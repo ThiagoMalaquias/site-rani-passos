@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
-  get 'courses/metrics/:slug/:code', to: 'home#metrics'
+  get 'courses/:slug/:code/:subcode', to: 'home#metrics'
   get 'courses/:slug', to: 'home#index'
 
   get 'search', to: 'home#search'
@@ -14,17 +14,9 @@ Rails.application.routes.draw do
     get 'all_installments', on: :collection
     post 'apply_discount', on: :collection
   end
-  resources :leads
-  resources :blogs
-  resources :teachers
-  resources :about_us, only: [:index]
+
   resources :promo, only: [:show]
   resources :localizations
-
-  resources :contacts
-  resources :companies
-  resources :testimonials
-  resources :live_lessons
   resources :user_payments, only: [:index, :create]
 
   resources :user_site_advertisements do
@@ -33,10 +25,6 @@ Rails.application.routes.draw do
 
   resources :orders do
     get 'complete-payment/:code', on: :collection, to: 'orders#complete_payment'
-  end
-
-  resources :user_courses do
-    get 'thanks', on: :member, to: 'user_courses#thanks'
   end
 
   resources :payments, only: [:index, :new, :show, :create] do

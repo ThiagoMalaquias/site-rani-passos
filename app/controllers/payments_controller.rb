@@ -58,18 +58,12 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    @user = User.find_by(id: payment_user_id)
-    cashback_applicator = Payment::CashbackApplicator.new(user: @user, courses: cart.courses)
-    
-    @applied_cashback = cookies[:cashback_applied].present? && cashback_applicator.applicable?
-    cashback_value = @applied_cashback ? cashback_applicator.amount_to_apply : params[:cashback_applied]
-    
     result = Payment::CreateOrderService.new(
       company: company,
       cookies_course: cookies_course,
       user_id: payment_user_id,
       payment_params: payment_params,
-      cashback_applied: cashback_value,
+      cashback_applied: params[:cashback_applied],
       utm_cookies: utm_cookies,
       site: @site
     ).call
