@@ -12,7 +12,6 @@ gem "cpf_cnpj"
 gem 'devise'
 gem 'devise_token_authenticatable'
 gem 'httparty'
-gem 'iugu', git: 'https://github.com/iugu/iugu-ruby' 
 gem 'jbuilder', '~> 2.5'
 gem 'jwt'
 gem 'mini_magick', '~> 4.8'
