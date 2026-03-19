@@ -66,13 +66,13 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.smtp_settings = {
-    address: "smtp-relay.brevo.com",
-    port: 587,
-    enable_starttls_auto: true,
-    user_name: "93bade001@smtp-brevo.com",
-    password: Rails.application.credentials.brevo[:password],
+    address: "smtp.sendgrid.net",
+    port: 587, # ports 587 and 2525 are also supported with STARTTLS
+    enable_starttls_auto: true, # detects and uses STARTTLS
+    user_name: "apikey",
+    password: Rails.application.credentials.sendgrid_api_key, # SMTP password is any valid API key, when user_name is "apikey".
     authentication: 'login',
-    domain: 'agenda.torneseumprogramador.com.br'
+    domain: 'yourdomain.com' # your domain to identify your server when connecting
   }
 
 
