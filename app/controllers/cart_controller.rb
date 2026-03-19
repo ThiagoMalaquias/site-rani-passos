@@ -57,6 +57,7 @@ class CartController < ApplicationController
 
     courses << { "id" => course.id, "local" => local, "discount" => discount, "code" => code }
     courses = courses.uniq { |item| item["id"] }
+    set_cookies(courses)
 
     redirect_to new_payment_path
     return

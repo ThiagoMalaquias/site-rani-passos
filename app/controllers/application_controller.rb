@@ -23,6 +23,6 @@ class ApplicationController < ActionController::Base
 
   def clear_cashback_applied
     cookies.delete(:cashback_applied) if params[:controller] != "payments" && params[:action] != "cashback_interest"
-    cookies.delete("ead_#{@site}_cart_user") if params[:controller] != "cart" && params[:controller] != "payments"
+    cookies.delete("ead_#{@site}_cart_user") if ["cart", "payments"].exclude?(params[:controller])
   end
 end

@@ -2,6 +2,10 @@ Rails.application.routes.draw do
   devise_for :users
 
   root to: "home#index"
+
+  get 'courses/metrics/:slug/:code', to: 'home#metrics'
+  get 'courses/:slug', to: 'home#index'
+
   get 'search', to: 'home#search'
   get 'events', to: 'home#events'
 
@@ -33,11 +37,6 @@ Rails.application.routes.draw do
 
   resources :user_courses do
     get 'thanks', on: :member, to: 'user_courses#thanks'
-  end
-
-  resources :courses do
-    get 'apply_discount', on: :member
-    get ':code/:subcode', on: :member, to: "courses#metrics"
   end
 
   resources :payments, only: [:index, :new, :show, :create] do
