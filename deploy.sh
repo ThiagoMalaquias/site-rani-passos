@@ -6,5 +6,4 @@ git commit -am "$commit_message"
 git pull
 git push
 
-git pull heroku master
-git push heroku master
+git push heroku main
