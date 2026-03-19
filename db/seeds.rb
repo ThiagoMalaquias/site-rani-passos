@@ -1,0 +1,2 @@
+Administrador.create(nome: "Danilo", email: "danilo.aparecido.santos@gmail.com", password:"!Niloshe@")
+Configuracao.create(authorization_hotmart: "ZTE1OWM4OTgtNTVmMC00NmJiLTg2MjYtMzFjM2JiNDAwMWQ2OmM5YjQzYTI5LWY2ODEtNGJhZi04ODI1LTM4MmMzOGQ2MWI0OQ==")

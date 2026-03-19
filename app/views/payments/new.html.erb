@@ -1,0 +1,385 @@
+<div class="checkout-wrap" data-controller="payment">
+  <% main_course = @courses.first %>
+  <section class="checkout-hero">
+    <div class="checkout-overlay"></div>
+    <div class="container">
+      <div class="checkout-hero-head text-center">
+        <span class="checkout-top-badge">Matrícula segura e 100% online</span>
+        <h1 class="checkout-title text-uppercase">Finalizar matrícula</h1>
+        <hr class="hero-divider mx-auto">
+        <p class="checkout-subtitle">
+          Você está a um passo de garantir seu acesso ao curso
+          <strong><%= main_course.title %></strong>.
+          Preencha seus dados e escolha a melhor forma de pagamento.
+        </p>
+      </div>
+      <form action="/payments" autocomplete="off" method="post" id="payments" accept-charset="utf-8">
+        <div class="row">
+          <!-- ESQUERDA -->
+          <div class="col-lg-7 mb-4">
+            <div class="checkout-panel">
+              <div class="checkout-panel-header">
+                <h3>Seus dados</h3>
+                <p>Preencha as informações abaixo para concluir sua matrícula.</p>
+              </div>
+              <div class="checkout-panel-body">
+                <div class="checkout-section">
+                  <div class="checkout-section-title">
+                    <span class="checkout-section-number">01</span>
+                    <h4>Informações pessoais</h4>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="name">Nome completo</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="user[name]"
+                             id="name"
+                             value="<%= @user.name rescue '' %>"
+                             placeholder="Ex: José da Silva"
+                             required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="email">E-mail</label>
+                      <input type="email"
+                             class="form-control checkout-input"
+                             name="user[email]"
+                             id="email"
+                             value="<%= @user.email rescue '' %>"
+                             placeholder="seuemail@exemplo.com"
+                             required>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="confirm_email">Confirme seu e-mail</label>
+                      <input type="email"
+                             class="form-control checkout-input"
+                             name="user[confirm_email]"
+                             id="confirm_email"
+                             value="<%= @user.email rescue '' %>"
+                             placeholder="Repita seu e-mail"
+                             required>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="phone">Telefone</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="user[phone]"
+                             id="phone"
+                             value="<%= @user.phone rescue '' %>"
+                             placeholder="(00) 91234-5678"
+                             required>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="cpf">CPF</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="user[cpf]"
+                             id="cpf"
+                             value="<%= @user.cpf rescue '' %>"
+                             placeholder="000.000.000-00"
+                             required>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="birth_date">Data de nascimento</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="user[birth_date]"
+                             id="birth_date"
+                             value="<%= @user.birth_date rescue '' %>"
+                             placeholder="00/00/0000">
+                    </div>
+                  </div>
+                </div>
+                <div class="checkout-section">
+                  <div class="checkout-section-title">
+                    <span class="checkout-section-number">02</span>
+                    <h4>Endereço</h4>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <label for="cep">CEP</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[posta_code]"
+                             id="cep"
+                             value="<%= @user.addresses.first.posta_code rescue '' %>"
+                             placeholder="00000-000"
+                             required>
+                    </div>
+                    <div class="form-group col-md-8">
+                      <label for="street">Endereço</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[street]"
+                             id="street"
+                             value="<%= @user.addresses.first.street rescue '' %>"
+                             placeholder="Rua, avenida, etc."
+                             required>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="number">Número</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[number]"
+                             id="number"
+                             value="<%= @user.addresses.first.number rescue '' %>"
+                             placeholder="123"
+                             required>
+                    </div>
+                    <div class="form-group col-md-5">
+                      <label for="complement">Complemento</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[complement]"
+                             id="complement"
+                             value="<%= @user.addresses.first.complement rescue '' %>"
+                             placeholder="Apto, bloco, casa...">
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="neighborhood">Bairro</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[neighborhood]"
+                             id="neighborhood"
+                             value="<%= @user.addresses.first.neighborhood rescue '' %>"
+                             required>
+                    </div>
+                    <div class="form-group col-md-8">
+                      <label for="city">Cidade</label>
+                      <input type="text"
+                             class="form-control checkout-input"
+                             name="address[city]"
+                             id="city"
+                             value="<%= @user.addresses.first.city rescue '' %>"
+                             required>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="uf">UF</label>
+                      <input type="text"
+                             class="form-control checkout-input text-uppercase"
+                             name="address[uf]"
+                             id="uf"
+                             value="<%= @user.addresses.first.uf rescue '' %>"
+                             maxlength="2"
+                             placeholder="SP"
+                             required>
+                    </div>
+                  </div>
+                </div>
+                <div class="checkout-section">
+                  <div class="checkout-section-title">
+                    <span class="checkout-section-number">03</span>
+                    <h4>Forma de pagamento</h4>
+                  </div>
+                  <div class="checkout-payment-box">
+                    <div id="payment-method">
+                      <ul class="nav nav-pills checkout-payment-tabs mb-4" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active"
+                             id="pills-card-tab"
+                             data-toggle="pill"
+                             data-payment-method="card"
+                             href="#pills-card"
+                             role="tab"
+                             aria-controls="pills-card"
+                             aria-selected="true"
+                             data-action="click->payment#setValueImutable">
+                            <span>💳</span>
+                            Cartão
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link"
+                             id="pills-billet-tab"
+                             data-toggle="pill"
+                             data-payment-method="billet"
+                             href="#pills-billet"
+                             role="tab"
+                             aria-controls="pills-billet"
+                             aria-selected="false"
+                             data-action="click->payment#setValueImutable">
+                            <span>📄</span>
+                            Boleto
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link"
+                             id="pills-pix-tab"
+                             data-toggle="pill"
+                             data-payment-method="pix"
+                             href="#pills-pix"
+                             role="tab"
+                             aria-controls="pills-pix"
+                             aria-selected="false"
+                             data-action="click->payment#setValueImutable">
+                            <span>⚡</span>
+                            Pix
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="pills-tabContent">
+                        <!-- CARTÃO -->
+                        <div class="tab-pane fade show active" id="pills-card" role="tabpanel" aria-labelledby="pills-card-tab">
+                          <div class="checkout-method-card">
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                  <label for="cnumber">Número do cartão</label>
+                                  <input type="tel"
+                                         class="form-control checkout-input"
+                                         name="card[number]"
+                                         id="cnumber"
+                                         placeholder="0000 0000 0000 0000">
+                                </div>
+                                <div class="form-group">
+                                  <label for="cname">Nome impresso no cartão</label>
+                                  <input type="text"
+                                         class="form-control checkout-input"
+                                         name="card[name]"
+                                         id="cname"
+                                         placeholder="Nome como está no cartão">
+                                </div>
+                                <div class="form-row">
+                                  <div class="form-group col-7">
+                                    <label for="cexpiry">Validade</label>
+                                    <input type="tel"
+                                           class="form-control checkout-input"
+                                           name="card[expiry]"
+                                           id="cexpiry"
+                                           placeholder="MM/AA">
+                                  </div>
+                                  <div class="form-group col-5">
+                                    <label for="ccvc">CVC</label>
+                                    <input type="tel"
+                                           class="form-control checkout-input"
+                                           name="card[cvc]"
+                                           id="ccvc"
+                                           placeholder="123">
+                                  </div>
+                                </div>
+                                <div class="form-group mb-0">
+                                  <label for="installment">Parcelamento</label>
+                                  <select class="form-control checkout-input"
+                                          name="installments"
+                                          id="installment"
+                                          data-action="change->payment#setInstallment">
+                                    <% @all_installments.each do |installment| %>
+                                      <option value="<%= installment[:key] %>"
+                                              data-js-installment-value="<%= installment[:value] %>">
+                                        <% if installment[:key] < 7 %>
+                                          <%= "#{installment[:key]}x de #{number_to_currency(installment[:value])}" %>
+                                        <% else %>
+                                          <%= "#{installment[:key]}x de #{number_to_currency(installment[:value])}*" %>
+                                        <% end %>
+                                      </option>
+                                    <% end %>
+                                  </select>
+                                  <small class="checkout-note">*Parcelas maiores podem ter acréscimo.</small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- BOLETO -->
+                        <div class="tab-pane fade" id="pills-billet" role="tabpanel" aria-labelledby="pills-billet-tab">
+                          <div class="checkout-method-info-grid">
+                            <div class="checkout-method-info">
+                              <h5>Pagamento por boleto</h5>
+                              <p>Após finalizar, o boleto será gerado para pagamento.</p>
+                            </div>
+                            <div class="checkout-method-info">
+                              <h5>Prazo de compensação</h5>
+                              <p>O boleto pode levar até 3 dias úteis para ser compensado.</p>
+                            </div>
+                            <div class="checkout-method-info">
+                              <h5>Liberação do acesso</h5>
+                              <p>Seu acesso é liberado após a confirmação bancária.</p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- PIX -->
+                        <div class="tab-pane fade" id="pills-pix" role="tabpanel" aria-labelledby="pills-pix-tab">
+                          <div class="checkout-method-info-grid">
+                            <div class="checkout-method-info featured">
+                              <h5>Pix instantâneo</h5>
+                              <p>Pagamento rápido, simples e com confirmação em poucos segundos.</p>
+                            </div>
+                            <div class="checkout-method-info">
+                              <h5>QR Code ou copia e cola</h5>
+                              <p>Você poderá pagar com o app do seu banco em poucos toques.</p>
+                            </div>
+                            <div class="checkout-method-info">
+                              <h5>Acesso mais rápido</h5>
+                              <p>Após a confirmação do Pix, sua matrícula pode ser liberada rapidamente.</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- HIDDEN FIELDS -->
+                <input type="hidden" name="user_id" id="user_id" value="<%= @user.id rescue '' %>">
+                <input type="hidden" name="method" id="method" value="card">
+                <input type="hidden" name="token" id="token">
+                <input type="hidden" name="discount" id="discount" value="<%= params[:discount] %>">
+                <input type="hidden" name="credit_card" id="credit_card">
+                <input type="hidden" name="cashback_applied" id="cashback_applied">
+              </div>
+            </div>
+          </div>
+          <!-- DIREITA -->
+          <div class="col-lg-5 mb-4">
+            <aside class="checkout-sidebar">
+              <div class="checkout-sidebar-card">
+                <span class="checkout-sidebar-badge">Resumo da matrícula</span>
+                <div class="checkout-course-card">
+                  <% if main_course.image.attached? %>
+                    <%= image_tag main_course.image,
+                          class: "checkout-course-thumb",
+                          alt: main_course.title %>
+                  <% else %>
+                    <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg",
+                          class: "checkout-course-thumb",
+                          alt: main_course.title %>
+                  <% end %>
+                  <div class="checkout-course-info">
+                    <h4><%= main_course.title %></h4>
+                    <span>
+                      <%= main_course.lifetime ? "Acesso vitalício" : "#{main_course.period_access} meses de acesso" %>
+                    </span>
+                  </div>
+                </div>
+                <div class="checkout-includes">
+                  <h5>O que está incluso</h5>
+                  <ul>
+                    <% main_course.warranties.each do |warranty| %>
+                      <li>
+                        <span class="icon">✓</span>
+                        <span><%= warranty.title %></span>
+                      </li>
+                    <% end %>
+                    <li><span><%= main_course.lifetime ? "Acesso vitalício" : "#{main_course.period_access} meses de acesso" %></span></li>
+                  </ul>
+                </div>
+                <div class="checkout-price-box">
+                  <small>Total da matrícula</small>
+                  <strong><%= number_to_currency(@total_amount) %></strong>
+                  <span>Pagamento seguro e ambiente criptografado</span>
+                </div>
+                <button type="submit"
+                        class="btn-primary-lg checkout-submit pulse"
+                        id="btncomprar">
+                  Confirmar matrícula
+                </button>
+                <p class="checkout-bottom-note">
+                  Ao finalizar, você concorda com os termos da matrícula e política da plataforma.
+                </p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

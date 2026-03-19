@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  professor: one
+  agendamento: one
+  descricao: MyString
+  valor: MyString
+  tipo: MyString
+
+two:
+  professor: two
+  agendamento: two
+  descricao: MyString
+  valor: MyString
+  tipo: MyString

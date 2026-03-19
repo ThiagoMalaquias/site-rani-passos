@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  professor: one
+  modulo: one
+  aluno: one
+  dados: MyText
+
+two:
+  professor: two
+  modulo: two
+  aluno: two
+  dados: MyText

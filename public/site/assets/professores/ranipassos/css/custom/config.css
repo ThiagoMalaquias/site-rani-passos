@@ -1,0 +1,17 @@
+:root {
+  --color-primary: #007BFF !important;
+  --icon-filter-primary: brightness(0) saturate(100%) invert(18%) sepia(78%) saturate(1741%) hue-rotate(273deg) brightness(96%) contrast(110%) !important;
+  --color-secondary: #17335C !important;
+  --color-border: #ececec !important;
+  --color-white: #fff !important;
+  --background-light: #fbfbfb;
+  --background-dark: #444;
+  --border-radius: 3px !important;
+  --border-max: 90px !important;
+  --border-px: 1px !important;
+  --font-family: "Roboto" !important;
+  --font-size-h1: 36px !important;
+  --font-size-h2: 26px !important;
+  --font-size-h3: 20px !important;
+  --font-size-p: 16px !important;
+}

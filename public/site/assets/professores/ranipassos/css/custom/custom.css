@@ -1,0 +1,79 @@
+.tagoffer {
+    background: var(--color-primary);
+    position: absolute;
+    margin-top: 20px;
+    height: 40px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius)
+}
+
+#faq {
+    background-color: #1a1a1a;
+    margin-top: 90px;
+    margin-bottom: 90px;
+    padding-bottom: 90px
+}
+
+.depoiment {
+    background-color: #1a1a1a;
+    margin-top: 90px;
+    padding-bottom: 90px;
+    text-align: center
+}
+
+
+.depouser {
+    background: #fafafa url(../../img/bg-depoiment.png) no-repeat 390px 70px;
+    display: flex;
+    padding: 20px;
+    margin-bottom: 30px
+}
+
+ul.liinfocourse li:before {
+    content: url(../../img/icons/verifylist.svg);
+    margin-right: 7px
+}
+
+section#interna .pg-protect.pg-matricula nav a.aktif:after {
+    content: url(../../img/marktil.svg);
+    float: right;
+    margin-right: 22px
+}
+
+section.breadcrumb {
+    background: url(../../img/img-breadcrumb.png) top center;
+    background-attachment: fixed;
+    background-size: cover;
+    padding: 65px 0
+}
+
+img.loremipsum {
+    width: 100%
+}
+
+.mvv {
+    background: url(../../img/bg-aboutus.png) top center;
+    background-attachment: fixed;
+    background-size: cover;
+    padding: 185px 0
+}
+
+img.f-logo {
+    width: 137px
+}
+
+img.logocontact {
+    width: 299px
+}
+
+.conteudoranicontato {
+    width: 370px;
+    padding-top: 30px;
+    padding-bottom: 111px
+}
+
+.ranicontato {
+    background: url(../../img/professorcontact.png) no-repeat top left
+}

@@ -1,0 +1,63 @@
+ <div class="popular-courses-section">
+    <div class="container">
+      <div class="popular-courses-header">
+        <h1 class="popular-courses-title">Veja abaixo os projetos mais escolhidos pelos alunos</h1>
+        <p class="popular-courses-description">Não adianta procurar em outro lugar, apenas aqui você terá acesso a materiais produzidos 100% por professores. Por isso oferecemos as melhores opções de cursos do Brasil, com o preço justo e acessível para você simplesmente gabaritar a prova e garantir a sua vaga.</p>
+      </div>
+
+      <div class="popular-courses-grid">
+        <% courses.each do |course| %>
+          <div class="popular-course-card">
+            <div class="course-card-header">
+              <h2 class="course-card-title"><%= course.title %></h2>
+            </div>
+
+            <div class="course-card-pricing">
+              <span class="course-old-price">de <%= number_to_currency(course.value_of) %> por</span>
+              <div class="course-installment">
+                <span class="installment-label"><%= course.installments %>x</span>
+                <h2 class="course-price"><%= number_to_currency(course.last_installment) %></h2>
+              </div>
+              <span class="course-cash-price"><%= number_to_currency(course.value_cash, unit: "") %> à vista</span>
+            </div>
+
+            <button class="course-card-button" onclick="window.location.href='/courses/<%= course.slug %>'">Saiba mais aqui</button>
+
+            <div class="course-card-features">
+              <ul class="course-features-list">
+                <% course.warranties.each do |warranty| %>
+                  <li class="course-feature-item">
+                    <span><%= warranty.title %></span>
+                  </li>
+                <% end %>
+                <li class="course-feature-item"><span><%= course.lifetime ? "Acesso Vitalício" : "#{course.period_access} meses de acesso" %></span></li>
+              </ul>
+            </div>
+          </div>
+        <% end %>      
+      </div>
+
+      <div class="hero-guarantee">
+      <div>
+        <img src="/site/assets/professores/<%= @site %>/img/cartao.png" alt="">
+        <span>Cartão <br> de crédito</span>
+      </div>
+      <div>
+        <img src="/site/assets/professores/<%= @site %>/img/boleto.png" alt="">
+        <span>Boleto</span>
+      </div>
+      <div>
+        <img src="/site/assets/professores/<%= @site %>/img/pix.png" alt="">
+        <span>Pix</span>
+      </div>
+      <div>
+        <img src="/site/assets/professores/<%= @site %>/img/compra-segura.png" alt="">
+        <span><strong>Compra</strong> <br> 100% segura</span>
+      </div>
+      <div>
+        <img src="/site/assets/professores/<%= @site %>/img/privacidade-protegida.png" alt="">
+        <span>Privacidade <br> protegida</span>
+      </div>
+      </div>
+    </div>
+  </div>

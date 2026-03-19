@@ -1,0 +1,47 @@
+<svg width="72" height="60" viewBox="0 0 72 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="video-gradient" x1="18" y1="6" x2="60" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00C9FF"/>
+      <stop offset="100%" stop-color="#92FE9D"/>
+    </linearGradient>
+    <linearGradient id="video-screen" x1="16" y1="12" x2="56" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1D74F5"/>
+      <stop offset="100%" stop-color="#6C63FF"/>
+    </linearGradient>
+    <radialGradient id="video-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 20 -35 0 36 42)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E4F5FF" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#D0EDFF" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#C4E6FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="video-play" x1="34" y1="20" x2="46" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF"/>
+      <stop offset="100%" stop-color="#D7F9FF"/>
+    </linearGradient>
+  </defs>
+
+  <ellipse cx="36" cy="42" rx="28" ry="16" fill="url(#video-glow)" />
+
+  <path d="M16 12C16 9.79086 17.7909 8 20 8H52C54.2091 8 56 9.79086 56 12V44C56 46.2091 54.2091 48 52 48H20C17.7909 48 16 46.2091 16 44V12Z"
+        fill="url(#video-screen)"/>
+
+  <path d="M56 20L64 15C65.6569 15 67 16.3431 67 18V38C67 39.6569 65.6569 41 64 41L56 36V20Z"
+        fill="url(#video-gradient)"/>
+
+  <path d="M21 14H51V41H21V14Z"
+        fill="url(#video-gradient)" opacity="0.12"/>
+
+  <path d="M33.5 25.134C33.5 24.0413 34.7083 23.3921 35.606 24.0223L43.2881 29.3884C44.0794 29.9488 44.0794 31.0512 43.2881 31.6116L35.606 36.9777C34.7083 37.6079 33.5 36.9587 33.5 35.866V25.134Z"
+        fill="url(#video-play)"/>
+
+  <path d="M23 51H49"
+        stroke="url(#video-gradient)" stroke-width="4" stroke-linecap="round" stroke-opacity="0.7"/>
+
+  <path d="M28 54H44"
+        stroke="url(#video-gradient)" stroke-width="3" stroke-linecap="round" stroke-opacity="0.5"/>
+
+  <circle cx="25" cy="11" r="2" fill="#7DF0FF"/>
+  <circle cx="31" cy="11" r="2" fill="#7DF0FF"/>
+  <circle cx="37" cy="11" r="2" fill="#7DF0FF"/>
+
+  <rect x="20" y="14" width="32" height="24" rx="6" stroke="url(#video-gradient)" stroke-width="2" opacity="0.6"/>
+</svg>

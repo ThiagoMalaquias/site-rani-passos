@@ -1,0 +1,2 @@
+class Stall < ApplicationRecord
+end

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+  <g id="endereco" transform="translate(-690 -679)">
+    <g id="Elipse_2" data-name="Elipse 2" transform="translate(690 679)" fill="#b5b5b5" stroke="#b5b5b5" stroke-width="1">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+    </g>
+    <g id="tool" transform="translate(625.693 684.917)">
+      <path id="Caminho_2" data-name="Caminho 2" d="M81.06,0a7.479,7.479,0,0,0-7.737,7.474c0,4.785,4.592,8.257,7.165,13.251a.353.353,0,0,0,.627,0c2.328-4.493,6.307-7.506,7.045-11.835A7.586,7.586,0,0,0,81.06,0ZM80.8,11.4a3.917,3.917,0,1,1,3.917-3.917A3.917,3.917,0,0,1,80.8,11.4Z" transform="translate(0 0)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

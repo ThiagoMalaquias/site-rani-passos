@@ -1,0 +1,34 @@
+<svg width="64" height="72" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="unlock-body" x1="18" y1="6" x2="50" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00C9FF"/>
+      <stop offset="45%" stop-color="#6C63FF"/>
+      <stop offset="100%" stop-color="#B517FF"/>
+    </linearGradient>
+    <linearGradient id="unlock-shackle" x1="24" y1="8" x2="40" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FF9F1C"/>
+    </linearGradient>
+    <radialGradient id="unlock-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 24 -22 0 32 48)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E6F8FF" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#D2EFFD" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#BFE5FA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="32" cy="48" rx="24" ry="16" fill="url(#unlock-glow)" />
+
+  <path d="M22 32H42C45.3137 32 48 34.6863 48 38V54C48 57.3137 45.3137 60 42 60H22C18.6863 60 16 57.3137 16 54V38C16 34.6863 18.6863 32 22 32Z"
+        fill="url(#unlock-body)"/>
+
+  <path d="M40 33V26C40 20.4772 35.5228 16 30 16C24.4772 16 20 20.4772 20 26"
+        stroke="url(#unlock-shackle)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="32" cy="45" r="4.5" fill="#FFFFFF" opacity="0.85"/>
+
+  <path d="M32 49.5V54"
+        stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+
+  <path d="M20 32H44"
+        stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-opacity="0.35"/>
+</svg>

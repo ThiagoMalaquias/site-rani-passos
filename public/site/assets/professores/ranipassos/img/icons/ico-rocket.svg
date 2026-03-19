@@ -1,0 +1,38 @@
+<svg width="66" height="70" viewBox="0 0 66 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="rocket-body" x1="30" y1="4" x2="56" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF3D68"/>
+      <stop offset="50%" stop-color="#FF5E63"/>
+      <stop offset="100%" stop-color="#FF8A47"/>
+    </linearGradient>
+    <linearGradient id="rocket-window" x1="36" y1="18" x2="46" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7DF0FF"/>
+      <stop offset="100%" stop-color="#4FB8FF"/>
+    </linearGradient>
+    <linearGradient id="rocket-flame" x1="30" y1="48" x2="36" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FF3D68"/>
+    </linearGradient>
+    <radialGradient id="rocket-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 28 -24 0 34 46)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE6E6" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FFD3D3" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFC0C0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="34" cy="46" rx="24" ry="18" fill="url(#rocket-glow)"/>
+
+  <path d="M34 10C42 18 45 28 45 38C45 46 34 54 34 54C34 54 23 46 23 38C23 28 26 18 34 10Z"
+        fill="url(#rocket-body)"/>
+
+  <path d="M26 32L21 42C20.2 43.6 21.4 45.4 23.2 45.2L28 44" fill="#FF8A65"/>
+  <path d="M42 32L47 42C47.8 43.6 46.6 45.4 44.8 45.2L40 44" fill="#FF8A65"/>
+
+  <circle cx="34" cy="28" r="6" fill="url(#rocket-window)" stroke="#FFFFFF" stroke-width="2" opacity="0.8"/>
+  <circle cx="35.5" cy="26.5" r="2" fill="#FFFFFF" opacity="0.7"/>
+
+  <path d="M34 54C32 58 30 64 34 64C38 64 36 58 34 54Z"
+        fill="url(#rocket-flame)"/>
+
+  <path d="M30 48L34 52L38 48" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+</svg>

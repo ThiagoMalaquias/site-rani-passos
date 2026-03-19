@@ -1,0 +1,2 @@
+class TipChatGptMessage < ApplicationRecord
+end

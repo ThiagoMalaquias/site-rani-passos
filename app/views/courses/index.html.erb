@@ -1,0 +1,134 @@
+<%
+  title = "Cursos"
+  if params[:nature].present?
+    title = "Cursos Gratuitos"
+  elsif params[:kind].present?
+    title = "Simulados"
+  elsif params[:mentoring].present?
+    title = "Mentorias"
+  end
+%>
+<style>
+  .apple_pagination{ margin: 0px; background: #ffffff; border: none;font-size: 1.3rem;}
+  .apple_pagination .current{background-color: var(--color-primary); color: #fff; font-weight: 400;}
+</style>
+<%= render "shared/headerbundle", title: title %>
+<section id="searchhome" class="srccourses">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="searchinput">
+          <div class="input-group mb-2">
+            <input type="search" class="form-control selectpersonalizado" id="inlineFormInputGroup" name="search" placeholder="O que procura?" autocomplete="off">
+            <div class="input-group-prepend">
+              <div class="input-group-text"><img src="/site/assets/professores/<%= @site %>/img/icons/ico-search.svg"></div>
+            </div>
+            <div class="search-drop">
+              <ul>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="searchbuttons text-center">
+          <% @categories_featureds.each do |category| %>
+            <a href="/courses?nature=<%= params[:nature] %>&kind=<%= params[:kind] %>&categoria%5B%5D=<%= category.id %>" class="btn background-primary border-max color-white"><%= category.title %></a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="contentcursos ppage">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="sidebar">
+          <form action="/courses" id="formFilter" class="d-inline-block" method="get" accept-charset="utf-8">
+            <h4>Carreira</h4>
+            <div class="sb-category sb">
+              <% @categories.each do |category| %>
+                <% categorias = params[:categoria] || [] %>
+                <div>
+                  <input type="checkbox" name="categoria[]" value="<%= category.id %>" <% if categorias.include?(category.id.to_s) %> checked <% end %> >
+                  <%= category.title %>
+                </div>
+              <% end %>
+            </div>
+            <input type="hidden" name="nature" value="<%= params[:nature] %>">
+            <input type="hidden" name="kind" value="<%= params[:kind] %>">
+            <button class="btn btn-primary mt-2" id="btnFiltrar">Filtrar</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <div class="d-flex justify-content flex-column">
+          <div class="row">
+            <% @courses.each do |course|%>
+              <div class="col-md-4">
+                <div class="coursebox">
+                  <% if course.nature == "paid" %>
+                    <div class="tagoffer">
+                      <img src="/site/assets/professores/<%= @site %>/img/icons/ico-tag.svg" alt="Oferta">
+                      <span class="color-white">-<%= course.discount_percentage %>%</span>
+                    </div>
+                  <% end %>
+                  <a class="" href="/courses/<%= course.slug %>">
+                    <% if course.image.attached? %>
+                      <%= image_tag course.image, class: "capecourse", alt: "#{course.title}" %>
+                    <% else %>
+                      <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg", class: "capecourse", alt: "#{course.title}" %>
+                    <% end %>
+                  </a>
+                  <a class="" href="/courses/<%= course.slug %>">
+                    <h3 class="text-center color-secondary"><%= course.title %></h3>
+                  </a>
+                  <div class="barinfo">
+                    <% if course.supplementary_material.present? %>
+                      <div class="pdf">
+                        <img src="/site/assets/professores/<%= @site %>/img/icons/ico-pdf.svg" alt="Downloads Pdf">
+                        <span><%= course.supplementary_material %></span>
+                      </div>
+                    <% end %>
+                    <% if course.duration.present? %>
+                      <div class="hour">
+                        <img src="/site/assets/professores/<%= @site %>/img/icons/ico-video.svg" alt="Horas de Aula">
+                        <span><%= course.duration %></span>
+                      </div>
+                    <% end %>
+                  </div>
+                  <% if course.nature == "paid" %>
+                    <% if course.recurrent %>
+                      <span class="oldprice">de <%= number_to_currency(course.value_of) %> por</span>
+                      <div class="price">
+                        <h2><%= number_to_currency(course.value_cash) %></h2>
+                      </div>
+                      <p class="pricepoll">Recorrente</p>
+                    <% else %>
+                      <span class="oldprice">de <%= number_to_currency(course.value_of) %> por</span>
+                      <div class="price">
+                        <span><%= course.installments %>x </span>
+                        <h2><%= number_to_currency(course.last_installment) %></h2>
+                      </div>
+                      <p class="pricepoll">ou <%= number_to_currency(course.value_cash, unit: "") %> à vista</p>
+                    <% end %>
+                  <% end %>
+                  <br>
+                  <a class="btn-outline m-auto" href="/courses/<%= course.slug %>">+ Detalhes</a>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="align-items-center d-flex mt-2 col-12">
+        <div class="mr-auto">
+          <span><b class="color-primary"><%= @courses.count %></b> Curso(s) encontrado(s)</span> <!-- TODO CONCLUIDO Colocar pra mostrar a quantidade de produto encontrado -->
+        </div>
+        <!-- paginação -->
+        <div class="apple_pagination">
+          <%= will_paginate @courses, :container => false %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-399858361"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-399858361', {  'allow_enhanced_conversions': true  });
+
+  var enhanced_conversion_data = {}
+</script>
+<script>
+  var g_ED = {
+      "email" : "#email",
+      "phone_number" : "#telefone"
+    }
+    var g_countrycode = '+55';
+
+    window.enhanced_conversion_data = window.enhanced_conversion_data || {};
+    document.addEventListener('input', g_save_toLocalStorage);
+    function g_save_toLocalStorage(e) {
+      var input = e.target;
+      for(i in g_ED) {
+        if(input.matches(g_ED[i]) ){
+          localStorage['g_'+ i] = input.value;
+        }
+      }
+      g_setup_Enhanced_Conversion_Data();
+    }
+    function g_setup_Enhanced_Conversion_Data(){
+      for(i in g_ED) {
+        if(localStorage['g_' + i]) {
+          if(i == 'email' && g_validateEmail(localStorage['g_' + i])) {
+            window.enhanced_conversion_data[i] = localStorage['g_' + i];
+          }
+          if(i == 'phone_number' && window.enhanced_conversion_data['email']) {
+            window.enhanced_conversion_data[i] = g_countrycode + localStorage['g_' + i];
+            window.enhanced_conversion_data[i] = window.enhanced_conversion_data[i].replace(/\D/g,'');
+          }
+        }
+      }
+    }
+
+    function g_validateEmail(email) {
+      return /\S+@\S+\.\S+/.test(email);
+    }
+    g_setup_Enhanced_Conversion_Data();
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+  (function googleFormValidation() {
+        if(document.body.innerText.includes("Contato criado com sucesso")) {
+            var country = "55"
+            enhanced_conversion_data.email = localStorage.getItem('g_e_mail')
+            enhanced_conversion_data.phone_number = country + localStorage.getItem('g_phone_number')
+            gtag('event', 'conversion', {'send_to': 'AW-399858361/g794COfd14gYELm11b4B'});
+            console.log("FORMULÁRIO CONTATO");
+
+        }else {
+          setTimeout(googleFormValidation, 500);
+        }
+      })()
+  })
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+  	if(window.location.href.includes('course=assinatura-completa')){
+      	document.querySelector('#payments').addEventListener('submit', function(){
+        	gtag('event', 'conversion', {'send_to': 'AW-399858361/4u2ZCNqe2YgYELm11b4B'});
+  			console.log('CONVERSÃO DE ASSINATURA')
+  		})
+  	}
+  })
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+  	document.querySelector("body > div#example li.item").addEventListener('click', function(){
+      gtag('event', 'conversion', {'send_to': 'AW-399858361/dQxKCN7m14gYELm11b4B'});
+      console.log('CONVERSÃO WHATSAPP')
+    })
+
+  })
+</script>
+<!-- Event snippet for Compra no site conversion page -->
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    if(window.location.href.includes('payments/new?')){
+      var valor = Number(document.querySelector("body > div > div > div > div.col-md-4 > div > div > h2").innerText.replace('R$','').replaceAll('.','').replace(',','.'))
+      localStorage.setItem(valor)
+  	}
+
+
+    if(window.location.href.includes('thanks')){
+
+
+        gtag('event', 'conversion', {
+            'send_to': 'AW-399858361/I1aJCLnNgYMYELm11b4B',
+            'value': localStorage.getItem(valor),
+            'currency': 'BRL',
+            'transaction_id': document.querySelector("#texto").value
+        });
+  		console.log('CONVERSÃO DE COMPRA COM VALOR' + valor)
+  	}
+
+  })
+</script>
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window,document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+   fbq('init', '1716686311854148');
+  fbq('track', 'PageView');
+</script>
+<noscript>
+  <img height="1" width="1" 
+src="https://www.facebook.com/tr?id=1716686311854148&ev=PageView
+&noscript=1"/>
+</noscript>
+<!-- End Facebook Pixel Code -->
+<!-- Meta Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '197288153080245');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=197288153080245&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<%= render "layouts/site/generics/scripts" %>
+<script type="text/javascript" src="/site/assets/js/whatsapp-chat.js"></script>

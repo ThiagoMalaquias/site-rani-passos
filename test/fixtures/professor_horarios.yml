@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  professor: one
+  dia: MyString
+  hora_inicio: 2022-08-04 12:31:36
+  hora_fim: 2022-08-04 12:31:36
+
+two:
+  professor: two
+  dia: MyString
+  hora_inicio: 2022-08-04 12:31:36
+  hora_fim: 2022-08-04 12:31:36

@@ -1,0 +1,145 @@
+<script type="text/javascript" src="/site/assets/js/jQuery/jQuery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/slick/slick.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/plugin/card.js"></script>
+<script type="text/javascript" src="/site/assets/js/bootstrap/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/jQuery.mask.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/jQuery.validate.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/additional-methods.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/countdown/jquery.plugin.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/jQuery/countdown/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="/site/assets/js/app.js"></script>
+<script type="text/javascript" src="/site/assets/js/pages/home.js"></script>
+<script type="text/javascript" src="/site/assets/js/pages/depoimentos/depoimentos.js"></script>
+<script type="text/javascript" src="/site/assets/js/pages/aulasaovivo/aulasaovivo.js"></script>
+<script>
+  $(function() {
+    $(document).on('click', event => {
+      if (event.target.id != 'inlineFormInputGroup') {
+        $('div.search-drop>ul>li>a').each(function() {
+          if (event.target != $(this)) {
+            $('.search-drop').hide();
+          }
+        })
+        $('div.search-drop>ul').each(function() {
+          if (event.target != $(this)) {
+            $('.search-drop').hide();
+          }
+        })
+      }
+    });
+
+    $('#banner-responsive .slick-next').hide()
+    $('#banner-responsivemobile .slick-next').hide()
+    $('#anuncio').modal('show')
+
+    $('.countdown').each(function() {
+        $(this).countdown({
+            until: new Date($(this).attr('data-date')),
+            format: 'HMS',
+            compact: true,
+            onExpiry: () => {
+                console.log("expirou");
+            }
+        });
+    });
+
+    $('input[name=search]').on('focus', function() {
+      if ($(this).val() != '' && $(this).val() != ' ') {
+        $(this).siblings().siblings('.search-drop').show();
+      }
+      $('input[name=search]').on('propertychange input', function() {
+
+        if ($(this).val() != '' && $(this).val() != ' ') {
+          $(this).siblings().siblings('.search-drop').show();
+
+          let val = $(this).val();
+
+          $.ajax({
+            url: `/search.json?course=${val}`,
+            type: 'GET',
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+              lis = $('div.search-drop>ul>li');
+              lis.each(function() {
+                $(this).remove();
+              })
+              $('div.search-drop>ul').append(`
+                                  <li>
+                                      <p>Buscando...</p>
+                                  </li>`);
+            },
+            success: function(response) {
+              lis = $('div.search-drop>ul>li');
+              lis.each(function() {
+                $(this).remove();
+              })
+              response.forEach(course => {
+                const description = course.description || ""
+
+                $('div.search-drop>ul').append(`
+                                      <li>
+                                          <a href="/courses/${course.slug}">
+                                              <img src="${course.image}" alt="${course.title}">
+                                              <div>
+                                                  <p>${course.title}</p>
+                                              </div>
+                                          </a>
+                                      </li>`);
+              });
+              if (response.length < 1) {
+                $('div.search-drop>ul').append(`
+                                      <li>
+                                          <p>Nenhum curso encontrado.</p>
+                                      </li>
+                                  `);
+              }
+            },
+            error: function(jqXHR, JQueryXHR, textStatus, errorThrown) {
+              console.log(jqXHR + '' + JQueryXHR + '' + textStatus + '' + errorThrown);
+              lis = $('div.search-drop>ul>li');
+              lis.each(function() {
+                $(this).remove();
+              })
+            }
+          });
+
+        }
+      })
+    })
+
+    let name = ""
+    let msg = ""
+    <% flash.each do |name, msg| %>
+    name = '<%= name %>'; msg = '<%= msg %>';
+    <% end %>
+
+    if(name == 'notice'){ return swal('Sucesso', `${msg}`, 'success') }
+    if(name == 'error'){
+      swal( {
+        text: `${msg}`,
+        icon: "error",
+        buttons: {
+          whatsapp: {
+            text: "Whatsapp",
+            value: "whatsapp",
+            className: 'sweet-warning'
+          },
+          cancel: "Ok"
+        },
+      })
+      .then((value) => {
+          switch (value) {
+          case "whatsapp":
+            window.open("https://ranipassos.live/GbiGZ")
+            break;
+        }
+      });
+    }
+  });
+</script>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <link rel="icon" href="/favicon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" id="wixDesktopViewport">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="skype_toolbar" content="skype_toolbar_parser_compatible">
+    <meta name="wix-dynamic-custom-elements" content="DropDownMenu">
+    <meta http-equiv="X-Wix-Meta-Site-Id" content="0029d788-821a-41a1-af2b-6be534e1bb38">
+    <meta http-equiv="X-Wix-Application-Instance-Id" content="09c425b7-97ed-4f35-9ee2-8f88b2c90118">
+    <meta http-equiv="X-Wix-Published-Version" content="2371">
+    <meta http-equiv="etag" content="bug">
+    <meta property="og:title" content="Tribunais | Material Gratuito">
+    <meta property="og:url" content="https://www.ranipassos.com.br/promo/<%= params[:id] %>">
+    <meta property="og:site_name" content="Ranipassos">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tribunais | Material Gratuito">
+    <link rel="canonical" href="https://www.ranipassos.com.br/promo/<%= params[:id] %>">
+    <link href="https://fonts.googleapis.com/css?family=Heebo:400,400i,500,700|Titillium+Web:600" rel="stylesheet">
+    <link rel="stylesheet" href="dist/css/style.css">
+    <%= render 'layouts/promo/style' %>
+    <script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+    <%= render 'layouts/promo/js' %>
+  </head>
+  <body class="is-boxed">
+    <%= yield %>
+  </body>
+</html>

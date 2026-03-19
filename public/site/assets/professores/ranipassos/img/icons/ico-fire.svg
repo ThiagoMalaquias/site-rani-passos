@@ -1,0 +1,28 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fire-gradient" x1="18" y1="8" x2="48" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF9248"/>
+      <stop offset="45%" stop-color="#FF5C5C"/>
+      <stop offset="100%" stop-color="#FF2568"/>
+    </linearGradient>
+    <radialGradient id="fire-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 22 -22 0 32 36)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE4B5" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#FFB27E" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#FF7E5F" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="32" cy="36" r="22" fill="url(#fire-glow)" />
+
+  <path d="M32 6C32 6 20 16.5 20 29C20 38.75 26.25 46 32 46C37.75 46 44 38.75 44 29C44 22 40 16 35 12C35 14 36.5 20 30 24C26 19 28 12 32 6Z"
+        fill="url(#fire-gradient)"/>
+
+  <path d="M32 20C32 20 26.5 25 26.5 31C26.5 35.5 29.5 39 32 39C34.5 39 37.5 35.5 37.5 31C37.5 27.5 35.5 24.5 33.5 23C33.5 24 34.25 27.25 31 29.5C29 27 30 23 32 20Z"
+        fill="#FFEFD5"/>
+
+  <path d="M28 40C29.75 43.5 32 47 32 47C32 47 34.25 43.5 36 40C34.5 41 33 41.5 32 41.5C31 41.5 29.5 41 28 40Z"
+        fill="#FF9248" opacity="0.8"/>
+
+  <path d="M34 50C35.5 48 36.5 45.5 37 43C35.8 44.2 33.7 45 32 45C30.3 45 28.2 44.2 27 43C27.5 45.5 28.5 48 30 50H34Z"
+        fill="#FF6B6B" opacity="0.6"/>
+</svg>

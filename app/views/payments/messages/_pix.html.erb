@@ -1,0 +1,104 @@
+<div class='container' style="max-width: 835px; transition: margin 200ms;">
+  <div class="professores">
+    <div class="card card-professor mb-4">
+      <div class="card-body">
+        <div class="text-center">
+          <h2>Pix Gerado com Sucesso</h2>
+        </div>
+        <p>
+          Olá <b class="_font-weight-bold"><%= user.name %></b>, 
+          <span>
+            Quando o pagamento for aprovado, você receberá acesso às informações por meio do email <%= user.email %>. Não se esqueça de verificar sua pasta de spam.</span>
+        </p>
+        <ul>
+          <li>Abra o aplicativo do seu banco e acesse a área Pix</li>
+          <li>Selecione a opção pagar com código Pix Copia e Cola e cole o código no espaço indicado no aplicativo</li>
+          <li>Após o pagamento, você receberá por email as informações de acesso à sua compra</li>
+        </ul>
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <img src="<%= payment.pix_qrcode_text %>"  alt="qrcode" style="width: 100%;"/>
+            <div id="timer" style="font-size: 25px"></div>
+          </div>
+          <div class="col-md-8 pt-4">
+            <%= payment.pix_qrcode %>
+            <div id="billet-code" style="display: none">
+              <input type="text" name="texto" id="texto" class="form-control text-center" value="<%= payment.pix_qrcode %>" style="width: 100%" readonly/>
+            </div>
+            <div class="mt-3 mb-3 text-center">
+              <button type="button" class="btn btn-primary" style="width: 100%" onclick="copiarTexto()">
+                Copiar Código
+              </button>
+            </div>
+          </div>
+        </div>
+        <p>
+          Em alguns casos o serviço de email utilizado por você pode se enganar e colocar uma de nossas mensagens no SPAM. Por isto, pedimos que sempre verifique também a sua caixa de SPAM, pois quando seu pagamento for aprovado seus dados de acesso ao produto podem cair lá!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let tempo;
+  let intervalTime;
+
+  window.onload = function () {
+    let duration = 60 * 15; // Converter para segundos
+    display = document.querySelector('#timer'); // selecionando o timer
+    startTimer(duration, display); // iniciando o timer
+    verificaPagamento()
+  };
+
+  function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+
+    setInterval(() => {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      display.textContent = minutes + ":" + seconds;
+      if (--timer < 0) {
+          timer = duration;
+      }else if(timer == 0){
+        window.location.assign(`/`);
+      }
+    }, 1000);
+  }
+
+
+  function verificaPagamento(){
+    const code = "<%= payment.code %>"
+    clearInterval(intervalTime)
+
+    intervalTime = setInterval(async () => {
+      let res = await fetch(`/payments/1.json?code=${code}`, {
+        method: 'GET',
+        headers: { 'Content-type': 'application/json; charset=UTF-8' }
+      })
+
+      const payment = JSON.parse(await res.text());
+      if(payment.status == 'paid'){
+        window.location.assign(`/payments/thanks/${code}`);
+      }
+    }, 5000)
+  }
+
+
+  function copiarTexto() {
+    let textoCopiado = document.getElementById("texto");
+    textoCopiado.select();
+    textoCopiado.setSelectionRange(0, 99999)
+    document.execCommand("copy");
+  }
+
+  const toastTrigger = document.getElementById('liveToastBtn')
+  const toastLiveExample = document.getElementById('liveToast')
+  if (toastTrigger) {
+    toastTrigger.addEventListener('click', () => {
+      const toast = new bootstrap.Toast(toastLiveExample)
+      toast.show()
+    })
+  }
+</script>

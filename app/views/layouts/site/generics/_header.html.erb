@@ -1,0 +1,193 @@
+<header>
+  <!-- TODO fazer os menus -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="divtop justify-content-between d-lg-flex align-items-center">
+            <a class="navbar-brand" href="javascript:window.location.assign('/')">
+              <img src="/site/assets/professores/<%= @site %>/img/logo-rp.png" alt="" class="img-logo">
+            </a>
+            <div class="headsearch d-none d-lg-block">
+              <div class="input-group">
+                <form action="/search" method="get" accept-charset="utf-8">
+                  <input type="search" class="form-control selectpersonalizado" id="inlineFormInputGroup" value="" name="course" placeholder="O que está buscando?" autocomplete="off">
+                  <input type="hidden" value="<%= params[:controller] %>" name="controlador">
+                  <div class="input-group-prepend">
+                    <div class="srcimginpu"><img src="/site/assets/professores/<%= @site %>/img/icons/ico-search.svg"></div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <button class="navbar-toggler btnmobile" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="rtop d-lg-flex d-none">
+              <a href="javascript:window.location.assign('/cart')" class="signature color-white mr-md-4">
+                <span class="d-block"><img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho">
+                  <% if count_course_in_cart(@site).positive? %>
+                    (<%= count_course_in_cart(@site) %>)
+                  <% end %>
+                </span>
+              </a>
+              <a href="/courses/assinatura-ilimitada" class="signature color-white mr-md-3">
+                <span class="d-block"><img class="" src="/site/assets/professores/<%= @site %>/img/icons/ico-signature.svg" alt="">Assinatura Ilimitada</span>
+              </a>
+              <% if @teacher.platform == "student_area" %>
+                <a href="<%= @teacher.link_area_aluno %>" class="signature color-white" target="blank">
+                  <span class="d-block">
+                    <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                  </span>
+                </a>
+              <% elsif @teacher.platform == "hotmart" %>
+                <a href="<%= @teacher.link_area_hotmart %>" class="signature color-white" target="blank">
+                  <span class="d-block">
+                    <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                  </span>
+                </a>
+              <% else %>
+                <a href="<%= @teacher.link_area_aluno %>" class="signature color-white">
+                  <span class="d-block">
+                    <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                  </span>
+                </a>
+              <% end %>
+            </div>
+            <div class="collapse navbar-collapse menumob" id="bs-example-navbar-collapse-1">
+              <ul class="navbar-nav d-lg-none">
+                <li class="nav-item <% params[:controller] == 'home' ? 'active' : nil %>">
+                  <a href="javascript:window.location.assign(/')" class="nav-link ">
+                    PÁGINA INICIAL
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/courses')" class="nav-link ">
+                    CURSOS
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/courses?nature=free')" class="nav-link ">
+                    CURSOS GRATUITOS
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/courses/mentoria-missao-gabaritar')" class="nav-link ">
+                    MENTORIA
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/about_us')" class="nav-link ">
+                    SOBRE NÓS
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/testimonials')" class="nav-link ">
+                    DEPOIMENTOS
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/teachers')" class="nav-link ">
+                    PROFESSORES
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="javascript:window.location.assign('/contacts')" class="nav-link ">
+                    CONTATO
+                  </a>
+                </li>
+                <li>
+                  <a href="javascript:window.location.assign('/cart')" class="signature color-white mb-0">
+                    <span class="d-block"><img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho">
+                      Carrinho
+                      <%if count_course_in_cart(@site).positive? %>
+                        (<%= count_course_in_cart(@site) %>)
+                      <% end %>
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="/courses/assinatura-ilimitada" class="signature color-white mb-0">
+                    <span class="d-block"><img class="" src="/site/assets/professores/<%= @site %>/img/icons/ico-signature.svg" alt="">Assinatura Ilimitada</span>
+                  </a>
+                </li>
+                <li>
+                  <% if @teacher.platform == "student_area" %>
+                    <a href="<%= @teacher.link_area_aluno %>" class="signature color-white mb-0" target="blank">
+                      <span class="d-block">
+                        <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                      </span>
+                    </a>
+                  <% elsif @teacher.platform == "hotmart" %>
+                    <a href="<%= @teacher.link_area_hotmart %>" class="signature color-white mb-0" target="blank">
+                      <span class="d-block">
+                        <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                      </span>
+                    </a>
+                  <% else %>
+                    <a href="<%= @teacher.link_area_aluno %>" class="signature color-white mb-0">
+                      <span class="d-block">
+                        <img class="icon-color-white" src="/site/assets/professores/<%= @site %>/img/icons/ico-areauser.svg" alt="">Área do Aluno
+                      </span>
+                    </a>
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="header-shadow">
+ <div class="menudesk d-none d-lg-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 d-flex">
+          <ul class="menu-item justify-content-between d-flex flex-wrap mb-0">
+            <li class="nav-item <% if params[:controller] == 'home' %> active <% end%>">
+              <a href="javascript:window.location.assign('/')" class="nav-link ">
+                PÁGINA INICIAL
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'courses' && params[:nature].blank? && params[:id] != "mentoria-missao-gabaritar" %> active <% end%>">
+              <a href="javascript:window.location.assign('/courses')" class="nav-link ">
+                CURSOS
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'courses' && params[:nature].present? %> active <% end%>">
+              <a href="javascript:window.location.assign('/courses?nature=free')" class="nav-link ">
+                CURSOS GRATUITOS
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'courses' && params[:id] == "mentoria-missao-gabaritar" %> active <% end%>">
+              <a href="javascript:window.location.assign('/courses/mentoria-missao-gabaritar')" class="nav-link ">
+                MENTORIA
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'about_us' %> active <% end%>">
+              <a href="javascript:window.location.assign('/about_us')" class="nav-link ">
+                SOBRE NÓS
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'testimonials' %> active <% end%>">
+              <a href="javascript:window.location.assign('/testimonials')" class="nav-link ">
+                DEPOIMENTOS
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'teachers' %> active <% end%>">
+              <a href="javascript:window.location.assign('/teachers')" class="nav-link ">
+                PROFESSORES
+              </a>
+            </li>
+            <li class="nav-item <% if params[:controller] == 'contacts' %> active <% end%>">
+              <a href="javascript:window.location.assign('/contacts')" class="nav-link ">
+                CONTATO
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

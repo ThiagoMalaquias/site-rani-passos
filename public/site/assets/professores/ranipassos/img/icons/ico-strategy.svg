@@ -1,0 +1,35 @@
+<svg width="68" height="62" viewBox="0 0 68 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="strategy-board" x1="16" y1="10" x2="54" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF8A65"/>
+      <stop offset="100%" stop-color="#FF3D68"/>
+    </linearGradient>
+    <linearGradient id="strategy-elements" x1="24" y1="16" x2="44" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FFB347"/>
+    </linearGradient>
+    <radialGradient id="strategy-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 20 -30 0 34 40)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE6DB" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#FFD2C1" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFC0AA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="34" cy="40" rx="28" ry="16" fill="url(#strategy-glow)"/>
+
+  <rect x="16" y="12" width="36" height="30" rx="6" fill="url(#strategy-board)"/>
+  <rect x="12" y="45" width="44" height="4" rx="2" fill="url(#strategy-board)" opacity="0.4"/>
+  <rect x="28" y="48" width="12" height="4" rx="2" fill="url(#strategy-board)" opacity="0.6"/>
+
+  <path d="M23 20L28 15" stroke="url(#strategy-elements)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M42 21L47 16" stroke="url(#strategy-elements)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M25 34L33 26L40 32L46 26"
+        stroke="#FFF5D1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="28" cy="18" r="3" fill="#FFF5D1"/>
+  <circle cx="44" cy="18" r="3" fill="#FFF5D1"/>
+  <circle cx="25" cy="34" r="3" fill="#FFF5D1" opacity="0.9"/>
+  <circle cx="33" cy="26" r="3" fill="#FFF5D1" opacity="0.9"/>
+  <circle cx="40" cy="32" r="3" fill="#FFF5D1" opacity="0.9"/>
+  <circle cx="46" cy="26" r="3" fill="#FFF5D1" opacity="0.9"/>
+</svg>

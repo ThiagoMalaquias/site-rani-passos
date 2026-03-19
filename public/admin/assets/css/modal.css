@@ -1,0 +1,27 @@
+/* The Modal (background) */
+.modal {
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999 !important;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  margin: 15% auto;
+  padding: 20px;
+  width: 35% !important;
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

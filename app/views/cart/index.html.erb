@@ -1,0 +1,302 @@
+<% 
+  discount_exist = @cart_discount.present? 
+  cart_discount_id = @cart_discount.id rescue 0
+  cart_discount_title = @cart_discount.title rescue ""
+%>
+
+<div class="landing-promotion">
+  <span>Desconto por pouco tempo. <strong>APROVEITE AGORA MESMO!</strong></span>
+</div>
+
+<div class="landing-guarantee py-4 cart-guarantee">
+  <div class="container">
+    <div class="d-flex justify-content-center align-items-center cart-guarantee__container">
+      <div class="d-flex align-items-center cart-guarantee__item">
+        <img src="/site/assets/professores/<%= @site %>/img/carrinho-compras.png" alt="Ícone de carrinho de compras" class="img-fluid cart-guarantee__icon">
+        <span class="text-white cart-guarantee__text">Meu <br> Carrinho</span>
+      </div>
+      <div class="d-flex align-items-center cart-guarantee__item">
+        <img src="/site/assets/professores/<%= @site %>/img/carrinho-compra-segura.png" alt="Ícone de compra segura" class="img-fluid cart-guarantee__icon">
+        <span class="text-white cart-guarantee__text">Compra <br> <strong>Segura</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row">
+      <div class="col-lg-8 col-md-12">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <% if @courses.present? %>
+              <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                <div>
+                  <h4 class="mb-1 color-secondary">
+                    <i class="fas fa-shopping-cart mr-2"></i>
+                    <%= pluralize(@courses.count, "curso") %> no carrinho
+                  </h4>
+                  <small class="text-muted">Revise seus cursos antes de finalizar</small>
+                </div>
+                <button onclick="confirmarLimpeza()" class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-trash-alt mr-1"></i> Limpar
+                </button>
+              </div>
+              
+              <% @courses.each_with_index do |course, index| %>
+                <% course_in_cookie = @cookies_course.find{ |obj| obj["id"] == course.id } %>
+                <% unless index == 0 %>
+                  <hr class="my-4">
+                <% end %>
+                
+                <div class="row align-items-center">
+                  <div class="col-md-3 col-4 mb-3 mb-md-0">
+                    <a href="/courses/<%= course.slug %>" class="d-block">
+                      <%= image_tag course.image, class: "img-fluid rounded shadow-sm", alt: "#{course.title}", style: "transition: transform 0.3s;" %>
+                    </a>
+                  </div>
+                  
+                  <div class="col-md-6 col-8">
+                    <a class="color-secondary text-decoration-none" href="/courses/<%= course.slug %>">
+                      <h5 class="mb-2"><%= course.title %></h5>
+                    </a>
+                    
+                    <div class="infotime mb-3" style="padding: 0px;">
+                      <% if course.supplementary_material.present? %>
+                        <div class="pdf mb-2">
+                          <img src="/site/assets/professores/<%= @site %>/img/icons/ico-pdf.svg" alt="Downloads Pdf">
+                          <span><%= course.supplementary_material %></span>
+                        </div>
+                      <% end %>
+                      <% if course.duration.present? %>
+                        <div class="hour">
+                          <img src="/site/assets/professores/<%= @site %>/img/icons/ico-video.svg" alt="Horas de Aula">
+                          <span><%= course.duration %></span>
+                        </div>
+                      <% end %>
+                    </div>
+                    
+                    <form action="/cart/apply_discount" method="post" id="formDiscount_<%= course.id %>" class="form-inline">
+                      <%== apply_discount(course_in_cookie["discount"], course) %>
+                    </form>
+                  </div>
+                  
+                  <div class="col-md-3 col-12 text-md-end text-left mt-3 mt-md-0">
+                    <div class="d-flex flex-column align-items-md-end">
+                      <% if course_in_cookie["discount"].present? %>
+                        <small class="text-muted mb-1" style="font-size: 0.85rem; text-decoration: line-through;">
+                          <%= number_to_currency(course.total_price, unit: "R$") %>
+                        </small>
+                        <span class="badge bg-success mb-2" style="font-size: 0.7rem;">
+                          <i class="fas fa-check-circle mr-1"></i>Desconto aplicado!
+                        </span>
+                      <% end %>
+                      <h4 class="mb-0 color-primary">
+                        <strong><%= number_to_currency(course.total_price(course_in_cookie), unit: "R$") %></strong>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <div class="text-center py-5">
+                <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+                <h3 class="color-secondary mb-3">Seu carrinho está vazio</h3>
+                <p class="text-muted mb-4">Que tal explorar nossos cursos?</p>
+                <a href="/courses" class="btn btn-primary btn-lg">
+                  <i class="fas fa-book mr-2"></i> Ver Cursos Disponíveis
+                </a>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 col-md-12 mt-4 mt-lg-0">
+        <% if @courses.present? %>
+          <!-- Resumo do Pedido -->
+          <div class="sidebarcourse shadow-sm rounded" style="position: sticky; top: 20px;">
+            <div class="p-4">
+              <h5 class="mb-3 color-secondary">
+                <i class="fas fa-receipt mr-2"></i>Resumo do Pedido
+              </h5>
+              
+              <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                <span class="oldpricepag"><strong>Total:</strong></span>
+                <div class="price">
+                  <h2 class="mb-0 color-primary"><%= number_to_currency(@total_amount) %></h2>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <small class="text-muted d-block mb-2">
+                  <i class="fas fa-shield-alt mr-1 text-success"></i>
+                  Compra 100% segura
+                </small>
+                <small class="text-muted d-block mb-2">
+                  <i class="fas fa-lock mr-1 text-success"></i>
+                  Pagamento criptografado
+                </small>
+                <small class="text-muted d-block">
+                  <i class="fas fa-headset mr-1 text-success"></i>
+                  Suporte especializado
+                </small>
+              </div>
+              
+              <a href="javascript:window.location.assign('/payments/new')" class="buynow text-uppercase color-white d-block text-center" style="text-decoration: none;">
+                <span class="d-block py-2">
+                  <i class="fas fa-credit-card mr-2"></i>
+                  Fechar Pedido
+                </span>
+              </a>
+            </div>
+          </div>
+        <% end %>
+        
+        <!-- Sugestões de Cursos -->
+        <% if @sugestions.present? %>
+          <div class="card shadow-sm mt-3">
+            <div class="card-body">
+              <%if discount_exist %>
+                <div class="blinking-text text-center mb-3 p-2 rounded" style="background-color: #fff3cd;">
+                  <strong class="text-dark">
+                    <i class="fas fa-gift mr-1"></i>
+                    Tenha <%= cart_discount_title %> na compra de qualquer curso abaixo:
+                  </strong>
+                </div>
+                <div class="alert alert-info py-2 mb-3" style="font-size: 0.75rem;">
+                  <i class="fas fa-info-circle mr-1"></i>
+                  <strong>Importante:</strong> Os descontos estão atrelados aos cursos iniciais.
+                </div>
+              <% else %>
+                <h6 class="mb-3 color-secondary">
+                  <i class="fas fa-fire mr-1"></i>
+                  <strong>Nossos cursos mais vendidos:</strong>
+                </h6>
+              <% end %>
+              
+              <% @sugestions.each_with_index do |course, index| %>
+                <% unless index == 0 %>
+                  <hr class="my-3">
+                <% end %>
+                
+                <div class="row align-items-center">
+                  <div class="col-4">
+                    <a href="/courses/<%= course.slug %>" class="d-block">
+                      <%= image_tag course.image, class: "img-fluid rounded", alt: "#{course.title}" %>
+                    </a>
+                  </div>
+                  
+                  <div class="col-8">
+                    <a class="color-secondary text-decoration-none" href="/courses/<%= course.slug %>">
+                      <h6 class="mb-2" style="font-size: 0.9rem; line-height: 1.3;"><%= course.title %></h6>
+                    </a>
+                    
+                    <div class="mb-2">
+                      <% if @cart_discount.present? %>
+                        <small class="text-muted d-block" style="font-size: 0.75rem; text-decoration: line-through;">
+                          <%= number_to_currency(course.total_price, unit: "R$") %>
+                        </small>
+                      <% end %>
+                      <strong class="color-primary" style="font-size: 1rem;">
+                        <%= number_to_currency(course.total_price({"discount" => cart_discount_title, "code" => cart_discount_id} ), unit: "R$") %>
+                      </strong>
+                    </div>
+                    
+                    <a href="/cart/new?course=<%= course.slug %>&local=cart&discount=<%= encoded_code_discount(cart_discount_title) %>&code=<%= cart_discount_id %>" 
+                      class="buynow text-uppercase color-white d-block text-center mt-2" 
+                      style="margin: 0px; padding: 6px; font-size: 11px; text-decoration: none;">
+                      <span class="d-block">
+                        <i class="fas fa-cart-plus mr-1"></i>
+                        Adicionar
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <section class="testimonials enhanced">
+      <div class="testimonial-slider">
+        <% @testimonials.limit(4).each do |testimonial| %>
+          <div>
+            <article class="testimonial-item">
+              <img src="/site/assets/professores/<%= @site %>/img/icons/ico-stars.svg" alt="" class="stars mb-3">
+              <div class="testimonial-header">
+                <%= image_tag testimonial.photo, alt: "Depoimento de #{testimonial.name}" %>
+                <div>
+                  <h4><%= testimonial.name %></h4>
+                  <span><%= testimonial.position %></span>
+                </div>
+              </div>
+              <p><%= testimonial.text %></p>
+            </article>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      $(".testimonial-slider").slick({
+        dots: false,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        arrows: true,
+        responsive: [{
+          breakpoint: 1200,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            infinite: true,
+            dots: false
+          }
+        }, {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            dots: false
+          }
+        }, {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: false
+          }
+        }]
+      });
+    });
+
+  function confirmarLimpeza(){
+    if(confirm("Tem certeza que deseja limpar o carrinho?\n\nTodos os cursos serão removidos.")){
+      window.location.assign("/cart/clear_courses")
+    }
+  }
+  
+  // Adiciona efeito hover nas imagens dos cursos
+  document.addEventListener('DOMContentLoaded', function() {
+    const courseImages = document.querySelectorAll('.courseint img[alt*="curso"]');
+    courseImages.forEach(function(img) {
+      img.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+      });
+      img.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+    });
+  });
+</script>

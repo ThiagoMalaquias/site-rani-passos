@@ -1,0 +1,19 @@
+<div id="example"></div>
+<%= render "layouts/site/generics/footer" %>
+<script>
+  whatsappchat.multipleUser(
+    {
+      selector: '#example',
+      users: [
+        {
+          name:'Rani Passos',
+          designation: 'Clique Aqui',
+          phone: '554588120821',
+          image : '/site/assets/professores/ranipassos/img/icons/logo-footer.svg'
+        }
+      ],
+      chatBoxMessage: 'Entre em contato com um de nossos atendentes',
+      color: '#25D366',
+    }
+  );
+</script>

@@ -1,0 +1,35 @@
+<svg width="64" height="74" viewBox="0 0 64 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shield-body" x1="16" y1="4" x2="52" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8338EC"/>
+      <stop offset="45%" stop-color="#FF006E"/>
+      <stop offset="100%" stop-color="#FB5607"/>
+    </linearGradient>
+    <linearGradient id="shield-core" x1="28" y1="18" x2="44" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFCF6F"/>
+      <stop offset="100%" stop-color="#FF8A47"/>
+    </linearGradient>
+    <radialGradient id="shield-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 30 -20 0 32 46)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE4F5" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#FFCDE8" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FFB7DB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="32" cy="48" rx="22" ry="16" fill="url(#shield-glow)" />
+
+  <path d="M32 6L12 14V34C12 48 22 60 32 66C42 60 52 48 52 34V14L32 6Z"
+        fill="url(#shield-body)"/>
+
+  <path d="M32 14L20 18V34C20 44 27 52 32 54C37 52 44 44 44 34V18L32 14Z"
+        fill="#FFFFFF" opacity="0.18"/>
+
+  <path d="M32 26L26 28V34C26 40 30 44 32 45C34 44 38 40 38 34V28L32 26Z"
+        fill="url(#shield-core)"/>
+
+  <path d="M30 38L32 40L36 36"
+        stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+
+  <path d="M32 6V66"
+        stroke="rgba(255, 255, 255, 0.18)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8 6"/>
+</svg>

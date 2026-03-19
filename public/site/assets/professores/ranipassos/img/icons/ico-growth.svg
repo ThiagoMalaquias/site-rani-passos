@@ -1,0 +1,39 @@
+<svg width="68" height="64" viewBox="0 0 68 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="growth-base" x1="16" y1="36" x2="52" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#83F5B8"/>
+      <stop offset="100%" stop-color="#00C9A7"/>
+    </linearGradient>
+    <linearGradient id="growth-line" x1="20" y1="18" x2="54" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#007CF0"/>
+      <stop offset="100%" stop-color="#00DFD8"/>
+    </linearGradient>
+    <radialGradient id="growth-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 24 -32 0 34 42)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E6FFF5" stop-opacity="0.9"/>
+      <stop offset="55%" stop-color="#D4FFE8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#C0FFD9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="34" cy="42" rx="30" ry="18" fill="url(#growth-glow)"/>
+
+  <path d="M18 36H50V48C50 50.2091 48.2091 52 46 52H22C19.7909 52 18 50.2091 18 48V36Z"
+        fill="url(#growth-base)"/>
+
+  <rect x="21" y="26" width="6" height="10" rx="2" fill="#8AFAD1"/>
+  <rect x="31" y="22" width="6" height="14" rx="2" fill="#7CF5C6"/>
+  <rect x="41" y="18" width="6" height="18" rx="2" fill="#6BF1BB"/>
+
+  <path d="M22 32L30 26L38 30L48 22"
+        stroke="url(#growth-line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <circle cx="22" cy="32" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="30" cy="26" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="38" cy="30" r="3" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="48" cy="22" r="3" fill="#FFFFFF" opacity="0.85"/>
+
+  <path d="M45 12L51 18L45 18"
+        stroke="#00DFD8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M51 18V12"
+        stroke="#00DFD8" stroke-width="3" stroke-linecap="round"/>
+</svg>

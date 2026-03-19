@@ -1,0 +1,48 @@
+<svg width="64" height="72" viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pdf-gradient" x1="18" y1="4" x2="54" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF3D68"/>
+      <stop offset="50%" stop-color="#FF614B"/>
+      <stop offset="100%" stop-color="#FF9950"/>
+    </linearGradient>
+    <linearGradient id="pdf-ribbon" x1="12" y1="22" x2="44" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="100%" stop-color="#FFB347"/>
+    </linearGradient>
+    <radialGradient id="pdf-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 28 -36 0 32 40)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE4E8" stop-opacity="0.85"/>
+      <stop offset="60%" stop-color="#FFD1D8" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFC0C7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="32" cy="46" rx="28" ry="18" fill="url(#pdf-glow)" />
+
+  <path d="M18 8C18 5.79086 19.7909 4 22 4H38C38.7956 4 39.5587 4.31607 40.1213 4.87868L50.1213 14.8787C50.6839 15.4413 51 16.2044 51 17V58C51 60.2091 49.2091 62 47 62H22C19.7909 62 18 60.2091 18 58V8Z"
+        fill="url(#pdf-gradient)"/>
+
+  <path d="M38 4V15C38 16.1046 38.8954 17 40 17H51"
+        fill="url(#pdf-gradient)" opacity="0.25"/>
+
+  <path d="M40 4L51 15H41C39.8954 15 39 14.1046 39 13V4"
+        fill="#FF8A80" opacity="0.8"/>
+
+  <g fill="#FFFFFF">
+    <rect x="24" y="28" width="18" height="3" rx="1.5" opacity="0.85"/>
+    <rect x="24" y="35" width="16" height="3" rx="1.5" opacity="0.75"/>
+    <rect x="24" y="42" width="12" height="3" rx="1.5" opacity="0.65"/>
+  </g>
+
+  <path d="M16 34C14.3431 34 13 35.3431 13 37V49C13 50.6569 14.3431 52 16 52H34C35.6569 52 37 50.6569 37 49V37C37 35.3431 35.6569 34 34 34H16Z"
+        fill="url(#pdf-ribbon)"/>
+
+  <path d="M20.8 45H19V37.5H22.85C24.9 37.5 26.1 38.6 26.1 40.2C26.1 41.35 25.45 42.35 24.35 42.75L26.4 45H24.3L22.4 42.55H20.8V45Z"
+        fill="#D93848"/>
+
+  <path d="M28.4 45H27V37.5H31.2C33.3 37.5 34.55 38.55 34.55 40.2C34.55 41.9 33.3 43 31.2 43H28.4V45ZM28.4 41.7H31.05C32.2 41.7 32.9 41.1 32.9 40.2C32.9 39.35 32.2 38.8 31.05 38.8H28.4V41.7Z"
+        fill="#D93848"/>
+
+  <circle cx="42" cy="50" r="7" fill="#FFFFFF" opacity="0.35"/>
+  <path d="M44.8 46.4C46.2 47.55 46.5 49.55 45.35 50.95C45.25 51.05 45.15 51.15 45.05 51.25L44.3 52L41.9 49.6L39.5 52L38.1 50.6L40.5 48.2L39.75 47.45C38.35 46.05 38.35 43.75 39.75 42.35C41.15 40.95 43.45 40.95 44.85 42.35C45.95 43.4 46.3 45.05 45.8 46.45C45.75 46.5 45.1 47.15 44.8 46.4Z"
+        fill="#FF4F70"/>
+</svg>

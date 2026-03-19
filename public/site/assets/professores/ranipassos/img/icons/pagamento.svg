@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+  <g id="pagamento" transform="translate(-645 -679)">
+    <g id="Elipse_1" data-name="Elipse 1" transform="translate(645 679)" fill="#b5b5b5" stroke="#b5b5b5" stroke-width="1">
+      <circle cx="16.5" cy="16.5" r="16.5" stroke="none"/>
+      <circle cx="16.5" cy="16.5" r="16" fill="none"/>
+    </g>
+    <g id="currency-exchange" transform="translate(644.564 678.515)">
+      <g id="Grupo_2" data-name="Grupo 2" transform="translate(0 0.018)">
+        <g id="Grupo_1" data-name="Grupo 1">
+          <path id="Caminho_1" data-name="Caminho 1" d="M17.118,16.132a1,1,0,1,1,.8-1.6,1,1,0,0,0,1.6-1.2,3.023,3.023,0,0,0-1.4-1.028V11.117a1,1,0,1,0-2.006,0v1.176a3.009,3.009,0,0,0,1,5.846,1,1,0,1,1-.8,1.6,1,1,0,0,0-1.6,1.2,3.023,3.023,0,0,0,1.4,1.028v1.177a1,1,0,0,0,2.006,0V21.978a3.009,3.009,0,0,0-1-5.846Zm0-10.03A11.033,11.033,0,1,0,28.151,17.135,11.046,11.046,0,0,0,17.118,6.1Zm0,20.06a9.027,9.027,0,1,1,9.027-9.027A9.037,9.037,0,0,1,17.118,26.162Z" transform="translate(0 -0.018)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

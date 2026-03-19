@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aluno: one
+  agendamento: one
+  valor: 1.5
+
+two:
+  aluno: two
+  agendamento: two
+  valor: 1.5

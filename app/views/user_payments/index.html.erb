@@ -1,0 +1,206 @@
+<style>
+  .dados-pagamento{display: none}
+  .address-information{display: none}
+</style>
+<%= render "shared/headerbundle", title: "Pagamento" %>
+<div class="courseint mt-4 ppage">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="col contact-form pt-3 pb-3 pl-4 pr-4">
+          <div class="dados-usuario">
+            <form action="/user_payments" autocomplete="off" method="post" id="user_payments" accept-charset="utf-8">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" class="form-control" name="user[name]" id="name" value="<%= @user.name rescue '' %>" placeholder="Ex: josefino silva" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="user[email]" id="email" value="<%= @user.email rescue '' %>" placeholder="Ex: josefino.silva@hotmail.com" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="cemail">Confirme seu email</label>
+                    <input type="text" class="form-control" name="user[phone]" id="cemail" value="<%= @user.email rescue '' %>" placeholder="Ex: josefino.silva@hotmail.com" required>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cpf">Telefone</label>
+                    <input type="text" class="form-control" name="user[phone]" id="phone" value="<%= @user.phone rescue '' %>" placeholder="Ex: (00) 91234-5678" required minlength="14" maxlength="15">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input type="text" class="form-control" name="user[cpf]" id="cpf" value="<%= @user.cpf rescue '' %>" placeholder="Ex: 123.456.789-00" required minlength="14" maxlength="15">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" class="form-control" name="address[posta_code]" id="cep" value="<%= @user.addresses.first.posta_code rescue '' %>" placeholder="Ex: 12345-000" required maxlength="15">
+                  </div>
+                </div>
+              </div>
+              <div class="address-information">
+                <div class="row">
+                  <div class="col-md-9">
+                    <div class="form-group">
+                      <label for="nome">Endereço</label>
+                      <input type="text" class="form-control" name="address[street]" id="street" value="<%= @user.addresses.first.street rescue '' %>" required>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="number">Nº</label>
+                      <input type="number" class="form-control" name="address[number]" id="number" value="<%= @user.addresses.first.number rescue '' %>" required>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="neighborhood">Bairro</label>
+                      <input type="text" class="form-control" name="address[neighborhood]" id="neighborhood" value="<%= @user.addresses.first.neighborhood rescue '' %>" required>
+                    </div>
+                  </div>
+                  <div class="col-md-5">
+                    <div class="form-group">
+                      <label for="city">Cidade</label>
+                      <input type="text" class="form-control" name="address[city]" id="city" value="<%= @user.addresses.first.city rescue '' %>" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="uf">UF</label>
+                      <input type="text" class="form-control" name="address[uf]" id="uf" value="<%= @user.addresses.first.uf rescue '' %>" maxlength="2" required>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-contact-send" id="btncomprar">
+                Comprar agora
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="sidebarcourse pt-3 pr-3">
+          <div class="pl-3">
+            <h6>Cursos selecionados:</h6>
+          </div>
+          <ul class="liinfocourse">
+            <% @courses.each do |course| %>
+              <li><%= course.title %></li>
+            <% end %>
+          </ul>
+          <span class="oldpricepag" style="text-align: end;"><b>Total</b> </span>
+          <div class="price" style="justify-content: end;">
+            <h2><%= number_to_currency(@total_amount) %></h2>
+          </div>
+          <% if current_user && current_user.cashback_balance_cents.positive? %>
+            <% cashback_reais = current_user.cashback_balance_cents / 100.0 %>
+            <div class="mt-3">
+              <p class="text-sm">
+                <strong>Seu cashback disponível:</strong>
+                <%= number_to_currency(cashback_reais) %>
+              </p>
+              <div class="form-group">
+                <label for="cashback_to_use">Quanto deseja usar de cashback?</label>
+                <input
+                type="number"
+                step="0.01"
+                min="0"
+                class="form-control"
+                id="cashback_to_use"
+                placeholder="0,00">
+                  <small class="text-muted">
+                    Máximo: <%= number_to_currency([@total_amount, cashback_reais].min) %>
+                  </small>
+                </div>
+                <button type="button" class="btn btn-link p-0" id="use_all_cashback">
+                  Usar máximo possível
+                </button>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function () {
+      $('#cpf').mask('000.000.000-00');
+      $('#cep').mask('00000-000');
+      $('#phone').mask('(00) 00000-0000');
+      verifyAddress()
+    })
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("user_payments");
+
+      if (!form) return;
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const name  = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const cemail = document.getElementById("cemail").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const cpf   = document.getElementById("cpf").value.trim();
+        const cep   = document.getElementById("cep").value.trim();
+        const street = document.getElementById("street").value.trim();
+        const neighborhood = document.getElementById("neighborhood").value.trim();
+        const city  = document.getElementById("city").value.trim();
+        const uf    = document.getElementById("uf").value.trim();
+        const number = document.getElementById("number").value.trim();
+
+        if (!name || !email || !phone || !cpf || !cep) {
+          swal("Atenção!", "Todos os campos devem ser preenchidos", "error");
+          return;
+        }
+
+        if (email.toLowerCase() !== cemail.toLowerCase()) {
+          swal("Atenção!", "Email e confirmação de email devem ser iguais", "error");
+          return;
+        }
+
+        if (!street || !neighborhood || !city || !uf || !number) {
+          swal("Atenção!", "Todos os campos de endereço devem ser preenchidos", "error");
+          return;
+        }
+
+        form.submit(); // se passou em todas as validações, envia o form
+      });
+    });
+
+    function verifyAddress(){
+      const street = $("#street").val()
+      const city = $("#city").val()
+      if(street || city) $(".address-information").show()
+    }
+
+    $('#cep').keyup(function(event) {
+      const cep = event.target.value
+      if (cep.length === 9){
+        const newCep = cep.replace("-", "")
+        $.ajax({
+          type: "GET",
+          url: `https://viacep.com.br/ws/${newCep}/json/`,
+          success: function(data){
+            $('#street').val(data.logradouro);
+            $('#neighborhood').val(data.bairro);
+            $('#city').val(data.localidade);
+            $('#uf').val(data.uf);
+            $(".address-information").show()
+          }
+        })
+      }
+    });
+  </script>

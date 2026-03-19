@@ -1,0 +1,22 @@
+<svg width="120" height="36" viewBox="0 0 120 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="star-gradient" x1="10" y1="4" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFE066"/>
+      <stop offset="60%" stop-color="#FFB347"/>
+      <stop offset="100%" stop-color="#FF9248"/>
+    </linearGradient>
+    <radialGradient id="star-glow" cx="0" cy="0" r="1" gradientTransform="matrix(0 18 -18 0 60 18)" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFF8D6" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#FFE9A6" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFD56C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="60" cy="18" r="18" fill="url(#star-glow)" opacity="0.5"/>
+
+  <path d="M12 3L15.09 11.26L24 11.27L16.45 16.49L19.54 24.74L12 19.52L4.46 24.74L7.55 16.49L0 11.27L8.91 11.26L12 3Z" fill="url(#star-gradient)"/>
+  <path d="M36 3L39.09 11.26L48 11.27L40.45 16.49L43.54 24.74L36 19.52L28.46 24.74L31.55 16.49L24 11.27L32.91 11.26L36 3Z" fill="url(#star-gradient)"/>
+  <path d="M60 3L63.09 11.26L72 11.27L64.45 16.49L67.54 24.74L60 19.52L52.46 24.74L55.55 16.49L48 11.27L56.91 11.26L60 3Z" fill="url(#star-gradient)"/>
+  <path d="M84 3L87.09 11.26L96 11.27L88.45 16.49L91.54 24.74L84 19.52L76.46 24.74L79.55 16.49L72 11.27L80.91 11.26L84 3Z" fill="url(#star-gradient)"/>
+  <path d="M108 3L111.09 11.26L120 11.27L112.45 16.49L115.54 24.74L108 19.52L100.46 24.74L103.55 16.49L96 11.27L104.91 11.26L108 3Z" fill="url(#star-gradient)"/>
+</svg>

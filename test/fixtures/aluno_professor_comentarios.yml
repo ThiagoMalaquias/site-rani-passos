@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  aluno: one
+  professor: one
+  comentario: MyText
+  qtd_estrela: 1
+  aprovado: false
+
+two:
+  aluno: two
+  professor: two
+  comentario: MyText
+  qtd_estrela: 1
+  aprovado: false

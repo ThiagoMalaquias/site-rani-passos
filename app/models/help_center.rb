@@ -1,0 +1,2 @@
+class HelpCenter < ApplicationRecord
+end

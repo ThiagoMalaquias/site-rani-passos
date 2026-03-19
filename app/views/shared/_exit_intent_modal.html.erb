@@ -1,0 +1,460 @@
+<% 
+  if params[:controller] == "cart" && params[:action] == "index"
+    modal_discount = 1
+  else
+    modal_discount = @course.present? && @course.modal_discount ? 1 : 0
+  end
+
+  video_id = @pop_up_leak.present? ? @pop_up_leak.link_video.split("=").last : ""
+  has_link = @pop_up_leak.present? && @pop_up_leak.link.present?
+  cta_link = has_link ? @pop_up_leak.link : "#"
+%>
+<% if @pop_up_leak.present? %>
+<div
+  class="modal fade"
+  id="exitIntentModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exitIntentLabel"
+  aria-hidden="true"
+  data-controller="exit-intent"
+  data-exit-intent-delay-ms-value="0"
+  data-exit-intent-threshold-value="8"
+  data-exit-intent-show-once-key-value="exit_intent_shown"
+  data-exit-intent-show-once-key-modal-discount-value="<%= modal_discount %>"
+  data-exit-intent-autoplay-muted-value="true"
+  data-exit-intent-video-id-value="<%= video_id %>"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered exit-intent-modal-dialog" role="document">
+    <div class="modal-content border-0 rounded-4 shadow-lg exit-intent-modal-content">
+      
+      <!-- Header com gradiente -->
+      <div class="modal-header border-0 pb-2 exit-intent-header">
+        <div class="d-flex align-items-center w-100">
+          <div class="exit-intent-icon-container me-3">
+            <div class="exit-intent-icon-wrapper">
+              <span class="exit-intent-icon">🎁</span>
+            </div>
+          </div>
+          <div class="flex-grow-1">
+            <h5 class="modal-title mb-0 exit-intent-title" id="exitIntentLabel">
+              <span class="exit-intent-title-main">Espera! Antes de você sair...</span>
+              <span class="exit-intent-title-sub d-block">Temos algo especial para você!</span>
+            </h5>
+          </div>
+          <button type="button" class="close exit-intent-close-btn" data-dismiss="modal" aria-label="Fechar"
+                  data-action="click->exit-intent#close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body p-0">
+        <!-- Vídeo ou Imagem -->
+        <% if video_id.present? %>
+          <div class="embed-responsive embed-responsive-16by9 bg-black position-relative overflow-hidden">
+            <div class="exit-intent-video-overlay"></div>
+            <iframe
+              id="exitIntentVideo"
+              class="embed-responsive-item"
+              src=""
+              title="Vídeo"
+              frameborder="0"
+              allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+          </div>
+        <% elsif @pop_up_leak.image.attached? %>
+          <div class="exit-intent-image-container position-relative overflow-hidden">
+            <% if has_link %>
+              <a href="<%= cta_link %>" class="exit-intent-image-link" target="_blank">
+                <%= image_tag @pop_up_leak.image, class: "img-fluid exit-intent-image", alt: "#{@pop_up_leak.title}" %>
+                <div class="exit-intent-image-overlay">
+                  <div class="exit-intent-image-cta">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Clique para ver mais
+                  </div>
+                </div>
+              </a>
+            <% else %>
+              <%= image_tag @pop_up_leak.image, class: "img-fluid exit-intent-image", alt: "#{@pop_up_leak.title}" %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <!-- Conteúdo e CTA -->
+        <div class="exit-intent-content-wrapper">
+          <div class="exit-intent-content">
+            <% if @pop_up_leak.title.present? %>
+              <h4 class="exit-intent-content-title mb-3">
+                <%= @pop_up_leak.title %>
+              </h4>
+            <% end %>
+            
+            <div class="exit-intent-content-text mb-4">
+              <%== @pop_up_leak.content %>
+            </div>
+
+            <!-- CTAs destacados -->
+            <div class="exit-intent-cta-container">
+              <% if has_link %>
+                <a href="<%= cta_link %>" 
+                   class="btn btn-lg exit-intent-primary-btn" 
+                   target="_blank"
+                   onclick="document.getElementById('exitIntentModal').querySelector('[data-dismiss]').click();">
+                  <span class="exit-intent-btn-icon">✨</span>
+                  <span class="exit-intent-btn-text">Quero aproveitar!</span>
+                  <span class="exit-intent-btn-arrow">→</span>
+                </a>
+              <% else %>
+                <button type="button" 
+                        class="btn btn-lg exit-intent-primary-btn"
+                        data-dismiss="modal"
+                        data-action="click->exit-intent#close">
+                  <span class="exit-intent-btn-icon">✨</span>
+                  <span class="exit-intent-btn-text">Entendi, obrigado!</span>
+                </button>
+              <% end %>
+              
+              <button type="button" 
+                      class="btn btn-link exit-intent-secondary-btn" 
+                      data-dismiss="modal"
+                      data-action="click->exit-intent#close">
+                Agora não, obrigado
+              </button>
+            </div>
+
+            <!-- Garantia -->
+            <div class="exit-intent-guarantee mt-4">
+              <div class="d-flex align-items-center justify-content-center">
+                <i class="fas fa-shield-alt text-success me-2"></i>
+                <span class="exit-intent-guarantee-text">
+                  Não se preocupe, não vamos te incomodar novamente nesta sessão
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Modal Container */
+  .exit-intent-modal-dialog {
+    animation: modalSlideIn 0.4s ease-out;
+  }
+
+  .exit-intent-modal-content {
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-50px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Header */
+  .exit-intent-header {
+    color: white;
+    padding: 1.5rem 1.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exit-intent-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+
+  .exit-intent-icon-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .exit-intent-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    animation: iconBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes iconBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(5deg); }
+  }
+
+  .exit-intent-icon {
+    font-size: 2rem;
+    display: block;
+  }
+
+  .exit-intent-title {
+    color: white;
+    font-weight: 700;
+    z-index: 1;
+    position: relative;
+  }
+
+  .exit-intent-title-main {
+    font-size: 1.25rem;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .exit-intent-title-sub {
+    font-size: 0.9rem;
+    opacity: 0.95;
+    font-weight: 400;
+  }
+
+  .exit-intent-close-btn {
+    color: white;
+    opacity: 0.9;
+    font-size: 1.5rem;
+    z-index: 1;
+    position: relative;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+  }
+
+  .exit-intent-close-btn:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+
+  /* Image Container */
+  .exit-intent-image-container {
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  .exit-intent-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .exit-intent-image-link:hover .exit-intent-image {
+    transform: scale(1.05);
+  }
+
+  .exit-intent-image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.6) 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .exit-intent-image-link:hover .exit-intent-image-overlay {
+    opacity: 1;
+  }
+
+  .exit-intent-image-cta {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Content Wrapper */
+  .exit-intent-content-wrapper {
+    background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+    padding: 2rem;
+  }
+
+  .exit-intent-content-title {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .exit-intent-content-text {
+    color: #4a5568;
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  /* CTA Buttons */
+  .exit-intent-cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .exit-intent-primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    width: 100%;
+    max-width: 400px;
+    justify-content: center;
+  }
+
+  .exit-intent-primary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .exit-intent-primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+    color: white;
+    text-decoration: none;
+  }
+
+  .exit-intent-primary-btn:hover::before {
+    left: 100%;
+  }
+
+  .exit-intent-btn-icon {
+    font-size: 1.3rem;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(180deg); }
+  }
+
+  .exit-intent-btn-text {
+    font-weight: 700;
+  }
+
+  .exit-intent-btn-arrow {
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+  }
+
+  .exit-intent-primary-btn:hover .exit-intent-btn-arrow {
+    transform: translateX(5px);
+  }
+
+  .exit-intent-secondary-btn {
+    color: #718096;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .exit-intent-secondary-btn:hover {
+    color: #4a5568;
+    text-decoration: none;
+  }
+
+  /* Guarantee */
+  .exit-intent-guarantee {
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .exit-intent-guarantee-text {
+    font-size: 0.85rem;
+    color: #718096;
+    text-align: center;
+  }
+
+  /* Video Overlay */
+  .exit-intent-video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .exit-intent-content-wrapper {
+      padding: 1.5rem;
+    }
+
+    .exit-intent-content-title {
+      font-size: 1.25rem;
+    }
+
+    .exit-intent-primary-btn {
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
+
+    .exit-intent-title-main {
+      font-size: 1.1rem;
+    }
+
+    .exit-intent-title-sub {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+<% end %>
