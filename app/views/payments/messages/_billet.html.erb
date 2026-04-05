@@ -1,50 +1,191 @@
-<div class="courseint mt-4 ppage">
-  <div class="container"  style="max-width: 835px; transition: margin 200ms;">
-    <div class="col contact-form pt-3 pb-3 pl-4 pr-4">
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class="text-center">
-            <h2>Boleto Gerado com Sucesso</h2>
-          </div>
-          <p>
-            Olá <b class="_font-weight-bold"><%= user.name %></b>, 
-            <span>
-              sua compra foi registrada e aqui está o seu Boleto para ser pago. Você deve pagar o boleto em qualquer agência bancária, casa lotérica, ou através do seu internet banking até o dia <%= payment.billet_expiry_date.strftime("%d/%m/%Y") %>. 
-            </span>
-          </p>
-          <div class="mb-3 text-center">
-            <input type="text" name="texto" id="texto" class="form-control text-center" value="<%= payment.billet_line %>" style="width: 100%" readonly/>
-            <img src="<%= payment.billet_barcode %>"  alt="barcode" class="mt-3"/>
-          </div>
-          <div class="mt-3 mb-3" style="display: flex; justify-content: space-between;">
-            <a id="viewBillet" target="_blank" class="btn btn-outline-primary" style="width: 45%" href="<%= payment.billet_pdf %>">
-              <span>Visualizar boleto</span>
-            </a>
-            <button type="button" class="btn btn-primary" style="width: 45%" onclick="copiarTexto()">
-              Copiar Código
-            </button>
-          </div>
-          <div class="toast-container position-fixed top-0 end-0 p-3">
-            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-              <div class="toast-header">
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+<div class="checkout-wrap checkout-wrap-billet">
+  <section class="checkout-hero checkout-hero-compact">
+    <div class="checkout-overlay"></div>
+
+    <div class="container">
+      <div class="checkout-hero-head text-center">
+        <span class="checkout-top-badge">Pagamento pendente</span>
+        <h1 class="checkout-title text-uppercase">Boleto gerado com sucesso</h1>
+        <hr class="hero-divider mx-auto">
+
+        <p class="checkout-subtitle">
+          Olá, <strong><%= user.name %></strong>. Sua compra foi registrada.
+          Agora basta realizar o pagamento do boleto até
+          <strong><%= payment.billet_expiry_date.strftime("%d/%m/%Y") %></strong>.
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-7 mb-4">
+          <div class="checkout-panel">
+            <div class="checkout-panel-header">
+              <h3>Dados do boleto</h3>
+              <p>Use a linha digitável ou visualize o boleto completo para pagamento.</p>
+            </div>
+
+            <div class="checkout-panel-body">
+              <div class="checkout-section mb-4">
+                <div class="checkout-section-title no-number">
+                  <h4>Linha digitável</h4>
+                </div>
+
+                <div class="billet-code-box">
+                  <input
+                    type="text"
+                    id="texto"
+                    class="form-control checkout-input text-center font-weight-bold"
+                    value="<%= payment.billet_line %>"
+                    readonly
+                  >
+                  <button type="button" class="btn btn-primary billet-copy-btn" onclick="copiarTexto()">
+                    Copiar código
+                  </button>
+                </div>
               </div>
-              <div class="toast-body">
-                Coiado com Sucesso
+
+              <div class="checkout-section mb-4">
+                <div class="checkout-section-title no-number">
+                  <h4>Código de barras</h4>
+                </div>
+
+                <div class="billet-barcode-box text-center">
+                  <img src="<%= payment.billet_barcode %>" alt="Código de barras do boleto" class="img-fluid billet-barcode-image" />
+                </div>
+              </div>
+
+              <div class="checkout-section mb-4">
+                <div class="checkout-section-title no-number">
+                  <h4>Ações rápidas</h4>
+                </div>
+
+                <div class="billet-actions">
+                  <a
+                    id="viewBillet"
+                    target="_blank"
+                    class="btn btn-outline-primary billet-action-btn"
+                    href="<%= payment.billet_pdf %>"
+                  >
+                    Visualizar boleto
+                  </a>
+
+                  <button
+                    type="button"
+                    class="btn btn-primary billet-action-btn"
+                    onclick="copiarTexto()"
+                  >
+                    Copiar código
+                  </button>
+                </div>
+              </div>
+
+              <div class="checkout-section mb-4">
+                <div class="checkout-section-title no-number">
+                  <h4>Informações importantes</h4>
+                </div>
+
+                <div class="billet-alert-list">
+                  <div class="billet-alert-item billet-alert-warning">
+                    <strong>Prazo de compensação</strong>
+                    <p>Após o pagamento, a compensação pode levar até 3 dias úteis.</p>
+                  </div>
+
+                  <div class="billet-alert-item">
+                    <strong>Liberação do acesso</strong>
+                    <p>Assim que o pagamento for confirmado, seus dados de acesso serão enviados por e-mail.</p>
+                  </div>
+
+                  <div class="billet-alert-item">
+                    <strong>Não recebeu o acesso?</strong>
+                    <p>
+                      Se já se passaram mais de 72 horas após o pagamento, entre em contato com o responsável pela venda.
+                    </p>
+                  </div>
+
+                  <div class="billet-alert-item">
+                    <strong>Verifique o spam</strong>
+                    <p>
+                      Em alguns casos, os e-mails com os dados de acesso podem cair na caixa de spam.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <!---->
-          <p class="_bg-yellow-lightest _border _border-yellow-lighter _rounded _text-yellow-darker _p-4">
-            A compensação do pagamento pode levar até 3 dias úteis após o pagamento.
-          </p>
-          <p>Caso já tenha se passado mais de 72h que você efetuou o pagamento e ainda não recebeu seus dados de acesso, por gentileza, entre em contato com o vendedor para que ele possa verificar esta situação.</p>
-          <p class="_mb-0">
-            Em alguns casos o serviço de email utilizado por você pode se enganar e colocar uma de nossas mensagens no SPAM. Por isto, pedimos que sempre verifique também a sua caixa de SPAM, pois quando seu pagamento for aprovado seus dados de acesso ao produto podem cair lá!
-          </p>
-          <p>Se precisa de suporte relacionado à sua compra, entre em contato com a pessoa responsável pela venda.</p>
+        </div>
+
+        <div class="col-lg-5 mb-4">
+          <aside class="checkout-sidebar">
+            <div class="checkout-sidebar-card billet-sidebar-card">
+              <span class="checkout-sidebar-badge">Resumo do pagamento</span>
+
+              <div class="billet-status-card">
+                <div class="billet-status-icon">⌛</div>
+                <h4>Aguardando pagamento</h4>
+                <p>
+                  Seu boleto está pronto. Realize o pagamento até a data de vencimento para liberar seu acesso.
+                </p>
+              </div>
+
+              <div class="billet-summary">
+                <div class="billet-summary-row">
+                  <span>Status</span>
+                  <strong class="status-pending">Pendente</strong>
+                </div>
+
+                <div class="billet-summary-row">
+                  <span>Vencimento</span>
+                  <strong><%= payment.billet_expiry_date.strftime("%d/%m/%Y") %></strong>
+                </div>
+
+                <div class="billet-summary-row">
+                  <span>Forma de pagamento</span>
+                  <strong>Boleto bancário</strong>
+                </div>
+
+                <div class="billet-summary-row billet-summary-row-total">
+                  <span>Total</span>
+                  <strong><%= number_to_currency((payment.amount.to_f / 100), unit: "R$ ", separator: ",", delimiter: ".") %></strong>
+                </div>
+              </div>
+
+              <div class="billet-timer-box">
+                <small>Atualização automática do status</small>
+                <div id="timer" class="billet-timer">15:00</div>
+              </div>
+
+              <div class="billet-sidebar-help">
+                <h5>Como pagar</h5>
+                <ul>
+                  <li>Internet banking</li>
+                  <li>Aplicativo do banco</li>
+                  <li>Casa lotérica</li>
+                  <li>Agência bancária</li>
+                </ul>
+              </div>
+
+              <a
+                href="<%= payment.billet_pdf %>"
+                target="_blank"
+                class="btn-primary-lg checkout-submit text-center d-block"
+              >
+                Abrir boleto
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
+    </div>
+  </section>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="mr-auto">Aviso</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Código copiado com sucesso.
     </div>
   </div>
 </div>

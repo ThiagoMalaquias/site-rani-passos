@@ -1,20 +1,6 @@
 class CartController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:apply_discount]
 
-  def index
-    course_ids = cookies_course.pluck("id")
-    @courses = Course.find(course_ids)
-    @cart_discount = cart.check_discount
-    @total_amount = cart.total_amount
-    @sugestions = if course_ids.present?
-                    relateds = CourseRelated.where(course_id: course_ids).pluck("linked_id").uniq
-                    Course.disclosure_actives.where(id: relateds).where.not(id: course_ids).order("RANDOM()").limit(5)
-                  else
-                    Course.disclosure_actives.paids.where.not(id: course_ids).limit(5)
-                  end
-    @testimonials = Testimonial.limit(5).order("RANDOM()")
-  end
-
   def apply_discount
     if params[:discount].blank?
       redirect_to cart_index_path

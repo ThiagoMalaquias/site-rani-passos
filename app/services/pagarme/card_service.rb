@@ -11,7 +11,7 @@ class Pagarme::CardService
     @courses = courses
     @user = user
     @amount = amount
-    @credit_card = JSON.parse(payment_params[:credit_card])
+    @credit_card = payment_params[:card]
     @installments = payment_params[:installments]
     @date_overdue = payment_params[:date_overdue]
   end
@@ -38,7 +38,13 @@ class Pagarme::CardService
 
   def payment_options
     address = user.addresses.last
-    holder_name = I18n.transliterate(credit_card["holder_name"].strip)
+    holder_name = I18n.transliterate(credit_card[:name].strip)
+
+    number = credit_card[:number].gsub(" ", "").strip
+    expiry = credit_card[:expiry].split("/")
+    exp_month = expiry.first.strip
+    exp_year = expiry.last.strip
+    cvc = credit_card[:cvc].strip
 
     options = {}
     options[:items] = [items]
@@ -53,11 +59,11 @@ class Pagarme::CardService
           installments: @installments.to_i,
           statement_descriptor: "RANI PASSOS",
           card: {
-            number: credit_card["number"].strip,
+            number: number,
             holder_name: holder_name,
-            exp_month: credit_card["exp_month"].strip,
-            exp_year: credit_card["exp_year"].strip,
-            cvv: credit_card["cvv"].strip,
+            exp_month: exp_month,
+            exp_year: exp_year,
+            cvv: cvc,
             billing_address: {
               line_1: address.street,
               zip_code: address.posta_code.delete("-"),

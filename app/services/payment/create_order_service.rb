@@ -43,6 +43,7 @@ class Payment::CreateOrderService
       utm_source: @utm_cookies[:utm_source],
       utm_medium: @utm_cookies[:utm_medium],
       utm_campaign: @utm_cookies[:utm_campaign],
+      origin: @utm_cookies[:origin],
       cashback_applied_cents: cashback_applied_cents
     )
 

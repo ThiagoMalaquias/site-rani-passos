@@ -1,5 +1,6 @@
 class PaymentsController < ApplicationController
   before_action :require_cart_cookies, only: [:new, :create]
+  before_action :get_user_from_payment_user_id, only: [:create]
   before_action :set_payment, only: [:show, :thanks]
   skip_before_action :verify_authenticity_token, only: [:create, :status_webhook]
 
@@ -91,10 +92,32 @@ class PaymentsController < ApplicationController
 
   private
 
+  def get_user_from_payment_user_id
+    return if cookies[:payment_user].present?
+
+    @user = User::Site::Create.new(company, user_params, address_params).call!
+
+    unless @user.instance_of?(User)
+      flash[:error] = @user[:message_error]
+      redirect_to new_payment_path
+      return
+    end
+
+    @user.update(user_params.merge(last_ip: request.remote_ip, user_agent: request.user_agent))
+    cookies[:payment_user] = @user.id.to_s
+
+    cookies_course.each do |cc|
+      course = Course.find(cc["id"])
+      UserOpenCart.create(user: @user, course: course)
+    end
+
+    @user.id
+  end
+
   def require_cart_cookies
     return if cookies["ead_#{@site}_cart_user"].present?
 
-    redirect_to cart_index_path
+    redirect_to root_path
   end
 
   def set_payment
@@ -106,14 +129,20 @@ class PaymentsController < ApplicationController
   end
 
   def payment_params
-    params.permit(:method, :token, :installments, :credit_card)
+    params.permit(
+      :method,
+      :token,
+      :installments,
+      card: %i[number name expiry cvc]
+    )
   end
 
   def utm_cookies
     {
       utm_source: cookies[:utm_source],
       utm_medium: cookies[:utm_medium],
-      utm_campaign: cookies[:utm_campaign]
+      utm_campaign: cookies[:utm_campaign],
+      origin: cookies[:origin]
     }
   end
 
@@ -157,5 +186,13 @@ class PaymentsController < ApplicationController
     courses << { "id" => @course.id, "local" => "", "discount" => "", "code" => 0 }
     courses = courses.uniq { |item| item["id"] }
     cookies["ead_#{@site}_cart_user"] = { value: courses.to_json, expires: 1.year.from_now, httponly: true }
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email, :cpf, :phone, :birth_date)
+  end
+
+  def address_params
+    params.require(:address).permit(:posta_code, :street, :number, :neighborhood, :city, :uf)
   end
 end

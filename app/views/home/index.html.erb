@@ -2,6 +2,7 @@
   <div class="landing-promotion">
     <span>Desconto por pouco tempo. <strong>APROVEITE AGORA MESMO!</strong></span>
   </div>
+
   <div class="landing-hero">
     <div class="landing-overlay"></div>
     <div class="container hero-grid">
@@ -9,8 +10,9 @@
         <h1 class="hero-title text-uppercase color-white"><%= @course.title %></h1>
         <hr class="hero-divider">
         <p class="hero-subtitle">
-          Durante 13 anos, construímos algo que vai além de simples videoaulas: somos uma marca reconhecida por entregar muito além do que prometemos. Enquanto alguns apenas ensinam, nós elevamos a régua. Enquanto a mercado repete fórmulas, nós aplicamos métodos e geramos resultados. Enquanto outros falam em aprovação, nós formamos aprovados - inclusive os primeiros colocados.
+        Durante 13 anos, construímos algo que vai além de simples videoaulas: somos uma marca reconhecida por entregar muito além do que prometemos. Enquanto alguns apenas ensinam, nós elevamos a régua. Enquanto a mercado repete fórmulas, nós aplicamos métodos e geramos resultados. Enquanto outros falam em aprovação, nós formamos aprovados - inclusive os primeiros colocados.
         </p>
+
         <div class="hero-features">
           <div class="feature">
             <img src="/site/assets/professores/<%= @site %>/img/video.png" alt="Videoaulas" class="mb-2 img-fluid ">
@@ -35,10 +37,12 @@
           </div>
         </div>
       </div>
+
       <div class="hero-media">
         <div class="media-card">
           <% if @course.url.present? %>
             <iframe src="<%= @course.url %>" frameborder="0" allowfullscreen></iframe>
+
             <div class="media-badge">
               <img src="/site/assets/professores/<%= @site %>/img/icons/ico-play.svg" alt="">
               Aula de apresentação gratuita
@@ -49,6 +53,7 @@
             <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg", class: "hero-image", alt: @course.title %>
           <% end %>
         </div>
+
         <ul class="hero-stats">
           <li>
             <strong><%= @course.lesson_count || "120+" %></strong>
@@ -59,43 +64,45 @@
             Acesso garantido
           </li>
         </ul>
+
         <div class="hero-buttons">
-          <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="btn-primary-lg pulse">Comprar Agora</a>
+          <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="btn-primary-lg pulse">Clique aqui para comprar</a>
         </div>
+
         <div class="hero-guarantee">
           <div>
-            <img src="/site/assets/professores/ranipassos/img/cartao.png" alt="">
-            <span>Cartão <br>
-              de crédito</span>
+            <img src="/site/assets/professores/<%= @site %>/img/cartao.png" alt="">
+            <span>Cartão <br> de crédito</span>
           </div>
           <div>
-            <img src="/site/assets/professores/ranipassos/img/boleto.png" alt="">
+            <img src="/site/assets/professores/<%= @site %>/img/boleto.png" alt="">
             <span>Boleto</span>
           </div>
           <div>
-            <img src="/site/assets/professores/ranipassos/img/pix.png" alt="">
+            <img src="/site/assets/professores/<%= @site %>/img/pix.png" alt="">
             <span>Pix</span>
           </div>
           <div>
-            <img src="/site/assets/professores/ranipassos/img/compra-segura.png" alt="">
-            <span><strong>Compra</strong> <br>
-              100% segura</span>
+            <img src="/site/assets/professores/<%= @site %>/img/compra-segura.png" alt="">
+            <span><strong>Compra</strong> <br> 100% segura</span>
           </div>
           <div>
-            <img src="/site/assets/professores/ranipassos/img/privacidade-protegida.png" alt="">
-            <span>Privacidade <br>
-              protegida</span>
+            <img src="/site/assets/professores/<%= @site %>/img/privacidade-protegida.png" alt="">
+            <span>Privacidade <br> protegida</span>
           </div>
         </div>
       </div>
     </div>
+
     <div class="hero-stars">
-      <img src="/site/assets/professores/ranipassos/img/5_estrelas.png" alt="" class="img-fluid">
+      <img src="/site/assets/professores/<%= @site %>/img/5_estrelas.png" alt="" class="img-fluid">
     </div>
   </div>
+
   <div class="landing-ribbon">
     <span>Reunimos <span style="color: #fff;">ABSOLUTAMENTE TUDO</span> que você precisa para se <span style="color: #fff;">APROVADO</span>. Seja você avançado ou iniciante nos estudos.</span>
   </div>
+
   <div class="courseint landing-main">
     <div class="container">
       <div class="row">
@@ -120,18 +127,42 @@
               </div>
             </div>
           <% end %>
+
           <section class="course-description">
             <%== @course.description %>
           </section>
         </div>
+
         <div class="col-lg-4">
           <aside class="landing-sidebar">
             <% if @course.nature == "paid" %>
               <%== sidebar_price(@course, params[:discount]) %>
             <% end %>
-            <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="buynow text-uppercase color-white">
-              <span class="d-block">Comprar Agora</span>
-            </a>
+
+            <% if @course.link_hotmart.present? %>
+              <a href="<%= @course.link_hotmart %>" target="_blank" class="buynow text-uppercase color-white">
+                <span class="d-block"><%= @course.nature == "free" ? "Acessar" : "Comprar" %> Agora <img class="coursecart" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho"></span>
+              </a>
+            <% elsif @course.nature == "free" %>
+              <a href="/user_courses/new?course=<%= @course.slug %>" class="buynow text-uppercase color-white">
+                <span class="d-block">Acessar Agora <img class="coursecart" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho"></span>
+              </a>
+            <% elsif @course.recurrent %>
+              <a href="/subscriptions/new?course=<%= @course.slug %>" class="buynow text-uppercase color-white">
+                <span class="d-block">Comprar Agora</span>
+              </a>
+            <% else %>
+              <% if exist_in_cart?(@site, @course.id) %>
+                <a href="/cart" class="buynow text-uppercase color-white">
+                  <span class="d-block">Ir para o Carrinho</span>
+                </a>
+              <% else %>
+                <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="buynow text-uppercase color-white">
+                  <span class="d-block">Adicionar ao Carrinho</span>
+                </a>
+              <% end %>
+            <% end %>
+
             <ul class="sidebar-list">
               <% @course.warranties.each do |warranty| %>
                 <li>
@@ -140,9 +171,11 @@
               <% end %>
               <li><span><%= @course.lifetime ? "Acesso Vitalício" : "#{@course.period_access} meses de acesso" %></span></li>
             </ul>
+
             <hr class="hero-divider">
+
             <div class="sidebar-testimony">
-              <% testimonial = @testimonials.last %>
+            <% testimonial = @testimonials.last %>
               <%= image_tag testimonial.photo, alt: "Depoimento de #{testimonial.name}" %>
               <p><%= testimonial.text %></p>
               <span>- <%= testimonial.name %></span>
@@ -152,7 +185,16 @@
       </div>
     </div>
   </div>
+
   <div class="container">
+    <div class="text-center mt-5 mb-2">
+      <h2 class="journey-title-with-lines" style="margin: 0;">
+        <span class="title-line"></span>
+        <span class="title-text">O Que Dizem Nossos Aprovados</span>
+        <span class="title-line"></span>
+      </h2>
+      <p>Somos mais de 45 mil aprovados na Familia RP Concursos</p>
+    </div>
     <section class="testimonials enhanced">
       <div class="testimonial-slider">
         <% @testimonials.limit(4).each do |testimonial| %>
@@ -173,6 +215,9 @@
       </div>
     </section>
   </div>
+
+  <%= render "chosen_projects_students", courses: @courses %>
+
   <% unless @course.signature %>
     <div class="container mt-5">
       <h2 class="journey-title-with-lines">
@@ -198,7 +243,7 @@
                 <% if matter.instructor %>
                   <p class="instructor-name"><%= matter.instructor.name %></p>
                 <% end %>
-                <hr class="matter-hr">
+              <hr class="matter-hr">
                 <% if matter.capsules.any? %>
                   <% 
                     total_capsules = matter.capsules.count
@@ -224,12 +269,13 @@
                       <%= pluralize(total_pdfs, "PDF") %>
                     </li>
                   </ul>
+                  
                 <% end %>
               </div>
               <% if matter.capsules.any? %>
-                <button type="button" class="btn-view-content" data-toggle="modal" data-target="#matterModal<%= matter.id %>">
-                  Clique aqui para ver o conteúdo programático
-                </button>
+              <button type="button" class="btn-view-content" data-toggle="modal" data-target="#matterModal<%= matter.id %>">
+                Clique aqui para ver o conteúdo programático
+              </button>
               <% end %>
             </div>
           <% end %>
@@ -237,12 +283,326 @@
       </section>
     </div>
   <% end %>
-  <div class="container mt-5">
+
+  <section class="landing-benefits">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="journey-title-with-lines mb-3">
+          <span class="title-line"></span>
+          <span class="title-text text-center">O que nos torna o projeto que <br> <span class="landing-benefits__gradient">MAIS APROVA</span> no Brasil?</span>
+          <span class="title-line"></span>
+        </h2>
+        <p class="landing-benefits__lead">
+          Com 13 anos de história, unimos qualidade e inovação para formar os primeiros colocados do país.
+        </p>
+      </div>
+
+      <div class="landing-benefits__grid">
+        <article class="benefit-card benefit-card--brand">
+          <div class="benefit-card__icon" aria-hidden="true">
+            <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M6.672 1.911a1 1 0 10-1.932.518l.259.966a1 1 0 001.932-.518l-.26-.966zM2.429 4.74a1 1 0 10-.517 1.932l.966.259a1 1 0 00.517-1.932l-.966-.26zm8.814-.569a1 1 0 00-1.415-1.414l-.707.707a1 1 0 101.415 1.415l.707-.708zm-7.071 7.072l.707-.707A1 1 0 003.465 9.12l-.708.707a1 1 0 001.415 1.415zm3.2-5.171a1 1 0 00-1.3 1.3l4 10a1 1 0 001.823.075l1.38-2.759 3.018 3.02a1 1 0 001.414-1.415l-3.019-3.02 2.76-1.379a1 1 0 00-.076-1.822l-10-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="benefit-card__title">Eleito o Melhor Curso do Brasil</h3>
+          <p class="benefit-card__text">
+            Reconhecido como líder em aprovação, com videoaulas completas, PDFs de teoria e revisão, questões comentadas, simulados e mapas mentais, entregamos o método que mais aprova e te coloca dentro das vagas.
+          </p>
+        </article>
+
+        <article class="benefit-card benefit-card--green">
+          <div class="benefit-card__icon" aria-hidden="true">
+            <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-card__title">Plataforma Exclusiva para Concursos</h3>
+          <p class="benefit-card__text">
+            Sabemos que o ambiente certo transforma o aprendizado. Nossa plataforma, criada exclusivamente para concursos, oferece uma experiência única que te diferencia da concorrência.
+          </p>
+        </article>
+
+        <article class="benefit-card benefit-card--orange">
+          <div class="benefit-card__icon" aria-hidden="true">
+            <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+            </svg>
+          </div>
+          <h3 class="benefit-card__title">Inteligência Artificial de Verdade</h3>
+          <p class="benefit-card__text">
+            Desde 2021, somos os pioneiros no Brasil com uma IA que estuda milhares de questões de prova - feita para te ensinar exatamente como as bancas cobram. Estamos em constante treinamento e aprendizado.
+          </p>
+        </article>
+
+        <article class="benefit-card benefit-card--purple">
+          <div class="benefit-card__icon" aria-hidden="true">
+            <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <h3 class="benefit-card__title">Mentoria com Acompanhamento Individual</h3>
+          <p class="benefit-card__text">
+            Com 65% de aprovação, nossa metoria é personalizada, com métodos validados e acompanhamento real, feito por especialistas que conhecem as bancas - para te colocar na lista dos aprovados.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-samples">
+    <div class="container">
+       <div class="text-center mb-5">
+        <h2 class="journey-title-with-lines" style="margin: 0;">
+          <span class="title-line"></span>
+          <span class="title-text text-center">Gabarite informática no seu concurso!</span>
+          <span class="title-line"></span>
+        </h2>
+      </div>
+
+      <div class="landing-samples__wrap">
+        <div class="landing-samples__grid">
+          <div class="landing-samples__list">
+            <div class="sample-item sample-item--green">
+              <div class="sample-item__icon" aria-hidden="true">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="sample-item__body">
+                <h4 class="sample-item__heading">Videoaulas completas</h4>
+                <p class="sample-item__text">Aulas do básico ao avançado, com didática assertiva que realmente funciona!</p>
+              </div>
+            </div>
+
+            <div class="sample-item sample-item--blue">
+              <div class="sample-item__icon" aria-hidden="true">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="sample-item__body">
+                <h4 class="sample-item__heading">Materiais exclusivos</h4>
+                <p class="sample-item__text">PDFs com teoria completa e de revisão, mapas mentais e caderno virtual, para você estudar de forma eficiente e aproveitar ao máximo cada aula!</p>
+              </div>
+            </div>
+
+            <div class="sample-item sample-item--purple">
+              <div class="sample-item__icon" aria-hidden="true">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="sample-item__body">
+                <h4 class="sample-item__heading">Questões comentadas</h4>
+                <p class="sample-item__text">Milhares de questões de banca e questões inéditas comentadas video e em PDF.</p>
+              </div>
+            </div>
+
+            <div class="sample-item sample-item--yellow">
+              <div class="sample-item__icon" aria-hidden="true">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="sample-item__body">
+                <h4 class="sample-item__heading">Aulas de MEGA REVISÃO</h4>
+                <p class="sample-item__text">Aulas completas de revisão em vídeo junto com o professor. Ganhe tempo revisando o que realmente cai, com quem realmente sabe do assunto.</p>
+              </div>
+            </div>
+
+            <div class="sample-item sample-item--gray">
+              <div class="sample-item__icon" aria-hidden="true">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div class="sample-item__body">
+                <h4 class="sample-item__heading">Simulados e Ranking</h4>
+                <p class="sample-item__text">Simulados semanais, 100% gratuitos e no nível da sua prova. Com um ranking exlusivo, você acompanha sua evolução e segue rumo a aprovação.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="landing-samples__cta-col">
+            <div class="sample-cta-card">
+              <div class="sample-cta-card__header text-center">
+                <div class="sample-cta-card__badge">🎁 ESSA É A NOSSA MELHOR OFERTA</div>
+                <% if @course.lifetime %>
+                  <p class="sample-cta-card__kicker">VOCÊ TERÁ ACESSO VITALÍCIO</p>
+                <% else %>
+                  <p class="sample-cta-card__kicker">VOCÊ TERÁ ACESSO POR <%= @course.period_access %> MESES</p>
+                <% end %>
+              </div>
+
+              <ul class="sample-cta-card__checks">
+                <% @course.warranties.each do |warranty| %>
+                  <li>
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                    <span><%= warranty.title %></span>
+                  </li>
+                <% end %>
+              </ul>
+
+              <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="sample-cta-card__btn">CLIQUE AQUI PARA COMPRAR</a>
+              
+              <img src="/site/assets/professores/<%= @site %>/img/5_estrelas.png" alt="Rani Passos" class="sample-cta-card__stars img-fluid">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="landing-faq">
+    <div class="container">
+      <div class="landing-faq__inner">
+        <div class="text-center mb-5">
+          <h2 class="journey-title-with-lines mb-3">
+            <span class="title-line"></span>
+            <span class="title-text text-center">Perguntas <span class="landing-faq__gradient">Frequentes</span></span>
+            <span class="title-line"></span>
+          </h2>
+          <p class="landing-benefits__lead">
+            Tire suas dúvidas antes de começar
+          </p>
+        </div>
+
+        <div class="landing-faq__list">
+        <% if @course.nature == "free" %>
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(1)" aria-expanded="false" aria-controls="faq-content-1" id="faq-trigger-1">
+              <span class="faq-item__question">Consigo me inscrever mais de uma vez no curso gratuito?</span>
+              <svg id="faq-icon-1" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-1" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-1" hidden>
+              <p>Não. É válida apenas uma inscrição por cadastro.</p>
+            </div>
+          </div>
+
+        
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(2)" aria-expanded="false" aria-controls="faq-content-2" id="faq-trigger-2">
+              <span class="faq-item__question">O curso realmente é 100% gratuito?</span>
+              <svg id="faq-icon-2" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-2" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-2" hidden>
+              <p>Sim! Todo o conteúdo é gratuito, sem qualquer tipo de cobrança adicional.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(3)" aria-expanded="false" aria-controls="faq-content-3" id="faq-trigger-3">
+              <span class="faq-item__question">Recebo certificado de participação?</span>
+              <svg id="faq-icon-3" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-3" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-3" hidden>
+              <p>Não emitimos certificado para o curso gratuito — o foco é o aprendizado e o preparo para o concurso.</p>
+            </div>
+          </div>
+        <% end %>
+
+        <% if @course.nature == "paid" %>
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(1)" aria-expanded="false" aria-controls="faq-content-1" id="faq-trigger-1">
+              <span class="faq-item__question">Como funciona o pagamento?</span>
+              <svg id="faq-icon-1" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-1" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-1" hidden>
+              <p>O pagamento é feito através de cartão de crédito, boleto bancário ou pix. O boleto é gerado automaticamente após a compra e é válido por 24 horas.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(2)" aria-expanded="false" aria-controls="faq-content-2" id="faq-trigger-2">
+              <span class="faq-item__question">O que acontece se eu cancelar a assinatura?</span>
+              <svg id="faq-icon-2" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-2" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-2" hidden>
+              <p>Se você cancelar a assinatura, você perderá o acesso ao conteúdo do curso. Mas você pode continuar acessando o conteúdo até o final do período de acesso.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(3)" aria-expanded="false" aria-controls="faq-content-3" id="faq-trigger-3">
+              <span class="faq-item__question">Possuo cupom de desconto?</span>
+              <svg id="faq-icon-3" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-3" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-3" hidden>
+              <p>Sim, você pode utilizar cupons de desconto para reduzir o valor do curso. Consulte a seção de cupons de desconto para mais informações.</p>
+            </div>
+          </div>
+        <% end %>
+
+        
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(4)" aria-expanded="false" aria-controls="faq-content-4" id="faq-trigger-4">
+              <span class="faq-item__question">Onde posso acessar o material do curso?</span>
+              <svg id="faq-icon-4" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-4" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-4" hidden>
+              <p>Você pode baixar o material em PDF. As videoaulas não ficam disponíveis para download, apenas para acesso online durante o período do curso.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(5)" aria-expanded="false" aria-controls="faq-content-5" id="faq-trigger-5">
+              <span class="faq-item__question">Por quanto tempo terei acesso?</span>
+              <svg id="faq-icon-5" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-5" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-5" hidden>
+              <p>O prazo de acesso é informado junto ao botão "Inscreva-se", e são contados a partir do momento em que o cadastro é realizado.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(6)" aria-expanded="false" aria-controls="faq-content-6" id="faq-trigger-6">
+              <span class="faq-item__question">Tive algum problema ou dúvida com o material. Onde consigo suporte?</span>
+              <svg id="faq-icon-6" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-6" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-6" hidden>
+              <p>Todo o suporte é feito através do nosso WhatsApp oficial, onde a equipe está pronta para te ajudar. 📲</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(7)" aria-expanded="false" aria-controls="faq-content-7" id="faq-trigger-7">
+              <span class="faq-item__question">Posso assistir pelo celular?</span>
+              <svg id="faq-icon-7" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+            <div id="faq-content-7" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-7" hidden>
+              <p>Sim! Você pode acessar sempre que estiver conectado à internet pelo celular, tablet, notebook ou computador. Estude onde e quando quiser!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container mt-5 d-none">
     <section class="journey-line">
       <h2 class="journey-title-with-lines">
         <span class="title-line"></span>
-        <span class="title-text text-center">Plataforma única e 100% direcionada <br>
-          para concurso público</span>
+        <span class="title-text text-center">Plataforma única e 100% direcionada <br> para concurso público</span>
         <span class="title-line"></span>
       </h2>
       <div class="journey-steps">
@@ -269,7 +629,7 @@
       </div>
     </section>
   </div>
-  <%= render "chosen_projects_students", courses: @courses %>
+
   <div class="final-banner">
     <div class="banner-card">
       <h2 class="text-white">FALE AGORA MESMO COM O NOSSO TIME DE ESPECIALISTAS</h2>
@@ -282,6 +642,7 @@
       </div>
     </div>
   </div>
+
   <!-- Modals for Matter Content -->
   <% @course.matters.active.order(title: :asc).each do |matter| %>
     <div class="modal fade" id="matterModal<%= matter.id %>" tabindex="-1" role="dialog" aria-labelledby="matterModalLabel<%= matter.id %>" aria-hidden="true">
@@ -350,7 +711,7 @@
       dots: false,
       infinite: true,
       speed: 300,
-      slidesToShow: 1,
+      slidesToShow: 3,
       slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 5000,
@@ -382,4 +743,21 @@
       }]
     });
   });
+
+  function toggleFAQ(n) {
+    var panel = document.getElementById("faq-content-" + n);
+    var icon = document.getElementById("faq-icon-" + n);
+    var btn = document.getElementById("faq-trigger-" + n);
+    if (!panel || !icon) return;
+    var open = panel.hasAttribute("hidden");
+    if (open) {
+      panel.removeAttribute("hidden");
+      icon.classList.add("is-open");
+      if (btn) btn.setAttribute("aria-expanded", "true");
+    } else {
+      panel.setAttribute("hidden", "");
+      icon.classList.remove("is-open");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    }
+  }
 </script>

@@ -1,104 +1,238 @@
-<div class='container' style="max-width: 835px; transition: margin 200ms;">
-  <div class="professores">
-    <div class="card card-professor mb-4">
-      <div class="card-body">
-        <div class="text-center">
-          <h2>Pix Gerado com Sucesso</h2>
-        </div>
-        <p>
-          Olá <b class="_font-weight-bold"><%= user.name %></b>, 
-          <span>
-            Quando o pagamento for aprovado, você receberá acesso às informações por meio do email <%= user.email %>. Não se esqueça de verificar sua pasta de spam.</span>
-        </p>
-        <ul>
-          <li>Abra o aplicativo do seu banco e acesse a área Pix</li>
-          <li>Selecione a opção pagar com código Pix Copia e Cola e cole o código no espaço indicado no aplicativo</li>
-          <li>Após o pagamento, você receberá por email as informações de acesso à sua compra</li>
-        </ul>
-        <div class="row">
-          <div class="col-md-4 text-center">
-            <img src="<%= payment.pix_qrcode_text %>"  alt="qrcode" style="width: 100%;"/>
-            <div id="timer" style="font-size: 25px"></div>
-          </div>
-          <div class="col-md-8 pt-4">
-            <%= payment.pix_qrcode %>
-            <div id="billet-code" style="display: none">
-              <input type="text" name="texto" id="texto" class="form-control text-center" value="<%= payment.pix_qrcode %>" style="width: 100%" readonly/>
-            </div>
-            <div class="mt-3 mb-3 text-center">
-              <button type="button" class="btn btn-primary" style="width: 100%" onclick="copiarTexto()">
-                Copiar Código
-              </button>
-            </div>
-          </div>
-        </div>
-        <p>
-          Em alguns casos o serviço de email utilizado por você pode se enganar e colocar uma de nossas mensagens no SPAM. Por isto, pedimos que sempre verifique também a sua caixa de SPAM, pois quando seu pagamento for aprovado seus dados de acesso ao produto podem cair lá!
+<div class="checkout-wrap checkout-wrap-pix">
+  <section class="checkout-hero checkout-hero-compact">
+    <div class="checkout-overlay"></div>
+
+    <div class="container">
+      <div class="checkout-hero-head text-center">
+        <span class="checkout-top-badge">Pagamento pendente</span>
+        <h1 class="checkout-title text-uppercase">Pix gerado com sucesso</h1>
+        <hr class="hero-divider mx-auto">
+
+        <p class="checkout-subtitle">
+          Olá, <strong><%= user.name %></strong>. Assim que o pagamento for confirmado,
+          enviaremos os dados de acesso para <strong><%= user.email %></strong>.
+          Verifique também sua caixa de spam.
         </p>
       </div>
+
+      <div class="row">
+        <div class="col-lg-7 mb-4">
+          <div class="checkout-panel">
+            <div class="checkout-panel-header">
+              <h3>Pagamento via Pix</h3>
+              <p>Escaneie o QR Code ou copie o código Pix para concluir o pagamento.</p>
+            </div>
+
+            <div class="checkout-panel-body">
+              <div class="checkout-section">
+                <div class="checkout-section-title no-number">
+                  <h4>Como pagar</h4>
+                </div>
+
+                <div class="pix-instructions">
+                  <div class="pix-instruction-item">
+                    <span class="pix-step-number">1</span>
+                    <p>Abra o aplicativo do seu banco e acesse a área Pix.</p>
+                  </div>
+
+                  <div class="pix-instruction-item">
+                    <span class="pix-step-number">2</span>
+                    <p>Escolha pagar com QR Code ou Pix Copia e Cola.</p>
+                  </div>
+
+                  <div class="pix-instruction-item">
+                    <span class="pix-step-number">3</span>
+                    <p>Após a confirmação, enviaremos o acesso por e-mail.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkout-section">
+                <div class="checkout-section-title no-number">
+                  <h4>QR Code para pagamento</h4>
+                </div>
+
+                <div class="pix-payment-box">
+                  <div class="row align-items-center">
+                    <div class="col-md-5 text-center mb-4 mb-md-0">
+                      <div class="pix-qrcode-card">
+                        <img src="<%= payment.pix_qrcode_text %>" alt="QR Code Pix" class="img-fluid pix-qrcode-image" />
+                        <div class="pix-timer-box">
+                          <small>Atualização automática</small>
+                          <div id="timer" class="pix-timer">15:00</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-7">
+                      <div class="pix-copy-box">
+                        <label for="texto" class="pix-copy-label">Código Pix Copia e Cola</label>
+
+                        <div class="pix-code-wrapper">
+                          <textarea
+                            name="texto"
+                            id="texto"
+                            class="form-control checkout-input pix-code-input"
+                            readonly
+                          ><%= payment.pix_qrcode %></textarea>
+                        </div>
+
+                        <div class="pix-actions mt-3">
+                          <button type="button" class="btn btn-primary pix-action-btn" onclick="copiarTexto()">
+                            Copiar código Pix
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="checkout-section">
+                <div class="checkout-section-title no-number">
+                  <h4>Informações importantes</h4>
+                </div>
+
+                <div class="pix-alert-list">
+                  <div class="pix-alert-item pix-alert-highlight">
+                    <strong>Confirmação rápida</strong>
+                    <p>O Pix costuma ser confirmado em poucos segundos após o pagamento.</p>
+                  </div>
+
+                  <div class="pix-alert-item">
+                    <strong>Liberação do acesso</strong>
+                    <p>Assim que identificarmos o pagamento, os dados de acesso serão enviados para seu e-mail.</p>
+                  </div>
+
+                  <div class="pix-alert-item">
+                    <strong>Verifique o spam</strong>
+                    <p>Alguns provedores podem mover o e-mail de acesso para a caixa de spam.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 mb-4">
+          <aside class="checkout-sidebar">
+            <div class="checkout-sidebar-card pix-sidebar-card">
+              <span class="checkout-sidebar-badge">Resumo do pagamento</span>
+
+              <div class="pix-status-card">
+                <div class="pix-status-icon">⚡</div>
+                <h4>Aguardando pagamento</h4>
+                <p>
+                  Finalize o pagamento via Pix para liberar seu acesso o mais rápido possível.
+                </p>
+              </div>
+
+              <div class="pix-summary">
+                <div class="pix-summary-row">
+                  <span>Status</span>
+                  <strong class="status-pending">Pendente</strong>
+                </div>
+
+                <div class="pix-summary-row">
+                  <span>Forma de pagamento</span>
+                  <strong>Pix</strong>
+                </div>
+
+                <div class="pix-summary-row pix-summary-row-total">
+                  <span>Total</span>
+                  <strong><%= number_to_currency((payment.amount.to_f / 100), unit: "R$ ", separator: ",", delimiter: ".") %></strong>
+                </div>
+              </div>
+
+              <div class="pix-sidebar-help">
+                <h5>Vantagens do Pix</h5>
+                <ul>
+                  <li>Pagamento instantâneo</li>
+                  <li>Confirmação rápida</li>
+                  <li>Liberação de acesso mais ágil</li>
+                </ul>
+              </div>
+
+              <button type="button" class="btn-primary-lg checkout-submit text-center d-block w-100" onclick="copiarTexto()">
+                Copiar código Pix
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="mr-auto">Aviso</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Código Pix copiado com sucesso.
     </div>
   </div>
 </div>
 <script>
-  let tempo;
   let intervalTime;
 
   window.onload = function () {
-    let duration = 60 * 15; // Converter para segundos
-    display = document.querySelector('#timer'); // selecionando o timer
-    startTimer(duration, display); // iniciando o timer
-    verificaPagamento()
+    const duration = 60 * 15;
+    const display = document.querySelector('#timer');
+    startTimer(duration, display);
+    verificaPagamento();
   };
 
   function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
+    let timer = duration;
 
     setInterval(() => {
-      minutes = parseInt(timer / 60, 10);
-      seconds = parseInt(timer % 60, 10);
+      let minutes = parseInt(timer / 60, 10);
+      let seconds = parseInt(timer % 60, 10);
+
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
+
       display.textContent = minutes + ":" + seconds;
+
       if (--timer < 0) {
-          timer = duration;
-      }else if(timer == 0){
+        timer = duration;
+      } else if (timer == 0) {
         window.location.assign(`/`);
       }
     }, 1000);
   }
 
-
-  function verificaPagamento(){
-    const code = "<%= payment.code %>"
-    clearInterval(intervalTime)
+  function verificaPagamento() {
+    const code = "<%= payment.code %>";
+    clearInterval(intervalTime);
 
     intervalTime = setInterval(async () => {
       let res = await fetch(`/payments/1.json?code=${code}`, {
         method: 'GET',
         headers: { 'Content-type': 'application/json; charset=UTF-8' }
-      })
+      });
 
       const payment = JSON.parse(await res.text());
-      if(payment.status == 'paid'){
+
+      if (payment.status == 'paid') {
         window.location.assign(`/payments/thanks/${code}`);
       }
-    }, 5000)
+    }, 5000);
   }
-
 
   function copiarTexto() {
-    let textoCopiado = document.getElementById("texto");
+    const textoCopiado = document.getElementById("texto");
     textoCopiado.select();
-    textoCopiado.setSelectionRange(0, 99999)
+    textoCopiado.setSelectionRange(0, 99999);
     document.execCommand("copy");
-  }
 
-  const toastTrigger = document.getElementById('liveToastBtn')
-  const toastLiveExample = document.getElementById('liveToast')
-  if (toastTrigger) {
-    toastTrigger.addEventListener('click', () => {
-      const toast = new bootstrap.Toast(toastLiveExample)
-      toast.show()
-    })
+    const toastLiveExample = document.getElementById('liveToast');
+    if (toastLiveExample) {
+      const toast = new bootstrap.Toast(toastLiveExample);
+      toast.show();
+    }
   }
 </script>

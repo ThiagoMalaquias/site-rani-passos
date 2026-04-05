@@ -1,150 +1,291 @@
-<section class="breadcrumb">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h2 class="text-center color-white mb-0 text-uppercase"></h2>
-        <a href="javascript:window.location.href='/'" class="btnvoltar float-right"><img class="f-voltar" src="/site/assets/professores/<%= @site %>/img/icons/arrow-prev.svg" alt="voltar">VOLTAR</a>
-      </div>
-    </div>
-  </div>
-</section>
 <% if @payment.status == "paid" %>
-  <div class="courseint mt-5 ppage">
-    <div class="container"  style="max-width: 835px; transition: margin 200ms;">
-      <div class="col contact-form pt-3 pb-3 pl-4 pr-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="text-center mb-4">
-              <h2>Compra Realizada com Sucesso</h2>
-            </div>
-            <p>
-              Olá <b class="font-weight-bold"><%= @user.name %></b>, 
-              <span>
-                nos próximos minutos você receberá um email em <%= @user.email %> com os dados para poder acessar este
-                produto sempre que desejar. Caso não encontre o email, verifique também em sua caixa de SPAM.
-              </span>
-            </p>
-            <div class="text-center mt-5">
-              <h5>O código da sua transação é:</h5>
-              <input type="text" name="texto" id="texto" class="form-control text-center" value="<%= @payment.code %>" style="width: 100%" readonly/>
-            </div>
-            <div class="mt-5">
-              <% user_courses = @payment.user_courses.non_nil_amount.order(amount: :asc)  %>
-              <% user_courses.each do |user_course| %>
-                <% course = user_course.course %>
-                <hr>
-                <div class="row">
-                  <div class="col-md-3">
-                    <%= image_tag course.image, class: "img-fluid", alt: "#{course.title}" %>
-                  </div>
-                  <div class="col-md-6">
-                    <a class="color-secondary" href="/courses/<%= course.slug %>">
-                      <h5><%= course.title %></h5>
-                    </a>
-                    <div class="infotime" style="padding: 0px;">
-                      <% if course.supplementary_material.present? %>
-                        <div class="pdf">
-                          <img src="/site/assets/professores/<%= @site %>/img/icons/ico-pdf.svg" alt="Downloads Pdf">
-                          <span><%= course.supplementary_material %></span>
-                        </div>
-                      <% end %>
-                      <% if course.duration.present? %>
-                        <div class="hour">
-                          <img src="/site/assets/professores/<%= @site %>/img/icons/ico-video.svg" alt="Horas de Aula">
-                          <span><%= course.duration %></span>
-                        </div>
-                      <% end %>
-                    </div>
-                  </div>
-                  <div class="col-md-3" style="text-align: end;">
-                    <h5>
-                      <b><%= number_to_currency(user_course.amount, unit: "R$") %></b>
-                    </h5>
+  <div class="checkout-wrap checkout-wrap-thanks">
+    <section class="checkout-hero checkout-hero-compact">
+      <div class="checkout-overlay"></div>
+
+      <div class="container">
+        <div class="checkout-hero-head text-center">
+          <span class="checkout-top-badge checkout-top-badge-success">
+            Compra confirmada
+          </span>
+
+          <h1 class="checkout-title text-uppercase">Tudo certo com sua matrícula</h1>
+
+          <hr class="hero-divider mx-auto">
+
+          <p class="checkout-subtitle">
+            Olá, <strong><%= @user.name %></strong>. Seu pagamento foi aprovado e os dados de acesso serão enviados para
+            <strong><%= @user.email %></strong>.
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-7 mb-4">
+            <div class="checkout-panel">
+              <div class="checkout-panel-header">
+                <h3>Resumo da sua compra</h3>
+                <p>Confira abaixo os cursos adquiridos e os dados da transação.</p>
+              </div>
+
+              <div class="checkout-panel-body">
+                <div class="thanks-inline-alert">
+                  <div class="thanks-inline-alert-icon">✓</div>
+                  <div class="thanks-inline-alert-content">
+                    <strong>Pagamento aprovado com sucesso</strong>
+                    <p>
+                      Em poucos minutos você receberá seu acesso por e-mail. Caso não encontre, verifique também sua caixa de spam.
+                    </p>
                   </div>
                 </div>
-              <% end %>
+
+                <div class="checkout-section mb-4">
+                  <div class="checkout-section-title">
+                    <h4 class="checkout-section-title-clean">
+                      Código da transação
+                    </h4>
+                  </div>
+
+                  <div class="thanks-transaction-box">
+                    <input
+                      type="text"
+                      id="payment-code-display"
+                      class="form-control checkout-input text-center font-weight-bold"
+                      value="<%= @payment.code %>"
+                      readonly
+                    >
+                  </div>
+                </div>
+
+                <div class="checkout-section mb-4">
+                  <div class="checkout-section-title">
+                    <h4 class="checkout-section-title-clean">
+                      Cursos adquiridos
+                    </h4>
+                  </div>
+
+                  <% user_courses = @payment.user_courses.non_nil_amount.order(amount: :asc) %>
+
+                  <div class="thanks-course-list">
+                    <% user_courses.each do |user_course| %>
+                      <% course = user_course.course %>
+
+                      <div class="thanks-course-item">
+                        <div class="thanks-course-thumb-wrap">
+                          <% if course.image.attached? %>
+                            <%= image_tag course.image, class: "thanks-course-thumb", alt: course.title %>
+                          <% else %>
+                            <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg", class: "thanks-course-thumb", alt: course.title %>
+                          <% end %>
+                        </div>
+
+                        <div class="thanks-course-content">
+                          <a class="thanks-course-title" href="/courses/<%= course.slug %>">
+                            <%= course.title %>
+                          </a>
+
+                          <div class="thanks-course-meta">
+                            <% if course.supplementary_material.present? %>
+                              <span>
+                                <img src="/site/assets/professores/<%= @site %>/img/icons/ico-pdf.svg" alt="Material">
+                                <%= course.supplementary_material %>
+                              </span>
+                            <% end %>
+
+                            <% if course.duration.present? %>
+                              <span>
+                                <img src="/site/assets/professores/<%= @site %>/img/icons/ico-video.svg" alt="Duração">
+                                <%= course.duration %>
+                              </span>
+                            <% end %>
+                          </div>
+                        </div>
+
+                        <div class="thanks-course-price">
+                          <strong><%= number_to_currency(user_course.amount, unit: "R$ ") %></strong>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="checkout-section mb-4">
+                  <div class="checkout-section-title">
+                     <h4 class="checkout-section-title-clean">
+                      Resumo da compra
+                    </h4>
+                  </div>
+
+                  <div class="thanks-payment-summary">
+                    <table class="table table-sm table-borderless mb-0">
+                      <tbody>
+                        <tr>
+                          <td class="text-muted">Forma de pagamento</td>
+                          <td class="text-right font-weight-bold"><%= @payment.method_pt %></td>
+                        </tr>
+
+                        <% if @payment.installments.present? && @payment.installments.to_i > 1 %>
+                          <tr>
+                            <td class="text-muted">Parcelas</td>
+                            <td class="text-right font-weight-bold"><%= @payment.installments %>x</td>
+                          </tr>
+                        <% end %>
+
+                        <tr>
+                          <td class="text-muted">Subtotal (cursos)</td>
+                          <td class="text-right">
+                            <%= number_to_currency(@payment.user_courses.non_nil_amount.map(&:amount).sum, unit: "R$ ", separator: ",", delimiter: ".") %>
+                          </td>
+                        </tr>
+
+                        <% if @payment.discount.present? && @payment.discount.to_s.strip != "" %>
+                          <tr>
+                            <td class="text-muted">Desconto</td>
+                            <td class="text-right text-success"><%= @payment.discount %></td>
+                          </tr>
+                        <% end %>
+
+                        <% if @payment.cashback_applied_cents.to_i.positive? %>
+                          <tr>
+                            <td class="text-muted">Cashback utilizado</td>
+                            <td class="text-right text-success">
+                              <%= number_to_currency(@payment.cashback_applied_cents / 100.0, unit: "R$ ", separator: ",", delimiter: ".") %>
+                            </td>
+                          </tr>
+                        <% end %>
+
+                        <% value_tax = @payment.user_courses.non_nil_amount.map(&:amount).sum - (@payment.cashback_applied_cents.to_f / 100) - (@payment.amount.to_f / 100) %>
+                        <% if @payment.method == "card" && value_tax.to_f.negative? %>
+                          <tr>
+                            <td class="text-muted">Taxas</td>
+                            <td class="text-right text-danger">
+                              <%= number_to_currency((value_tax * -1), unit: "R$ ", separator: ",", delimiter: ".") %>
+                            </td>
+                          </tr>
+                        <% end %>
+
+                        <tr class="thanks-total-row">
+                          <td>Total pago</td>
+                          <td class="text-right">
+                            <strong><%= number_to_currency((@payment.amount.to_f / 100), unit: "R$ ", separator: ",", delimiter: ".") %></strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="mt-5 pt-4 border-top">
-              <h6 class="text-uppercase text-muted mb-3" style="font-size: 0.8rem; letter-spacing: .05em;">Resumo do pagamento</h6>
-              <div class="row">
-                <div class="col-md-6 col-lg-12">
-                  <table class="table table-sm table-borderless mb-0">
-                    <tbody>
-                      <tr>
-                        <td class="text-muted">Forma de pagamento</td>
-                        <td class="text-right font-weight-bold"><%= @payment.method_pt %></td>
-                      </tr>
-                      <% if @payment.installments.present? && @payment.installments.to_i > 1 %>
-                        <tr>
-                          <td class="text-muted">Parcelas</td>
-                          <td class="text-right font-weight-bold"><%= @payment.installments %>x</td>
-                        </tr>
-                      <% end %>
-                      <tr>
-                        <td class="text-muted">Subtotal (cursos)</td>
-                        <td class="text-right">
-                          <%= number_to_currency(@payment.user_courses.non_nil_amount.map(&:amount).sum, unit: "R$ ", separator: ",", delimiter: ".") %>
-                        </td>
-                      </tr>
-                      <% if @payment.discount.present? && @payment.discount.to_s.strip != "" %>
-                        <tr>
-                          <td class="text-muted">Desconto</td>
-                          <td class="text-right text-success"><%= @payment.discount %></td>
-                        </tr>
-                      <% end %>
-                      <% if @payment.cashback_applied_cents.to_i.positive? %>
-                        <tr>
-                          <td class="text-muted">Cashback utilizado</td>
-                          <td class="text-right text-success">
-                            <%= number_to_currency(@payment.cashback_applied_cents / 100.0, unit: "R$ ", separator: ",", delimiter: ".") %>
-                          </td>
-                        </tr>
-                      <% end %>
-                      <% value_tax =  @payment.user_courses.non_nil_amount.map(&:amount).sum - (@payment.cashback_applied_cents.to_f / 100) - (@payment.amount.to_f / 100) %>
-                      <% if @payment.method == "card" && value_tax.to_f.negative? %>
-                        <tr>
-                          <td class="text-muted">Taxas</td>
-                          <td class="text-right text-danger">
-                            <%= number_to_currency((value_tax * -1), unit: "R$ ", separator: ",", delimiter: ".") %>
-                          </td>
-                        </tr>
-                      <% end %>
-                      <tr class="border-top">
-                        <td class="text-muted pt-2">Total pago</td>
-                        <td class="text-right font-weight-bold pt-2" style="font-size: 1.1rem;">
-                          <%= number_to_currency((@payment.amount.to_f / 100), unit: "R$ ", separator: ",", delimiter: ".") %>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+          </div>
+
+          <div class="col-lg-5 mb-4">
+            <aside class="checkout-sidebar">
+              <div class="checkout-sidebar-card thanks-sidebar-card">
+                <span class="checkout-sidebar-badge">Matrícula confirmada</span>
+
+                <div class="thanks-sidebar-hero">
+                  <div class="thanks-sidebar-icon-wrap">
+                    <div class="thanks-sidebar-icon">✓</div>
+                  </div>
+
+                  <h4 class="thanks-sidebar-title">Seu acesso está sendo preparado</h4>
+
+                  <p class="thanks-sidebar-description">
+                    Recebemos seu pagamento com sucesso. Em poucos minutos você receberá no e-mail
+                    <strong><%= @user.email %></strong> as instruções para acessar a plataforma.
+                  </p>
+                </div>
+
+                <div class="thanks-sidebar-cta-box">
+                  <a
+                    href="https://aluno.ranipassos.com.br/"
+                    target="_blank"
+                    class="btn-primary-lg checkout-submit text-center d-block"
+                  >
+                    Acessar área do aluno
+                  </a>
+
+                  <small class="thanks-sidebar-cta-help">
+                    Caso o acesso ainda não tenha chegado, aguarde alguns minutos e verifique também a caixa de spam.
+                  </small>
+                </div>
+
+                <div class="thanks-sidebar-section">
+                  <h5 class="thanks-sidebar-section-title">Próximos passos</h5>
+
+                  <div class="thanks-sidebar-steps">
+                    <div class="thanks-sidebar-step">
+                      <div class="thanks-sidebar-step-number">1</div>
+                      <div class="thanks-sidebar-step-content">
+                        <strong>Confira seu e-mail</strong>
+                        <p>Os dados de acesso serão enviados para <%= @user.email %>.</p>
+                      </div>
+                    </div>
+
+                    <div class="thanks-sidebar-step">
+                      <div class="thanks-sidebar-step-number">2</div>
+                      <div class="thanks-sidebar-step-content">
+                        <strong>Verifique a caixa de spam</strong>
+                        <p>Alguns provedores podem mover nossa mensagem automaticamente.</p>
+                      </div>
+                    </div>
+
+                    <div class="thanks-sidebar-step">
+                      <div class="thanks-sidebar-step-number">3</div>
+                      <div class="thanks-sidebar-step-content">
+                        <strong>Guarde seu código de transação</strong>
+                        <p>Ele pode ser útil caso precise falar com o suporte.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+<% elsif @payment.status == "expired" %>
+  <div class="checkout-wrap checkout-wrap-thanks">
+    <section class="checkout-hero checkout-hero-compact">
+      <div class="checkout-overlay"></div>
+
+      <div class="container">
+        <div class="checkout-hero-head text-center">
+          <span class="checkout-top-badge checkout-top-badge-warn">
+            Pagamento não concluído
+          </span>
+
+          <h1 class="checkout-title text-uppercase">
+            <%= @payment.method == "billet" ? "Boleto" : "Pix" %> vencido
+          </h1>
+
+          <hr class="hero-divider mx-auto">
+
+          <p class="checkout-subtitle">
+            Olá, <strong><%= @user.name %></strong>. O prazo para pagamento expirou. Entre em contato com nossa equipe para gerar uma nova forma de pagamento.
+          </p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="checkout-panel">
+              <div class="checkout-panel-body">
+                <div class="checkout-method-info featured mb-0">
+                  <h5>Precisa de ajuda?</h5>
+                  <p class="mb-0">
+                    Nossa equipe pode emitir um novo boleto ou enviar outra opção de pagamento rapidamente.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-<% elsif @payment.status == "expired" %>
-  <div class="courseint mt-5 ppage">
-    <div class="container" style="max-width: 835px; transition: margin 200ms;">
-      <div class="col contact-form pt-3 pb-3 pl-4 pr-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="text-center mb-4">
-              <h2> <%= @payment.method == "billet" ? "Boleto" : "Pix" %> Vencido</h2>
-            </div>
-            <p>
-              Olá <b class="font-weight-bold"><%= @user.name %></b>,
-              <span>
-                O seu <%= @payment.method == "billet" ? "boleto" : "pix" %> venceu devido à falta de pagamento. Para garantir o acesso aos cursos, entre em contato com nossa equipe para que possamos emitir um novo boleto o mais rápido possível. Estamos aqui para ajudar!
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
 <% elsif @payment.method == "billet" %>
   <%= render "payments/messages/billet", payment: @payment, user: @user %>
 <% elsif @payment.method == "pix" %>

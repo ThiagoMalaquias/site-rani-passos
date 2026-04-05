@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     cookies[:utm_source] = params[:utm_source] if params[:utm_source].present?
     cookies[:utm_medium] = params[:utm_medium] if params[:utm_medium].present?
     cookies[:utm_campaign] = params[:utm_campaign] if params[:utm_campaign].present?
+    cookies[:origin] = params[:or] if params[:or].present?
   end
 
   def clear_cashback_applied

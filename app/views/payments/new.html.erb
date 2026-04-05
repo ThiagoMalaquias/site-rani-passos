@@ -59,7 +59,7 @@
                              placeholder="Repita seu e-mail"
                              required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                       <label for="phone">Telefone</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -69,7 +69,7 @@
                              placeholder="(00) 91234-5678"
                              required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-6">
                       <label for="cpf">CPF</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -79,24 +79,8 @@
                              placeholder="000.000.000-00"
                              required>
                     </div>
-                    <div class="form-group col-md-4">
-                      <label for="birth_date">Data de nascimento</label>
-                      <input type="text"
-                             class="form-control checkout-input"
-                             name="user[birth_date]"
-                             id="birth_date"
-                             value="<%= @user.birth_date rescue '' %>"
-                             placeholder="00/00/0000">
-                    </div>
-                  </div>
-                </div>
-                <div class="checkout-section">
-                  <div class="checkout-section-title">
-                    <span class="checkout-section-number">02</span>
-                    <h4>Endereço</h4>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-4">
+
+                    <div class="form-group col-md-3">
                       <label for="cep">CEP</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -106,7 +90,7 @@
                              placeholder="00000-000"
                              required>
                     </div>
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-7">
                       <label for="street">Endereço</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -116,8 +100,8 @@
                              placeholder="Rua, avenida, etc."
                              required>
                     </div>
-                    <div class="form-group col-md-3">
-                      <label for="number">Número</label>
+                    <div class="form-group col-md-2">
+                      <label for="number">Nº</label>
                       <input type="text"
                              class="form-control checkout-input"
                              name="address[number]"
@@ -126,7 +110,7 @@
                              placeholder="123"
                              required>
                     </div>
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-5 d-none">
                       <label for="complement">Complemento</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -135,7 +119,7 @@
                              value="<%= @user.addresses.first.complement rescue '' %>"
                              placeholder="Apto, bloco, casa...">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-4 d-none">
                       <label for="neighborhood">Bairro</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -144,7 +128,7 @@
                              value="<%= @user.addresses.first.neighborhood rescue '' %>"
                              required>
                     </div>
-                    <div class="form-group col-md-8">
+                    <div class="form-group col-md-8 d-none">
                       <label for="city">Cidade</label>
                       <input type="text"
                              class="form-control checkout-input"
@@ -153,7 +137,7 @@
                              value="<%= @user.addresses.first.city rescue '' %>"
                              required>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-4 d-none">
                       <label for="uf">UF</label>
                       <input type="text"
                              class="form-control checkout-input text-uppercase"
@@ -319,11 +303,9 @@
                   </div>
                 </div>
                 <!-- HIDDEN FIELDS -->
-                <input type="hidden" name="user_id" id="user_id" value="<%= @user.id rescue '' %>">
+                <input type="hidden" name="user_id" id="user_id" value="">
                 <input type="hidden" name="method" id="method" value="card">
                 <input type="hidden" name="token" id="token">
-                <input type="hidden" name="discount" id="discount" value="<%= params[:discount] %>">
-                <input type="hidden" name="credit_card" id="credit_card">
                 <input type="hidden" name="cashback_applied" id="cashback_applied">
               </div>
             </div>
@@ -363,17 +345,17 @@
                   </ul>
                 </div>
                 <div class="checkout-price-box">
-                  <small>Total da matrícula</small>
-                  <strong><%= number_to_currency(@total_amount) %></strong>
+                  <small>Total da compra</small>
+                  <strong id="total_amount"><%= number_to_currency(@total_amount) %></strong>
                   <span>Pagamento seguro e ambiente criptografado</span>
                 </div>
                 <button type="submit"
                         class="btn-primary-lg checkout-submit pulse"
                         id="btncomprar">
-                  Confirmar matrícula
+                  Confirmar compra
                 </button>
                 <p class="checkout-bottom-note">
-                  Ao finalizar, você concorda com os termos da matrícula e política da plataforma.
+                  Ao finalizar, você concorda com os termos da compra e política da plataforma.
                 </p>
               </div>
             </aside>
@@ -383,3 +365,59 @@
     </div>
   </section>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#cnumber').mask('0000 0000 0000 0000');
+    $('#cexpiry').mask('00/00');
+    $('#ccvc').mask('000');
+    $('#phone').mask('(00) 00000-0000');
+    $('#cpf').mask('000.000.000-00');
+    $('#cep').mask('00000-000');
+
+    $('#pills-tab').on('click', 'a[data-payment-method]', function () {
+      var method = $(this).data('payment-method');
+      if (method) {
+        $('#method').val(method);
+      }
+    });
+
+    $('#cep').on('change', function () {
+      var cep = $(this).val();
+      if (cep.length == 9) {
+        $.ajax({
+          type: "GET",
+          url: `https://viacep.com.br/ws/${cep}/json/`,
+          success: function(data){
+            console.log(data);
+            $('#street').val(data.logradouro);
+            $('#neighborhood').val(data.bairro);
+            $('#city').val(data.localidade);
+            $('#uf').val(data.uf);
+            $('#number').focus();
+          }
+        });
+      }
+    });
+
+    function formatBRL(value) {
+      return value.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function updateCheckoutTotalFromInstallments() {
+      var $sel = $('#installment');
+      var $opt = $sel.find('option:selected');
+      var count = parseInt($sel.val(), 10) || 1;
+      var perInstallment = parseFloat($opt.data('js-installment-value'));
+      if (isNaN(perInstallment)) perInstallment = 0;
+      var total = count * perInstallment;
+      $('#total_amount').text(formatBRL(total));
+    }
+
+    $('#installment').on('change', updateCheckoutTotalFromInstallments);
+    updateCheckoutTotalFromInstallments();
+  });
+</script>
