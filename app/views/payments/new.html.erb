@@ -1,5 +1,6 @@
 <div class="checkout-wrap" data-controller="payment">
   <% main_course = @courses.first %>
+  <% default_installment = @all_installments.last %>
   <section class="checkout-hero">
     <div class="checkout-overlay"></div>
     <div class="container">
@@ -152,7 +153,7 @@
                 </div>
                 <div class="checkout-section">
                   <div class="checkout-section-title">
-                    <span class="checkout-section-number">03</span>
+                    <span class="checkout-section-number">02</span>
                     <h4>Forma de pagamento</h4>
                   </div>
                   <div class="checkout-payment-box">
@@ -249,7 +250,8 @@
                                           data-action="change->payment#setInstallment">
                                     <% @all_installments.each do |installment| %>
                                       <option value="<%= installment[:key] %>"
-                                              data-js-installment-value="<%= installment[:value] %>">
+                                              data-js-installment-value="<%= installment[:value] %>"
+                                              <%= "selected" if default_installment.present? && installment[:key] == default_installment[:key] %>>
                                         <% if installment[:key] < 7 %>
                                           <%= "#{installment[:key]}x de #{number_to_currency(installment[:value])}" %>
                                         <% else %>
@@ -307,6 +309,7 @@
                 <input type="hidden" name="method" id="method" value="card">
                 <input type="hidden" name="token" id="token">
                 <input type="hidden" name="cashback_applied" id="cashback_applied">
+                <input type="hidden" id="checkout_full_total_amount" value="<%= @total_amount.to_f %>">
               </div>
             </div>
           </div>
@@ -332,22 +335,19 @@
                     </span>
                   </div>
                 </div>
-                <div class="checkout-includes">
-                  <h5>O que está incluso</h5>
-                  <ul>
-                    <% main_course.warranties.each do |warranty| %>
-                      <li>
-                        <span class="icon">✓</span>
-                        <span><%= warranty.title %></span>
-                      </li>
-                    <% end %>
-                    <li><span><%= main_course.lifetime ? "Acesso vitalício" : "#{main_course.period_access} meses de acesso" %></span></li>
-                  </ul>
-                </div>
                 <div class="checkout-price-box">
                   <small>Total da compra</small>
-                  <strong id="total_amount"><%= number_to_currency(@total_amount) %></strong>
+                  <strong id="total_amount">
+                    <% if default_installment.present? %>
+                      <%= "#{default_installment[:key]}x de #{number_to_currency(default_installment[:value])}" %><%= "*" if default_installment[:key] >= 7 %>
+                    <% else %>
+                      <%= number_to_currency(@total_amount) %>
+                    <% end %>
+                  </strong>
                   <span>Pagamento seguro e ambiente criptografado</span>
+                </div>
+                <div class="mb-4 text-center">
+                  <img src="/site/assets/professores/ranipassos/img/site-seguro-100.png" alt="" class="img-fluid" style="width: 70%;">
                 </div>
                 <button type="submit"
                         class="btn-primary-lg checkout-submit pulse"
@@ -362,6 +362,29 @@
           </div>
         </div>
       </form>
+
+      <div class="hero-guarantee">
+        <div>
+          <img src="/site/assets/professores/<%= @site %>/img/cartao.png" alt="">
+          <span>Cartão <br> de crédito</span>
+        </div>
+        <div>
+          <img src="/site/assets/professores/<%= @site %>/img/boleto.png" alt="">
+          <span>Boleto</span>
+        </div>
+        <div>
+          <img src="/site/assets/professores/<%= @site %>/img/pix.png" alt="">
+          <span>Pix</span>
+        </div>
+        <div>
+          <img src="/site/assets/professores/<%= @site %>/img/compra-segura.png" alt="">
+          <span><strong>Compra</strong> <br> 100% segura</span>
+        </div>
+        <div>
+          <img src="/site/assets/professores/<%= @site %>/img/privacidade-protegida.png" alt="">
+          <span>Privacidade <br> protegida</span>
+        </div>
+      </div>
     </div>
   </section>
 </div>
@@ -375,10 +398,39 @@
     $('#cpf').mask('000.000.000-00');
     $('#cep').mask('00000-000');
 
+    function formatBRL(value) {
+      return value.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      });
+    }
+
+    function updateCheckoutTotalFromInstallments() {
+      var $sel = $('#installment');
+      var $opt = $sel.find('option:selected');
+      var count = parseInt($sel.val(), 10) || 1;
+      var perInstallment = parseFloat($opt.data('js-installment-value'));
+      if (isNaN(perInstallment)) perInstallment = 0;
+      var label = count + 'x de ' + formatBRL(perInstallment);
+      if (count >= 7) label += '*';
+      $('#total_amount').text(label);
+    }
+
+    function setTotalAmountForCashPayment() {
+      var full = parseFloat($('#checkout_full_total_amount').val(), 10);
+      if (isNaN(full)) full = 0;
+      $('#total_amount').text(formatBRL(full));
+    }
+
     $('#pills-tab').on('click', 'a[data-payment-method]', function () {
       var method = $(this).data('payment-method');
       if (method) {
         $('#method').val(method);
+      }
+      if (method === 'billet' || method === 'pix') {
+        setTotalAmountForCashPayment();
+      } else if (method === 'card') {
+        updateCheckoutTotalFromInstallments();
       }
     });
 
@@ -399,23 +451,6 @@
         });
       }
     });
-
-    function formatBRL(value) {
-      return value.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      });
-    }
-
-    function updateCheckoutTotalFromInstallments() {
-      var $sel = $('#installment');
-      var $opt = $sel.find('option:selected');
-      var count = parseInt($sel.val(), 10) || 1;
-      var perInstallment = parseFloat($opt.data('js-installment-value'));
-      if (isNaN(perInstallment)) perInstallment = 0;
-      var total = count * perInstallment;
-      $('#total_amount').text(formatBRL(total));
-    }
 
     $('#installment').on('change', updateCheckoutTotalFromInstallments);
     updateCheckoutTotalFromInstallments();

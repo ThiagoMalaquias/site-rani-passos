@@ -1,0 +1,56 @@
+<%= render "shared/headerbundle", title: @teacher.name %>
+
+<div class="container mt-4 about">
+  <div class="row">
+    <div class="col-md-7 justify-content-center d-flex flex-column">
+      <h1>Um pouco sobre mim</h1>
+      <h5>Olá, concurseiros.</h5>
+      <br>
+      <%= raw @teacher.about %>
+    </div>
+    <div class="col-md-5">
+      <div class="text-center">
+        <img class="capainst img-fluid" src="/site/assets/professores/<%= @site %>/img/img-professor.png" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mvv mb-page mb-5">
+  <div class="container">
+    <div class="row">
+      <div data-aos="zoom-in" data-aos-delay="1000" class="col-xs-12 col-md-4 text-center">
+        <h3 class="m-4 color-white text-uppercase">Missão</h3>
+        <p class="color-white">Oferecer educação de alta qualidade com preço justo, aliados a um sistema inovador e transformador de estudo.</p>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="1000" class="col-xs-12 col-md-4 text-center">
+        <h3 class="m-4 color-white text-uppercase">Visão</h3>
+        <p class="color-white">Ser referência em âmbito nacional como a melhor opção em educação a distância para concursos públicos.</p>
+      </div>
+      <div data-aos="zoom-in" data-aos-delay="1000" class="col-xs-12 col-md-4 text-center">
+        <h3 class="m-4 color-white text-uppercase">Valores</h3>
+        <p class="color-white">Amor a educação, respeito pelo aluno, excelência de materiais, honestidade, responsabilidade e preço justo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FOTOS -->
+<div class="fotosempresa mb-page">
+  <div class="container">
+  </div>
+</div>
+<% if @teacher.sense.present? %>
+  <div class="homesection1 mb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+          <h1 class="mb-4">O SENTIDO DE TUDO!</h1>
+          <%= raw @teacher.sense %>
+          <!--  <a href="#" class="btn-solid m-auto">Veja mais sobre</a> -->
+        </div>
+        <div class="col-md-6">
+          <img class="loremipsum" src="/site/assets/professores/<%= @site %>/img/cruzinstitucional.jpg" alt="O SENTIDO DE TUDO!">
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

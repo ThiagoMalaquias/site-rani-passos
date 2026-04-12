@@ -139,29 +139,9 @@
               <%== sidebar_price(@course, params[:discount]) %>
             <% end %>
 
-            <% if @course.link_hotmart.present? %>
-              <a href="<%= @course.link_hotmart %>" target="_blank" class="buynow text-uppercase color-white">
-                <span class="d-block"><%= @course.nature == "free" ? "Acessar" : "Comprar" %> Agora <img class="coursecart" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho"></span>
-              </a>
-            <% elsif @course.nature == "free" %>
-              <a href="/user_courses/new?course=<%= @course.slug %>" class="buynow text-uppercase color-white">
-                <span class="d-block">Acessar Agora <img class="coursecart" src="/site/assets/professores/<%= @site %>/img/icons/ico-cart.svg" alt="carrinho"></span>
-              </a>
-            <% elsif @course.recurrent %>
-              <a href="/subscriptions/new?course=<%= @course.slug %>" class="buynow text-uppercase color-white">
-                <span class="d-block">Comprar Agora</span>
-              </a>
-            <% else %>
-              <% if exist_in_cart?(@site, @course.id) %>
-                <a href="/cart" class="buynow text-uppercase color-white">
-                  <span class="d-block">Ir para o Carrinho</span>
-                </a>
-              <% else %>
-                <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="buynow text-uppercase color-white">
-                  <span class="d-block">Adicionar ao Carrinho</span>
-                </a>
-              <% end %>
-            <% end %>
+            <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="buynow text-uppercase color-white">
+              Clique aqui para comprar
+            </a>
 
             <ul class="sidebar-list">
               <% @course.warranties.each do |warranty| %>
@@ -216,7 +196,9 @@
     </section>
   </div>
 
-  <%= render "chosen_projects_students", courses: @courses %>
+  <% if @courses.any? %>
+    <%= render "chosen_projects_students", courses: @courses, featured_course: @course %>
+  <% end %>
 
   <% unless @course.signature %>
     <div class="container mt-5">
@@ -424,18 +406,25 @@
           </div>
 
           <div class="landing-samples__cta-col">
+            <% assinatura_slug = HomeController::COMPARISON_SLUG_ASSINATURA %>
+            <% is_assinatura_landing = @course.slug == assinatura_slug %>
             <div class="sample-cta-card">
               <div class="sample-cta-card__header text-center">
-                <div class="sample-cta-card__badge">🎁 ESSA É A NOSSA MELHOR OFERTA</div>
-                <% if @course.lifetime %>
-                  <p class="sample-cta-card__kicker">VOCÊ TERÁ ACESSO VITALÍCIO</p>
+                <% if is_assinatura_landing %>
+                  <div class="sample-cta-card__badge">🎁 ESSA É A NOSSA MELHOR OFERTA</div>
                 <% else %>
-                  <p class="sample-cta-card__kicker">VOCÊ TERÁ ACESSO POR <%= @course.period_access %> MESES</p>
+                  <div class="sample-cta-card__badge">⭐ APROVEITE A ASSINATURA COMPLETA</div>
+                <% end %>
+                <p class="sample-cta-card__kicker">VOCÊ TERÁ ACESSO VITALÍCIO</p>
+                <% unless is_assinatura_landing %>
+                  <p class="sample-cta-card__pitch">
+                    Quer tudo em um só lugar? A <strong>Assinatura Rani Passos</strong> reúne o método completo — a opção mais escolhida por quem busca aprovação.
+                  </p>
                 <% end %>
               </div>
 
               <ul class="sample-cta-card__checks">
-                <% @course.warranties.each do |warranty| %>
+                <% Course.find_by(slug: assinatura_slug).warranties.each do |warranty| %>
                   <li>
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                     <span><%= warranty.title %></span>
@@ -443,8 +432,17 @@
                 <% end %>
               </ul>
 
-              <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="sample-cta-card__btn">CLIQUE AQUI PARA COMPRAR</a>
-              
+              <% if is_assinatura_landing %>
+                <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount] %>" class="sample-cta-card__btn">CLIQUE AQUI PARA COMPRAR</a>
+              <% else %>
+                <a href="/cart/new?course=<%= assinatura_slug %>&discount=<%= params[:discount] %>" class="sample-cta-card__btn">QUERO A ASSINATURA COMPLETA</a>
+                <p class="sample-cta-card__alt-actions">
+                  <a href="/courses/<%= assinatura_slug %>" class="sample-cta-card__alt-link">Ver detalhes da assinatura</a>
+                  <span class="sample-cta-card__alt-sep" aria-hidden="true">·</span>
+                  <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount] %>" class="sample-cta-card__alt-link sample-cta-card__alt-link--dim">Comprar só este curso</a>
+                </p>
+              <% end %>
+
               <img src="/site/assets/professores/<%= @site %>/img/5_estrelas.png" alt="Rani Passos" class="sample-cta-card__stars img-fluid">
             </div>
           </div>
@@ -468,131 +466,19 @@
         </div>
 
         <div class="landing-faq__list">
-        <% if @course.nature == "free" %>
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(1)" aria-expanded="false" aria-controls="faq-content-1" id="faq-trigger-1">
-              <span class="faq-item__question">Consigo me inscrever mais de uma vez no curso gratuito?</span>
-              <svg id="faq-icon-1" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-1" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-1" hidden>
-              <p>Não. É válida apenas uma inscrição por cadastro.</p>
+          <% @faqs.each do |faq| %>
+            <div class="faq-item">
+              <button type="button" class="faq-item__trigger" onclick="toggleFAQ(<%= faq.id %>)" aria-expanded="false" aria-controls="faq-content-<%= faq.id %>" id="faq-trigger-<%= faq.id %>">
+                <span class="faq-item__question"><%= faq.question %></span>
+                <svg id="faq-icon-<%= faq.id %>" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+              <div id="faq-content-<%= faq.id %>" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-<%= faq.id %>" hidden>
+                <p><%= faq.reply %></p>
+              </div>
             </div>
-          </div>
-
-        
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(2)" aria-expanded="false" aria-controls="faq-content-2" id="faq-trigger-2">
-              <span class="faq-item__question">O curso realmente é 100% gratuito?</span>
-              <svg id="faq-icon-2" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-2" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-2" hidden>
-              <p>Sim! Todo o conteúdo é gratuito, sem qualquer tipo de cobrança adicional.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(3)" aria-expanded="false" aria-controls="faq-content-3" id="faq-trigger-3">
-              <span class="faq-item__question">Recebo certificado de participação?</span>
-              <svg id="faq-icon-3" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-3" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-3" hidden>
-              <p>Não emitimos certificado para o curso gratuito — o foco é o aprendizado e o preparo para o concurso.</p>
-            </div>
-          </div>
-        <% end %>
-
-        <% if @course.nature == "paid" %>
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(1)" aria-expanded="false" aria-controls="faq-content-1" id="faq-trigger-1">
-              <span class="faq-item__question">Como funciona o pagamento?</span>
-              <svg id="faq-icon-1" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-1" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-1" hidden>
-              <p>O pagamento é feito através de cartão de crédito, boleto bancário ou pix. O boleto é gerado automaticamente após a compra e é válido por 24 horas.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(2)" aria-expanded="false" aria-controls="faq-content-2" id="faq-trigger-2">
-              <span class="faq-item__question">O que acontece se eu cancelar a assinatura?</span>
-              <svg id="faq-icon-2" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-2" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-2" hidden>
-              <p>Se você cancelar a assinatura, você perderá o acesso ao conteúdo do curso. Mas você pode continuar acessando o conteúdo até o final do período de acesso.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(3)" aria-expanded="false" aria-controls="faq-content-3" id="faq-trigger-3">
-              <span class="faq-item__question">Possuo cupom de desconto?</span>
-              <svg id="faq-icon-3" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-3" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-3" hidden>
-              <p>Sim, você pode utilizar cupons de desconto para reduzir o valor do curso. Consulte a seção de cupons de desconto para mais informações.</p>
-            </div>
-          </div>
-        <% end %>
-
-        
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(4)" aria-expanded="false" aria-controls="faq-content-4" id="faq-trigger-4">
-              <span class="faq-item__question">Onde posso acessar o material do curso?</span>
-              <svg id="faq-icon-4" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-4" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-4" hidden>
-              <p>Você pode baixar o material em PDF. As videoaulas não ficam disponíveis para download, apenas para acesso online durante o período do curso.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(5)" aria-expanded="false" aria-controls="faq-content-5" id="faq-trigger-5">
-              <span class="faq-item__question">Por quanto tempo terei acesso?</span>
-              <svg id="faq-icon-5" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-5" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-5" hidden>
-              <p>O prazo de acesso é informado junto ao botão "Inscreva-se", e são contados a partir do momento em que o cadastro é realizado.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(6)" aria-expanded="false" aria-controls="faq-content-6" id="faq-trigger-6">
-              <span class="faq-item__question">Tive algum problema ou dúvida com o material. Onde consigo suporte?</span>
-              <svg id="faq-icon-6" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-6" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-6" hidden>
-              <p>Todo o suporte é feito através do nosso WhatsApp oficial, onde a equipe está pronta para te ajudar. 📲</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <button type="button" class="faq-item__trigger" onclick="toggleFAQ(7)" aria-expanded="false" aria-controls="faq-content-7" id="faq-trigger-7">
-              <span class="faq-item__question">Posso assistir pelo celular?</span>
-              <svg id="faq-icon-7" class="faq-item__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-              </svg>
-            </button>
-            <div id="faq-content-7" class="faq-item__answer" role="region" aria-labelledby="faq-trigger-7" hidden>
-              <p>Sim! Você pode acessar sempre que estiver conectado à internet pelo celular, tablet, notebook ou computador. Estude onde e quando quiser!</p>
-            </div>
-          </div>
+          <% end %>
         </div>
       </div>
     </div>

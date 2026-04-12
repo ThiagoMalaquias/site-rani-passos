@@ -1,0 +1,150 @@
+<div class="theme-dark">
+  <%= render "shared/headerbundle", title: "Contato" %>
+</div>
+
+<div class="container-fluid py-3 contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-7 col-xs-12">
+        <div class="contact-content mt-3">
+          <p class="text-white m-0">Quer saber algo mais antes de adquirir o seu curso?<br>
+            Entre em contato pelo canal de sua preferência que eu vou te ajudar.</p>
+
+          <img src="/site/assets/professores/<%= @site %>/img/logo-rp.png" alt="Logo da empresa" class="img-logo" style="width: 70%;">
+          <div class="row g-4">
+            <div class="col-md-6" style="border-right: 1px solid #2e2e2e;">
+              <div class="mb-4">
+                <%= link_to blogs_path, class: "btn btn-primary mb-3", aria: { label: "Acessar o blog" } do %>
+                  <span class="mr-2">Acesse o Blog</span> <i class="fas fa-blog me-2" aria-hidden="true"></i>
+                <% end %>
+                <p class="text-white mb-0">Acesse nosso blog e fique por dentro de tudo o que acontece no mundo dos concursos!</p>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="contact-service mb-4">
+                <h5 style="color: #027bff;">Atendimento</h5>
+                
+                <div class="contact-item d-flex align-items-center">
+                  <%= image_tag "/site/assets/professores/#{@site}/img/icons/ico-whatsapp.svg", 
+                      class: "me-2", 
+                      alt: "Ícone WhatsApp",
+                      width: "24",
+                      height: "24",
+                      aria: { hidden: "true" } %>
+                  <%= link_to @teacher.phone, 
+                      "https://ranipassos.live/GbiGZ", 
+                      target: "_blank", 
+                      rel: "noopener noreferrer",
+                      class: "text-white text-decoration-none",
+                      aria: { label: "Abrir WhatsApp" } %>
+                </div>
+                
+                <div class="contact-item d-flex align-items-center">
+                  <%= image_tag "/site/assets/professores/#{@site}/img/icons/ico-email.svg", 
+                      class: "me-2", 
+                      alt: "Ícone Email",
+                      width: "24",
+                      height: "24",
+                      aria: { hidden: "true" } %>
+                  <%= link_to @teacher.email, 
+                      "mailto:contato@ranipassos.com.br", 
+                      class: "text-white text-decoration-none",
+                      aria: { label: "Enviar email" } %>
+                </div>
+              </div>
+              
+              <div class="socialrani">
+                <div class="d-flex gap-2 flex-wrap">
+                  <%= link_to "https://www.facebook.com/#{@teacher.facebook}", 
+                      target: "_blank", 
+                      rel: "noopener noreferrer",
+                      class: "socialrani-link",
+                      aria: { label: "Acessar Facebook" } do %>
+                    <%= image_tag "/site/assets/professores/#{@site}/img/icons/facebook.svg", 
+                        alt: "Facebook",
+                        width: "32",
+                        height: "32" %>
+                  <% end %>
+                  
+                  <%= link_to "https://www.instagram.com/#{@teacher.instagram}", 
+                      target: "_blank", 
+                      rel: "noopener noreferrer",
+                      class: "socialrani-link",
+                      aria: { label: "Acessar Instagram" } do %>
+                    <%= image_tag "/site/assets/professores/#{@site}/img/icons/instagram.svg", 
+                        alt: "Instagram",
+                        width: "32",
+                        height: "32" %>
+                  <% end %>
+                  
+                  <%= link_to "https://www.youtube.com/#{@teacher.youtube}", 
+                      target: "_blank", 
+                      rel: "noopener noreferrer",
+                      class: "socialrani-link",
+                      aria: { label: "Acessar YouTube" } do %>
+                    <%= image_tag "/site/assets/professores/#{@site}/img/icons/youtube.svg", 
+                        alt: "YouTube",
+                        width: "32",
+                        height: "32" %>
+                  <% end %>
+                  
+                  <%= link_to "https://t.me/#{@teacher.telegram}", 
+                      target: "_blank", 
+                      rel: "noopener noreferrer",
+                      class: "socialrani-link",
+                      aria: { label: "Acessar Telegram" } do %>
+                    <%= image_tag "/site/assets/professores/#{@site}/img/icons/telegram.svg", 
+                        alt: "Telegram",
+                        width: "32",
+                        height: "32" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 col-xs-12">
+        <div class="col contact-form pt-3 pb-3 pl-4 pr-4 mt-5">
+          <h4 class="m-4 text-center text-white">Formulário de Contato</h4>
+          <form action="/contacts" autocomplete="off" method="post" accept-charset="utf-8">
+            <input type="hidden" name="csrf_token_name" value="b7f0872a0bfecac8d8cf075197b6b9fa">
+            <div class="message">
+            </div>
+            <div class="form-group">
+              <label for="nome" class="text-white">Nome</label>
+              <input type="text" class="form-control" name="contact[name]" id="nome" placeholder="Ex: josefino silva" required>
+              <div class="help-block invalid-feedback">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email" class="text-white">Email</label>
+              <input type="email" class="form-control" name="contact[email]" id="email" placeholder="Ex: josefino.silva@hotmail.com" required>
+              <div class="help-block invalid-feedback">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="telefone" class="text-white">Telefone</label>
+              <input type="text" class="form-control" name="contact[phone]" id="telefone" placeholder="Ex: (99) 99999-9999" required maxlength="15">
+              <div class="help-block invalid-feedback">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="mensagem" class="text-white">Mensagem</label>
+              <textarea class="form-control" name="contact[message]" id="mensagem" rows="3" placeholder="Ex: mensagem..." required></textarea>
+              <div class="help-block invalid-feedback">
+              </div>
+            </div>
+            <div class="form-group">
+              <%= recaptcha_tags %>
+            </div>
+            <div class="form-group text-center">
+              <button type="submit" class="btn btn-primary btn-contact-send" id="btncontato">Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

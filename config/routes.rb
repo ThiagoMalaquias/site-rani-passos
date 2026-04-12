@@ -3,6 +3,11 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 
+  get 'companies', to: 'home#companies'
+  get 'courses', to: 'home#courses'
+  get 'testimonials', to: 'home#testimonials'
+  get 'blogs', to: 'home#blogs'
+
   get 'courses/:slug/:code/:subcode', to: 'home#metrics'
   get 'courses/:slug', to: 'home#index'
 
@@ -16,6 +21,7 @@ Rails.application.routes.draw do
   end
 
   resources :promo, only: [:show]
+  resources :contacts
   resources :localizations
   resources :user_payments, only: [:index, :create]
 

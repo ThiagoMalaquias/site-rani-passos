@@ -1,13 +1,23 @@
- 
+<% featured = local_assigns[:featured_course] %>
+<% compare_pair = courses.many? %>
+
 <div class="popular-courses-section">
   <div class="container">
     <div class="popular-courses-header">
-      <h1 class="popular-courses-title">Veja abaixo os projetos mais escolhidos pelos alunos</h1>
-      <p class="popular-courses-description">Não adianta procurar em outro lugar, apenas aqui você terá acesso a materiais produzidos 100% por professores. Por isso oferecemos as melhores opções de cursos do Brasil, com o preço justo e acessível para você simplesmente gabaritar a prova e garantir a sua vaga.</p>
+      <% if compare_pair %>
+        <h1 class="popular-courses-title">Compare os planos lado a lado</h1>
+        <p class="popular-courses-description">O plano que você está vendo nesta página aparece ao lado de outra opção, destacada para facilitar a comparação de preços e benefícios.</p>
+      <% else %>
+        <h1 class="popular-courses-title">Veja abaixo os projetos mais escolhidos pelos alunos</h1>
+        <p class="popular-courses-description">Não adianta procurar em outro lugar, apenas aqui você terá acesso a materiais produzidos 100% por professores. Por isso oferecemos as melhores opções de cursos do Brasil, com o preço justo e acessível para você simplesmente gabaritar a prova e garantir a sua vaga.</p>
+      <% end %>
     </div>
-    <div class="popular-courses-grid">
+    <div class="popular-courses-grid<%= ' popular-courses-grid--compare' if compare_pair %>">
       <% courses.each do |course| %>
-        <div class="popular-course-card">
+        <% page_course = featured %>
+        <% highlight_comparison = compare_pair && page_course.present? && course.id != page_course.id %>
+        <% page_plan_card = compare_pair && page_course.present? && course.id == page_course.id %>
+        <div class="popular-course-card<%= ' popular-course-card--featured' if highlight_comparison %><%= ' popular-course-card--alt' if page_plan_card %>">
           <div class="course-card-header">
             <h2 class="course-card-title"><%= course.title %></h2>
           </div>

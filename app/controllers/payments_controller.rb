@@ -15,46 +15,19 @@ class PaymentsController < ApplicationController
     render json: payment_json, status: :ok
   end
 
-  def cashback_interest
-    result = Payment::CashbackInterestService.new(
-      user_id: params[:user_id],
-      authentication_token: params[:authentication_token],
-      course_id: params[:course_id],
-      cookies_course: cookies_course,
-      site: @site
-    ).call
-  
-    unless result.success?
-      redirect_to root_path, notice: result.error_message
-      return
-    end
-  
-    cookies[:payment_user] = result.payment_user_id
-    cookies[:cashback_applied] = result.cashback_applied
-    cookies["ead_#{@site}_cart_user"] = {
-      value: result.cart_courses.to_json,
-      expires: 1.year.from_now,
-      httponly: true
-    }
-  
-    redirect_to new_payment_path, notice: result.notice
-  end
-
   def new
     @courses = cart.courses
     @total_amount = cart.total_amount
     @all_installments = cart.all_installments
 
-    return if payment_user_id.blank?
-    @user = User.find_by(id: payment_user_id)
-
-    cashback_applicator = Payment::CashbackApplicator.new(user: @user, courses: @courses)
-    @applied_cashback = cookies[:cashback_applied].present? && cashback_applicator.applicable?
-  
-    if @applied_cashback
-      cashback_value = cashback_applicator.amount_to_apply
-      @total_amount = cart.total_amount - cashback_value
-      @all_installments = cart.all_installments(@total_amount)
+    if payment_user_id.blank?
+      @user = User.new(
+        name: cookies[:user_name],
+        email: cookies[:user_email],
+        phone: cookies[:user_phone]
+      )
+    else
+      @user = User.find_by(id: payment_user_id)
     end
   end
 

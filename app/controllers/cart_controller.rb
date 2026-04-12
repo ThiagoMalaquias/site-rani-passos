@@ -45,6 +45,10 @@ class CartController < ApplicationController
     courses = courses.uniq { |item| item["id"] }
     set_cookies(courses)
 
+    cookies[:user_name] = params[:user_name]
+    cookies[:user_email] = params[:user_email]
+    cookies[:user_phone] = params[:user_phone]
+
     redirect_to new_payment_path
     return
   end
