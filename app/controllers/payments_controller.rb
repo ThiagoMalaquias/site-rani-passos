@@ -19,7 +19,16 @@ class PaymentsController < ApplicationController
     @courses = cart.courses
     @total_amount = cart.total_amount
     @all_installments = cart.all_installments
-    @main_course_cart_line = cookies_course.find { |c| @courses.first && c["id"].to_i == @courses.first.id }
+    @cart_discount = cart.check_discount
+    @cookies_course = cookies_course
+
+    course_ids = cookies_course.map { |c| c["id"] }
+    @sugestions = if course_ids.present?
+      relateds = CourseRelated.where(course_id: course_ids).pluck("linked_id").uniq
+      Course.disclosure_actives.rani_passos.where(id: relateds).where.not(id: course_ids).order("RANDOM()").limit(5)
+    else
+      Course.disclosure_actives.rani_passos.paids.where.not(id: course_ids).limit(5)
+    end
 
     if payment_user_id.blank?
       @user = User.new(

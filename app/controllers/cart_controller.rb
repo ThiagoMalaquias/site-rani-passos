@@ -1,5 +1,6 @@
 class CartController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:apply_discount]
+  before_action :clear_cart, only: [:new]
 
   def apply_discount
     if params[:discount].blank?
@@ -67,6 +68,10 @@ class CartController < ApplicationController
   def clear_courses
     cookies["ead_#{@site}_cart_user"] = nil
     redirect_to cart_index_path
+  end
+
+  def clear_cart
+    cookies["ead_#{@site}_cart_user"] = nil if params[:clear_cart] == "true" || params[:user_name].present?
   end
 
   def all_installments

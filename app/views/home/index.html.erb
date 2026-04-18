@@ -65,7 +65,7 @@
         </ul>
 
         <div class="hero-buttons">
-          <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="btn-primary-lg pulse">Clique aqui para comprar</a>
+          <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>&clear_cart=true" class="btn-primary-lg pulse">Clique aqui para comprar</a>
         </div>
 
         <div class="hero-guarantee">
@@ -138,7 +138,7 @@
               <%== sidebar_price(@course, params[:discount]) %>
             <% end %>
 
-            <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>" class="buynow text-uppercase color-white">
+            <a href="/cart/new?course=<%= @course.slug %>&discount=<%= params[:discount]%>&clear_cart=true" class="buynow text-uppercase color-white">
               Clique aqui para comprar
             </a>
 

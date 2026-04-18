@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :site, :set_pop_up_leak, :set_utm_params, :clear_cashback_applied
+  before_action :site, :set_pop_up_leak, :set_utm_params
 
   def site
     @site = ENV.fetch('SITE') { 'ranipassos' }
@@ -20,10 +20,5 @@ class ApplicationController < ActionController::Base
     cookies[:utm_medium] = params[:utm_medium] if params[:utm_medium].present?
     cookies[:utm_campaign] = params[:utm_campaign] if params[:utm_campaign].present?
     cookies[:origin] = params[:or] if params[:or].present?
-  end
-
-  def clear_cashback_applied
-    cookies.delete(:cashback_applied) if params[:controller] != "payments" && params[:action] != "cashback_interest"
-    cookies.delete("ead_#{@site}_cart_user") if ["cart", "payments"].exclude?(params[:controller])
   end
 end

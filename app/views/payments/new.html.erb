@@ -9,8 +9,7 @@
         <h1 class="checkout-title text-uppercase">Finalizar matrícula</h1>
         <hr class="hero-divider mx-auto">
         <p class="checkout-subtitle">
-          Você está a um passo de garantir seu acesso ao curso
-          <strong><%= main_course.title %></strong>.
+          Você está a um passo de garantir seu acesso aos cursos
           Preencha seus dados e escolha a melhor forma de pagamento.
         </p>
       </div>
@@ -318,36 +317,40 @@
             <aside class="checkout-sidebar">
               <div class="checkout-sidebar-card">
                 <span class="checkout-sidebar-badge">Resumo da matrícula</span>
-                <div class="checkout-course-card">
-                  <% if main_course.image.attached? %>
-                    <%= image_tag main_course.image,
-                          class: "checkout-course-thumb",
-                          alt: main_course.title %>
-                  <% else %>
-                    <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg",
-                          class: "checkout-course-thumb",
-                          alt: main_course.title %>
+                <div class="checkout-courses-list">
+                  <% @courses.each do |course| %>
+                    <% cart_line = @cookies_course.find { |c| c["id"].to_i == course.id } %>
+                    <% d_title = cart_line.present? ? course.checkout_discount_title(cart_line) : nil %>
+                    <% d_amount = cart_line.present? ? course.checkout_discount_amount(cart_line) : 0.0 %>
+                    <div class="checkout-course-card">
+                      <% if course.image.attached? %>
+                        <%= image_tag course.image,
+                              class: "checkout-course-thumb",
+                              alt: course.title %>
+                      <% else %>
+                        <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg",
+                              class: "checkout-course-thumb",
+                              alt: course.title %>
+                      <% end %>
+                      <div class="checkout-course-info">
+                        <h4><%= course.title %></h4>
+                        <span class="checkout-course-access">
+                          <%= course.lifetime ? "Acesso vitalício" : "#{course.period_access} meses de acesso" %>
+                        </span>
+                        <% if @courses.many? %>
+                          <span class="checkout-course-line-total">
+                            <%= number_to_currency(course.total_price(cart_line || {})) %>
+                          </span>
+                        <% end %>
+                        <% if d_title.present? && d_amount.positive? %>
+                          <span class="checkout-flag checkout-flag--name"><%= d_title %></span>
+                          <span class="checkout-flag checkout-flag--value">− <%= number_to_currency(d_amount) %></span>
+                        <% end %>
+                      </div>
+                    </div>
                   <% end %>
-                  <div class="checkout-course-info">
-                    <h4><%= main_course.title %></h4>
-                    <span>
-                      <%= main_course.lifetime ? "Acesso vitalício" : "#{main_course.period_access} meses de acesso" %>
-                    </span>
-                  </div>
                 </div>
-                <% discount_title = nil
-                   discount_amount = 0.0
-                   if @main_course_cart_line.present?
-                     discount_title = main_course.checkout_discount_title(@main_course_cart_line)
-                     discount_amount = main_course.checkout_discount_amount(@main_course_cart_line)
-                   end %>
-                <% if discount_title.present? && discount_amount.positive? %>
-                  <div class="checkout-discount-summary">
-                    <span class="checkout-discount-summary__label">Desconto aplicado</span>
-                    <span class="checkout-discount-summary__name"><%= discount_title %></span>
-                    <span class="checkout-discount-summary__value">− <%= number_to_currency(discount_amount) %></span>
-                  </div>
-                <% end %>
+               
                 <div class="checkout-price-box">
                   <small>Total da compra</small>
                   <strong id="total_amount">
@@ -375,6 +378,10 @@
           </div>
         </div>
       </form>
+
+      <% if @sugestions.present? %>
+        <%= render "checkout_upsell" %>
+      <% end %>
 
       <div class="hero-guarantee">
         <div>

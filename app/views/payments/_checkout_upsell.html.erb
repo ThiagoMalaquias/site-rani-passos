@@ -1,0 +1,61 @@
+<section class="checkout-upsell" aria-label="Cursos sugeridos para complementar seu pedido">
+  <div class="checkout-upsell__inner">
+    <div class="checkout-upsell__head">
+      <% if @cart_discount.present? %>
+        <div class="checkout-upsell__ribbon" role="status">
+          <i class="fas fa-gift checkout-upsell__ribbon-icon" aria-hidden="true"></i>
+          <span><strong><%= @cart_discount.title %></strong> — leve também um destes cursos com condição especial</span>
+        </div>
+        <p class="checkout-upsell__hint">
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          Os descontos do combo seguem as mesmas regras do carrinho. Ao adicionar, você volta para esta tela com o valor atualizado.
+        </p>
+      <% else %>
+        <h2 class="checkout-upsell__title">
+          <span class="checkout-upsell__title-icon" aria-hidden="true">✨</span>
+          Quem compra este curso também escolhe
+        </h2>
+        <p class="checkout-upsell__subtitle">
+          Amplie sua preparação com materiais que complementam o que você já está levando — um clique e o curso entra no seu pedido.
+        </p>
+      <% end %>
+    </div>
+
+    <div class="checkout-upsell__track">
+      <% @sugestions.each do |course| %>
+        <% discount_cookie = @cart_discount.present? ? { "discount" => @cart_discount.title, "code" => @cart_discount.id } : {} %>
+        <% priced = course.total_price(discount_cookie) %>
+        <% base_price = course.total_price %>
+        <% add_href = if @cart_discount.present?
+             "/cart/new?course=#{course.slug}&local=cart&discount=#{encoded_code_discount(@cart_discount.title)}&code=#{@cart_discount.id}"
+           else
+             "/cart/new?course=#{course.slug}"
+           end %>
+        <article class="checkout-upsell-card">
+          <a href="/courses/<%= course.slug %>" class="checkout-upsell-card__media">
+            <% if course.image.attached? %>
+              <%= image_tag course.image, class: "checkout-upsell-card__img", alt: course.title %>
+            <% else %>
+              <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg", class: "checkout-upsell-card__img", alt: course.title %>
+            <% end %>
+          </a>
+          <div class="checkout-upsell-card__body">
+            <a href="/courses/<%= course.slug %>" class="checkout-upsell-card__title-link">
+              <h3 class="checkout-upsell-card__title"><%= course.title %></h3>
+            </a>
+            <div class="checkout-upsell-card__price">
+              <% if @cart_discount.present? && (base_price - priced) > 0.009 %>
+                <span class="checkout-upsell-card__price-old"><%= number_to_currency(base_price, unit: "R$ ") %></span>
+              <% end %>
+              <span class="checkout-upsell-card__price-now"><%= number_to_currency(priced, unit: "R$ ") %></span>
+            </div>
+            <a href="<%= add_href %>" class="checkout-upsell-card__btn">
+              <i class="fas fa-cart-plus" aria-hidden="true"></i>
+              Adicionar ao pedido
+            </a>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  </div>
+</section>
