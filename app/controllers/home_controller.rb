@@ -21,7 +21,7 @@ class HomeController < ApplicationController
   end
 
   def courses
-    @courses = Course.disclosure_actives
+    @courses = Course.disclosure_actives.rani_passos
 
     @courses = @courses.paids if params[:nature].nil? || params[:nature].blank?
     @courses = @courses.free if params[:nature].present?

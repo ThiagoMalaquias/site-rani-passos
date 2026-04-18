@@ -56,8 +56,7 @@
 
         <ul class="hero-stats">
           <li>
-            <strong><%= @course.lesson_count || "120+" %></strong>
-            Aulas completas
+            <%== detail_content_course(@course) %>
           </li>
           <li>
             <strong><%= @course.lifetime ? "Vitalício" : "#{@course.period_access} meses" %></strong>

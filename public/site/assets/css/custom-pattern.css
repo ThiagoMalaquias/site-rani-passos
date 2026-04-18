@@ -2812,6 +2812,62 @@ a.disabled {
   margin: 0 !important;
 }
 
+.site-top-bar {
+  background-color: #000;
+  color: #fff;
+}
+
+.site-top-bar__inner {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0.65rem 1.25rem;
+}
+
+.site-top-bar__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #111;
+  background: #fff;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.site-top-bar__btn .fas {
+  font-size: 0.95em;
+}
+
+.site-top-bar__btn:hover,
+.site-top-bar__btn:focus {
+  color: #fff;
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 576px) {
+  .site-top-bar__inner {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .site-top-bar__btn {
+    font-size: 0.72rem;
+    padding: 0.45rem 1rem;
+  }
+}
 
 .landing-wrap {
   background: #fff;
@@ -2967,7 +3023,7 @@ a.disabled {
 }
 
 .btn-secondary-lg {
-  background: var(--color-secondary);
+  background: #26d366;
   color: #fff;
   text-transform: uppercase;
   font-weight: 600;
@@ -3840,14 +3896,14 @@ a.disabled {
   flex: 1;
   height: 2px;
   background: #007BFF;
-  max-width: 200px;
+  max-width: 170px;
 }
 
 .title-text {
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 700;
-  color: #000;
+  color: #fff;
 }
 
 /* Home Careers Images */
@@ -4637,7 +4693,7 @@ a.disabled {
 }
 
 .banner-card {
-  background: linear-gradient(135deg, #25164a, #ff5757);
+  background: #007BFF;
   color: #fff;
   padding: 60px;
   text-align: center;
@@ -5258,16 +5314,26 @@ a.disabled {
   left: 0;
   right: 0;
   bottom: 0;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(191, 2, 77, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 50%, rgba(191, 2, 77, 0.03) 0%, transparent 50%);
+  background-color: #0b1220;
+  background-image: url("/site/assets/professores/ranipassos/img/banner-ranipassos.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
   pointer-events: none;
 }
 
 .theme-dark .headerbundle,
-.theme-dark .headerbundle-overlay,
 .theme-dark .headerbundle::before {
-  background: #1b1b1b
+  background: #1b1b1b;
+}
+
+.theme-dark .headerbundle-overlay {
+  background-color: #1b1b1b;
+  background-image: linear-gradient(180deg, rgba(27, 27, 27, 0.5), rgba(27, 27, 27, 0.82)),
+    url("/site/assets/professores/ranipassos/img/banner-ranipassos.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 .theme-dark .headerbundle .title-text {
@@ -5309,6 +5375,16 @@ a.disabled {
 @media (max-width: 768px) {
   .headerbundle {
     padding: 40px 0 35px;
+  }
+
+  .headerbundle-overlay {
+    background-image: url("/site/assets/professores/ranipassos/img/topo-rani-mobile.png");
+    background-position: center top;
+  }
+
+  .theme-dark .headerbundle-overlay {
+    background-image: linear-gradient(180deg, rgba(27, 27, 27, 0.5), rgba(27, 27, 27, 0.82)),
+      url("/site/assets/professores/ranipassos/img/topo-rani-mobile.png");
   }
 
   .headerbundle-decoration {

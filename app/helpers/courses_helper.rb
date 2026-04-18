@@ -45,4 +45,17 @@ module CoursesHelper
       <p class='pricepoll'> desconto aplicado: <b>#{discount}</b></p>
     "
   end
+
+  def detail_content_course(course)
+    return "
+      <strong>#{course.lesson_count || "120+"}</strong>
+      Aulas completas
+    " unless course.signature?
+
+
+    "
+      <strong>#{Course.courses_bind_signature(course).count}</strong>
+      Cursos completos
+    "
+  end
 end

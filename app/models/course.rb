@@ -44,6 +44,7 @@ class Course < ApplicationRecord
   scope :usuals, -> { where(kind: 'usual') }
   scope :simulateds, -> { where(kind: 'simulated') }
   scope :mentorings, -> { where(essay_mentoring: 'yes') }
+  scope :rani_passos, -> { where(site: ['all', 'rani_passos']) }
 
   INTEREST = 1.67
 
@@ -127,6 +128,16 @@ class Course < ApplicationRecord
     return 120 if total.zero?
 
     total
+  end
+
+  def self.courses_bind_signature(course)
+    hash_categories = course.categories.to_h { |cat| [cat.title, cat.id] }
+    hash_categories.delete("Assinaturas")
+    Course
+      .distinct
+      .joins(:course_categories)
+      .where(signature: false)
+      .access_actives.where("course_categories.category_id in (#{hash_categories.map { |_k, v| v }.join(',')})")
   end
 
   private

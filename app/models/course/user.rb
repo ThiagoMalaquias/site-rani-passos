@@ -17,7 +17,7 @@ class Course::User
     ids_courses = []
     courses.find_each do |course|
       if course.signature
-        ids_courses.concat(courses_bind_signature(course).map(&:id))
+        ids_courses.concat(Course.courses_bind_signature(course).map(&:id))
       else
         ids_courses.push(course.id)
       end
@@ -32,21 +32,9 @@ class Course::User
       ids_courses.push(course.id)
       next unless course.signature
 
-      ids_courses.concat(courses_bind_signature(course).map(&:id))
+      ids_courses.concat(Course.courses_bind_signature(course).map(&:id))
     end
 
     Course.where(id: ids_courses.uniq)
-  end
-
-  private
-
-  def courses_bind_signature(course)
-    hash_categories = course.categories.to_h { |cat| [cat.title, cat.id] }
-    hash_categories.delete("Assinaturas")
-    Course
-      .distinct
-      .joins(:course_categories)
-      .where(signature: false)
-      .access_actives.where("course_categories.category_id in (#{hash_categories.map { |_k, v| v }.join(',')})")
   end
 end
