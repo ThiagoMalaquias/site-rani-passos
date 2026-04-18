@@ -40,9 +40,7 @@
             <% end %>
           </a>
           <div class="checkout-upsell-card__body">
-            <a href="/courses/<%= course.slug %>" class="checkout-upsell-card__title-link">
-              <h3 class="checkout-upsell-card__title"><%= course.title %></h3>
-            </a>
+            <h3 class="checkout-upsell-card__title"><%= course.title %></h3>
             <div class="checkout-upsell-card__price">
               <% if @cart_discount.present? && (base_price - priced) > 0.009 %>
                 <span class="checkout-upsell-card__price-old"><%= number_to_currency(base_price, unit: "R$ ") %></span>
