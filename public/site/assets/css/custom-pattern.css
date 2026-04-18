@@ -6455,6 +6455,7 @@ a.disabled {
     gap: 0.9rem;
     padding-bottom: 0.5rem;
     margin: 0 -4px;
+    padding-top: 15px;
     padding-left: 4px;
     padding-right: 4px;
     scroll-snap-type: x mandatory;
