@@ -335,6 +335,19 @@
                     </span>
                   </div>
                 </div>
+                <% discount_title = nil
+                   discount_amount = 0.0
+                   if @main_course_cart_line.present?
+                     discount_title = main_course.checkout_discount_title(@main_course_cart_line)
+                     discount_amount = main_course.checkout_discount_amount(@main_course_cart_line)
+                   end %>
+                <% if discount_title.present? && discount_amount.positive? %>
+                  <div class="checkout-discount-summary">
+                    <span class="checkout-discount-summary__label">Desconto aplicado</span>
+                    <span class="checkout-discount-summary__name"><%= discount_title %></span>
+                    <span class="checkout-discount-summary__value">− <%= number_to_currency(discount_amount) %></span>
+                  </div>
+                <% end %>
                 <div class="checkout-price-box">
                   <small>Total da compra</small>
                   <strong id="total_amount">

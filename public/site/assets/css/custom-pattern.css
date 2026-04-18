@@ -6075,6 +6075,37 @@ a.disabled {
   color: #6b7280;
 }
 
+.checkout-discount-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: -12px 0 20px;
+  padding: 12px 14px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 14px;
+}
+
+.checkout-discount-summary__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #15803d;
+}
+
+.checkout-discount-summary__name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #166534;
+}
+
+.checkout-discount-summary__value {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #15803d;
+}
+
 .checkout-includes {
   margin-bottom: 24px;
 }

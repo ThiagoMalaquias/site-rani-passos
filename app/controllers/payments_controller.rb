@@ -19,6 +19,7 @@ class PaymentsController < ApplicationController
     @courses = cart.courses
     @total_amount = cart.total_amount
     @all_installments = cart.all_installments
+    @main_course_cart_line = cookies_course.find { |c| @courses.first && c["id"].to_i == @courses.first.id }
 
     if payment_user_id.blank?
       @user = User.new(

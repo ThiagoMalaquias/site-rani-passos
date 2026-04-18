@@ -64,6 +64,27 @@ class Course < ApplicationRecord
     price - ((price * discount) / 100)
   end
 
+  def checkout_discount_title(course_in_cookies)
+    return if course_in_cookies.blank?
+
+    code = course_in_cookies["code"].to_i
+    if code.positive?
+      CartDiscount.find_by(id: code)&.title
+    else
+      course_in_cookies["discount"].to_s.strip.presence
+    end
+  end
+
+  def checkout_discount_amount(course_in_cookies)
+    return 0.0 if course_in_cookies.blank?
+
+    pct = percentage_discount_applied(course_in_cookies)
+    return 0.0 if pct.zero? || pct == -1
+
+    base = Convert.convert_comma_to_float(value_cash)
+    (base - total_price(course_in_cookies)).round(2)
+  end
+
   def percentage_discount_applied(course_in_cookies)
     code = course_in_cookies["code"].to_i
     title_discount = course_in_cookies["discount"]
