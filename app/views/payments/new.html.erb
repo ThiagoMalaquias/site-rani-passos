@@ -409,8 +409,75 @@
   </section>
 </div>
 
+<% if @show_assinatura_checkout_modal %>
+  <%= render "assinatura_checkout_modal" %>
+<% end %>
+
 <script>
+  window.checkoutAssinaturaUpsell = <%= @show_assinatura_checkout_modal ? "true" : "false" %>;
+
+  (function () {
+    var DRAFT_KEY = 'rp_checkout_form_draft_v1';
+    var SKIP_NAMES = ['authenticity_token', 'utf8', 'checkout_full_total_amount'];
+
+    window.saveCheckoutFormDraftAndGo = function (url) {
+      var form = document.getElementById('payments');
+      if (!form || !url) {
+        window.location.href = url;
+        return;
+      }
+      var data = {};
+      $(form).find('input, select, textarea').each(function () {
+        var el = this;
+        var name = el.name;
+        if (!name) return;
+        var type = (el.type || '').toLowerCase();
+        if (type === 'submit' || type === 'button') return;
+        if (SKIP_NAMES.indexOf(name) >= 0) return;
+        if (name === '_method') return;
+        data[name] = $(el).val();
+      });
+      try {
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+      } catch (err) {}
+      window.location.href = url;
+    };
+
+    window.restoreCheckoutFormDraftIfAny = function () {
+      var raw;
+      try {
+        raw = sessionStorage.getItem(DRAFT_KEY);
+      } catch (err) {
+        return;
+      }
+      if (!raw) return;
+      try {
+        sessionStorage.removeItem(DRAFT_KEY);
+        var data = JSON.parse(raw);
+        var form = document.getElementById('payments');
+        if (!form) return;
+        $.each(data, function (name, value) {
+          if (value === undefined || value === null) return;
+          if (SKIP_NAMES.indexOf(name) >= 0) return;
+          $(form).find('[name]').filter(function () {
+            return this.name === name;
+          }).val(value);
+        });
+        var method = ($('#method').val() || 'card').toString();
+        if (method === 'billet' && $('#pills-billet-tab').length) {
+          $('#pills-billet-tab').tab('show');
+        } else if (method === 'pix' && $('#pills-pix-tab').length) {
+          $('#pills-pix-tab').tab('show');
+        } else if ($('#pills-card-tab').length) {
+          $('#pills-card-tab').tab('show');
+        }
+      } catch (err) {}
+    };
+  })();
+
   $(document).ready(function () {
+    restoreCheckoutFormDraftIfAny();
+
     $('#cnumber').mask('0000 0000 0000 0000');
     $('#cexpiry').mask('00/00');
     $('#ccvc').mask('000');
@@ -473,6 +540,42 @@
     });
 
     $('#installment').on('change', updateCheckoutTotalFromInstallments);
-    updateCheckoutTotalFromInstallments();
+
+    var payMethod = ($('#method').val() || 'card').toString();
+    if (payMethod === 'billet' || payMethod === 'pix') {
+      setTotalAmountForCashPayment();
+    } else {
+      updateCheckoutTotalFromInstallments();
+    }
+
+    var skipAssinaturaModal = false;
+
+    $('#payments').on('submit', function (e) {
+      if (!window.checkoutAssinaturaUpsell) return;
+      if (skipAssinaturaModal) return;
+      var total = parseFloat($('#checkout_full_total_amount').val(), 10);
+      if (isNaN(total)) total = 0;
+      var floor = parseFloat($('#checkout_assinatura_floor').val(), 10);
+      if (isNaN(floor)) floor = 0;
+      if (total >= floor - 0.01) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      $('#modalAssinaturaCheckout').modal('show');
+    });
+
+    $('#btnManterCursoCheckout').on('click', function () {
+      skipAssinaturaModal = true;
+      $('#modalAssinaturaCheckout').modal('hide');
+      setTimeout(function () {
+        $('#payments')[0].submit();
+      }, 200);
+    });
+
+    $(document).on('click', '#btnTrocarAssinaturaCheckout', function () {
+      var url = $(this).data('swap-url');
+      if (url) {
+        saveCheckoutFormDraftAndGo(url);
+      }
+    });
   });
 </script>

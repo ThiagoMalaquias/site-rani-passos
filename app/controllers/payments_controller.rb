@@ -30,6 +30,14 @@ class PaymentsController < ApplicationController
       Course.disclosure_actives.rani_passos.paids.where.not(id: course_ids).limit(5)
     end
 
+    assinatura_slug = HomeController::COMPARISON_SLUG_ASSINATURA
+    @assinatura_course = Course.find_by(slug: assinatura_slug)
+    @assinatura_floor_price = @assinatura_course.present? ? @assinatura_course.total_price({}).to_f : 0.0
+    @has_assinatura_in_cart = @courses.any? { |c| c.slug == assinatura_slug }
+    @show_assinatura_checkout_modal = @assinatura_course.present? &&
+      !@has_assinatura_in_cart &&
+      @total_amount.to_f < @assinatura_floor_price
+
     if payment_user_id.blank?
       @user = User.new(
         name: cookies[:user_name],
