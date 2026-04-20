@@ -314,7 +314,7 @@
           </div>
           <!-- DIREITA -->
           <div class="col-lg-5 mb-4">
-            <aside class="checkout-sidebar">
+            <aside class="checkout-sidebar <%= 'checkout-sidebar--sticky' unless @sugestions.present? %>">
               <div class="checkout-sidebar-card">
                 <span class="checkout-sidebar-badge">Resumo da matrícula</span>
                 <div class="checkout-courses-list">
