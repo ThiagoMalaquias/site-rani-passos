@@ -1,11 +1,48 @@
 <% assinatura_slug = HomeController::COMPARISON_SLUG_ASSINATURA %>
 <% swap_url = "/cart/new?course=#{assinatura_slug}&clear_cart=true" %>
+<% upsell_video = @company.video_upsell %>
 
 <div class="modal fade checkout-assinatura-modal" id="modalAssinaturaCheckout" tabindex="-1" role="dialog" aria-labelledby="modalAssinaturaCheckoutTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered checkout-assinatura-modal__dialog" role="document">
     <div class="modal-content checkout-assinatura-modal__content">
       <div class="checkout-assinatura-modal__grid">
-        <aside class="checkout-assinatura-modal__visual">
+        <%# Mobile: mídia em destaque no topo (vídeo ou capa) + título do pacote %>
+        <div class="checkout-assinatura-modal__hero-mobile d-md-none">
+          <div class="checkout-assinatura-modal__hero-media">
+            <% if upsell_video.present? %>
+              <div class="checkout-assinatura-modal__video-embed checkout-assinatura-modal__video-embed--hero">
+                <iframe
+                  src="<%= upsell_video %>?rel=0"
+                  title="Vídeo da assinatura Rani Passos"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+              </div>
+            <% else %>
+              <div class="checkout-assinatura-modal__hero-cover">
+                <% if @assinatura_course.image.attached? %>
+                  <%= image_tag @assinatura_course.image,
+                        class: "checkout-assinatura-modal__hero-cover-img",
+                        alt: @assinatura_course.title %>
+                <% else %>
+                  <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg",
+                        class: "checkout-assinatura-modal__hero-cover-img",
+                        alt: @assinatura_course.title %>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <div class="checkout-assinatura-modal__hero-meta">
+            <span class="checkout-assinatura-modal__visual-kicker checkout-assinatura-modal__hero-kicker">
+              <i class="fas fa-layer-group" aria-hidden="true"></i>
+              Pacote completo
+            </span>
+            <p class="checkout-assinatura-modal__visual-title checkout-assinatura-modal__hero-title"><%= @assinatura_course.title %></p>
+          </div>
+        </div>
+
+        <%# Desktop: coluna visual com capa + “O que inclui” sobreposta %>
+        <aside class="checkout-assinatura-modal__visual d-none d-md-block">
           <% if @assinatura_course.image.attached? %>
             <%= image_tag @assinatura_course.image,
                   class: "checkout-assinatura-modal__cover-img",
@@ -16,6 +53,9 @@
                   alt: @assinatura_course.title %>
           <% end %>
           <div class="checkout-assinatura-modal__visual-scrim" aria-hidden="true"></div>
+          <div class="checkout-assinatura-modal__visual-includes">
+            <%= render "assinatura_modal_includes" %>
+          </div>
           <div class="checkout-assinatura-modal__visual-caption">
             <span class="checkout-assinatura-modal__visual-kicker">
               <i class="fas fa-layer-group" aria-hidden="true"></i>
@@ -58,36 +98,36 @@
               </div>
             </div>
 
-            <h3 class="checkout-assinatura-modal__subtitle">O que inclui</h3>
-            <ul class="checkout-assinatura-modal__list">
-              <% if @assinatura_course.warranties.any? %>
-                <% @assinatura_course.warranties.limit(8).each do |warranty| %>
-                  <li>
-                    <i class="fas fa-check-circle" aria-hidden="true"></i>
-                    <span><%= warranty.title %></span>
-                  </li>
-                <% end %>
+            <%# Mobile: “O que inclui” no fluxo do painel (abaixo do comparativo) %>
+            <section class="checkout-assinatura-modal__includes-panel d-md-none" aria-label="O que inclui na assinatura">
+              <%= render "assinatura_modal_includes" %>
+            </section>
+
+            <%# Desktop: vídeo ou capa no painel (duplica mídia só em telas maiores) %>
+            <div class="checkout-assinatura-modal__preview d-none d-md-block" aria-label="Apresentação da assinatura">
+              <% if upsell_video.present? %>
+                <div class="checkout-assinatura-modal__video-embed">
+                  <iframe
+                    src="<%= upsell_video %>?rel=0"
+                    title="Vídeo da assinatura Rani Passos"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+                </div>
               <% else %>
-                <li>
-                  <i class="fas fa-check-circle" aria-hidden="true"></i>
-                  <span>Videoaulas do básico ao avançado com professores especialistas</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle" aria-hidden="true"></i>
-                  <span>Materiais em PDF, questões comentadas e simulados</span>
-                </li>
-                <li>
-                  <i class="fas fa-check-circle" aria-hidden="true"></i>
-                  <span>RAV e ferramentas para maximizar seu desempenho na prova</span>
-                </li>
+                <div class="checkout-assinatura-modal__cover-fallback">
+                  <% if @assinatura_course.image.attached? %>
+                    <%= image_tag @assinatura_course.image,
+                          class: "checkout-assinatura-modal__cover-fallback-img",
+                          alt: @assinatura_course.title %>
+                  <% else %>
+                    <%= image_tag "/site/assets/#{@site}/img/assinatura.jpg",
+                          class: "checkout-assinatura-modal__cover-fallback-img",
+                          alt: @assinatura_course.title %>
+                  <% end %>
+                </div>
               <% end %>
-              <li>
-                <i class="fas fa-check-circle" aria-hidden="true"></i>
-                <span>
-                  <%= @assinatura_course.lifetime ? "Acesso vitalício" : "#{@assinatura_course.period_access} meses de acesso" %> à plataforma
-                </span>
-              </li>
-            </ul>
+            </div>
           </div>
 
           <div class="checkout-assinatura-modal__actions">

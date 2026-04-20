@@ -1,0 +1,50 @@
+<div class="checkout-assinatura-modal__visual-includes-card">
+  <header class="checkout-assinatura-modal__visual-includes-head">
+    <span class="checkout-assinatura-modal__visual-includes-mark" aria-hidden="true">
+      <i class="fas fa-clipboard-list"></i>
+    </span>
+    <div class="checkout-assinatura-modal__visual-includes-head-copy">
+      <span class="checkout-assinatura-modal__visual-includes-kicker">Benefícios</span>
+      <h3 class="checkout-assinatura-modal__visual-includes-title">O que inclui</h3>
+    </div>
+  </header>
+  <ul class="checkout-assinatura-modal__includes-list" role="list">
+    <% if @assinatura_course.warranties.any? %>
+      <% @assinatura_course.warranties.limit(8).each do |warranty| %>
+        <li class="checkout-assinatura-modal__includes-item">
+          <span class="checkout-assinatura-modal__includes-icon" aria-hidden="true">
+            <i class="fas fa-check"></i>
+          </span>
+          <span class="checkout-assinatura-modal__includes-text"><%= warranty.title %></span>
+        </li>
+      <% end %>
+    <% else %>
+      <li class="checkout-assinatura-modal__includes-item">
+        <span class="checkout-assinatura-modal__includes-icon" aria-hidden="true">
+          <i class="fas fa-check"></i>
+        </span>
+        <span class="checkout-assinatura-modal__includes-text">Videoaulas do básico ao avançado com professores especialistas</span>
+      </li>
+      <li class="checkout-assinatura-modal__includes-item">
+        <span class="checkout-assinatura-modal__includes-icon" aria-hidden="true">
+          <i class="fas fa-check"></i>
+        </span>
+        <span class="checkout-assinatura-modal__includes-text">Materiais em PDF, questões comentadas e simulados</span>
+      </li>
+      <li class="checkout-assinatura-modal__includes-item">
+        <span class="checkout-assinatura-modal__includes-icon" aria-hidden="true">
+          <i class="fas fa-check"></i>
+        </span>
+        <span class="checkout-assinatura-modal__includes-text">RAV e ferramentas para maximizar seu desempenho na prova</span>
+      </li>
+    <% end %>
+    <li class="checkout-assinatura-modal__includes-item checkout-assinatura-modal__includes-item--accent">
+      <span class="checkout-assinatura-modal__includes-icon" aria-hidden="true">
+        <i class="fas fa-unlock-alt"></i>
+      </span>
+      <span class="checkout-assinatura-modal__includes-text">
+        <%= @assinatura_course.lifetime ? "Acesso vitalício" : "#{@assinatura_course.period_access} meses de acesso" %> à plataforma
+      </span>
+    </li>
+  </ul>
+</div>
