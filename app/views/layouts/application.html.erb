@@ -127,10 +127,12 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WPKXSN5"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
+    <% if params[:controller] != "payments" %>
+     <%= render "layouts/site/professores/ranipassos/header" %>
+    <% end %>
 
-    <%= render "layouts/site/professores/ranipassos/header" %>
     <%= yield %>
-    <%= render "shared/exit_intent_modal" %>
+
     <%= render "layouts/site/professores/ranipassos/footer" %>
   </body>
 </html>

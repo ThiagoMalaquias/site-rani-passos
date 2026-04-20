@@ -374,14 +374,16 @@
                   Ao finalizar, você concorda com os termos da compra e política da plataforma.
                 </p>
               </div>
+              <% if @sugestions.present? %>
+                <div class="checkout-sidebar-upsell">
+                  <%= render "checkout_upsell", sidebar_mode: true %>
+                </div>
+              <% end %>
             </aside>
+            
           </div>
         </div>
       </form>
-
-      <% if @sugestions.present? %>
-        <%= render "checkout_upsell" %>
-      <% end %>
 
       <div class="hero-guarantee">
         <div>

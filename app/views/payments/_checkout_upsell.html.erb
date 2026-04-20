@@ -1,4 +1,5 @@
-<section class="checkout-upsell" aria-label="Cursos sugeridos para complementar seu pedido">
+<% sidebar_mode = local_assigns[:sidebar_mode] || false %>
+<section class="checkout-upsell <%= 'checkout-upsell--sidebar' if sidebar_mode %>" aria-label="Cursos sugeridos para complementar seu pedido">
   <div class="checkout-upsell__inner">
     <div class="checkout-upsell__head">
       <% if @cart_discount.present? %>
