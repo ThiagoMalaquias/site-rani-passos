@@ -23,6 +23,8 @@ class EmailsMailer < ApplicationMailer
     @body = @body.gsub("{{access_until}}", access_until.strftime("%d/%m/%Y"))
     @body = @body.gsub("{{user_email}}", user.email)
 
+    @body = @body.gsub("{{user_area}}", "<a href='https://aluno.ranipassos.com.br' target='blank'>https://aluno.ranipassos.com.br</a>")
+
     mail(to: user.email, subject: company.subject_email.to_s, template_name: "email")
   end
 
@@ -34,6 +36,8 @@ class EmailsMailer < ApplicationMailer
     @body = @body.gsub("{{user_email}}", user_course.user.email)
     @body = @body.gsub("{{course_title}}", user_course.course.title)
     @body = @body.gsub("{{access_until}}", user_course.access_until.strftime("%d/%m/%Y"))
+
+    @body = @body.gsub("{{user_area}}", "<a href='https://aluno.ranipassos.com.br' target='blank'>https://aluno.ranipassos.com.br</a>")
 
     mail(to: user_course.user.email, subject: "B#{company.subject_email}", template_name: "email")
   end
