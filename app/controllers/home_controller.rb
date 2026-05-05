@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
-  COMPARISON_SLUG_ASSINATURA = "assinatura-rani-passos".freeze
-  COMPARISON_SLUG_MENTORIA   = "mentoria-missao-gabaritar".freeze
+  COMPARISON_SLUG_ASSINATURA = "assinatura-rani-passos-anual".freeze
+  COMPARISON_SLUG_MENTORIA   = "assinatura-rani-passos".freeze
   COMPARISON_DEFAULT_SLUG    = COMPARISON_SLUG_ASSINATURA
 
   before_action :set_courses, only: [:index, :metrics]
